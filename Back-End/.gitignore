@@ -1,0 +1,16 @@
+## .NET
+bin/
+obj/
+*.user
+
+## Visual Studio
+.vs/
+
+## Secrets — never commit real connection strings, JWT keys, or email credentials
+appsettings.Production.json
+*.env
+.env
+
+## OS
+.DS_Store
+Thumbs.db
