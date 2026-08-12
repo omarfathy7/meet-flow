@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Team CSS -->
+    <link rel="stylesheet" href="Team.css">
+</head>
+
+<body>
+
+    <!-- ===================================================
+                    SIDEBAR NAVIGATION
+    =================================================== -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">M</div>
+            <h2>MeetFlow</h2>
+        </div>
+
+        <nav>
+            <ul>
+                <li>
+                    <a href="../Dashboard/Dashboard.html">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Meetings/Meetings.html">
+                        <i class="fa-regular fa-calendar-check"></i>
+                        <span>Meetings</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Tasks/Tasks.html">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>Tasks</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Follow-Ups/Follow-Ups.html">
+                        <i class="fa-solid fa-arrows-spin"></i>
+                        <span>Follow-ups</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Calender/Calender.html">
+                        <i class="fa-regular fa-calendar"></i>
+                        <span>Calendar</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Analytics/Analytics.html">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+
+                <hr class="sidebar-divider">
+
+                <li class="active">
+                    <a href="..\Team\Team.html">
+                        <i class="fa-solid fa-user-group"></i>
+                        <span>Team</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Reports/Reports.html">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Integrations/Integrations.html">
+                        <i class="fa-solid fa-cubes"></i>
+                        <span>Integrations</span>
+                    </a>
+                </li>
+
+                <hr class="sidebar-divider">
+
+                <li>
+                    <a href="../Settings/Settings.html">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="..\Help&Support\Help&Support.html">
+                        <i class="fa-regular fa-circle-question"></i>
+                        <span>Help & Support</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    </aside>
+
+    <!-- ===================================================
+                    MAIN CONTENT AREA
+    =================================================== -->
+    <main class="main-content">
+
+        <!-- PAGE HEADER -->
+        <div class="page-header">
+            <header class="top-header">
+                <button class="toggle-btn" id="toggleSidebar" aria-label="Toggle Sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div class="header-title">
+                    <i class="fa-solid fa-user-group"></i>
+                    <h1>Team</h1>
+                </div>
+            </header>
+
+            <!-- Invite Member Button at Top Right -->
+            <div class="header-action">
+                <button class="btn-primary" id="openInviteModalBtn">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Invite Member</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- STATS CARDS GRID -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <span class="card-label">Total Members</span>
+                <h2>24</h2>
+                <p class="sub-text positive"><i class="fa-solid fa-arrow-up"></i> 4 new this month</p>
+            </div>
+            <div class="stat-card">
+                <span class="card-label">Active Members</span>
+                <h2>20</h2>
+                <p class="sub-text positive"><i class="fa-solid fa-circle status-dot online"></i> Currently online</p>
+            </div>
+            <div class="stat-card">
+                <span class="card-label">Departments</span>
+                <h2>6</h2>
+                <p class="sub-text"><i class="fa-solid fa-building"></i> Across organization</p>
+            </div>
+            <div class="stat-card">
+                <span class="card-label">Pending Invitations</span>
+                <h2>3</h2>
+                <p class="sub-text"><i class="fa-solid fa-envelope"></i> Awaiting response</p>
+            </div>
+        </section>
+
+        <!-- TEAM CONTENT AREA -->
+        <section class="team-content-layout">
+            <div class="content-card team-card">
+                
+                <!-- CARD HEADER: TABS & SEARCH BAR -->
+                <div class="card-header-toolbar">
+                    <div class="team-tabs">
+                        <button class="tab-btn active" data-tab="all-members">All Members</button>
+                        <button class="tab-btn" data-tab="departments">Departments</button>
+                    </div>
+
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" id="memberSearchInput" placeholder="Search members...">
+                    </div>
+                </div>
+
+                <!-- TAB CONTENT 1: ALL MEMBERS TABLE -->
+                <div class="tab-content active" id="all-members-tab">
+                    <div class="table-responsive">
+                        <table class="team-table">
+                            <thead>
+                                <tr>
+                                    <th>Member</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th>Tasks</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="teamTableBody">
+                                <tr>
+                                    <td>
+                                        <div class="member-info">
+                                            <div class="avatar-circle"></div>
+                                            <span class="member-name">Alex Johnson</span>
+                                        </div>
+                                    </td>
+                                    <td class="role-cell">Admin</td>
+                                    <td>
+                                        <span class="status-indicator">
+                                            <span class="status-dot online"></span> Online
+                                        </span>
+                                    </td>
+                                    <td class="tasks-cell">8</td>
+                                    <td class="action-cell">
+                                        <button class="action-btn"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="member-info">
+                                            <div class="avatar-circle"></div>
+                                            <span class="member-name">Jane Smith</span>
+                                        </div>
+                                    </td>
+                                    <td class="role-cell">Product Manager</td>
+                                    <td>
+                                        <span class="status-indicator">
+                                            <span class="status-dot online"></span> Online
+                                        </span>
+                                    </td>
+                                    <td class="tasks-cell">6</td>
+                                    <td class="action-cell">
+                                        <button class="action-btn"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="member-info">
+                                            <div class="avatar-circle"></div>
+                                            <span class="member-name">Mike Johnson</span>
+                                        </div>
+                                    </td>
+                                    <td class="role-cell">Designer</td>
+                                    <td>
+                                        <span class="status-indicator">
+                                            <span class="status-dot away"></span> Away
+                                        </span>
+                                    </td>
+                                    <td class="tasks-cell">4</td>
+                                    <td class="action-cell">
+                                        <button class="action-btn"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="member-info">
+                                            <div class="avatar-circle"></div>
+                                            <span class="member-name">Sarah Williams</span>
+                                        </div>
+                                    </td>
+                                    <td class="role-cell">Developer</td>
+                                    <td>
+                                        <span class="status-indicator">
+                                            <span class="status-dot offline"></span> Offline
+                                        </span>
+                                    </td>
+                                    <td class="tasks-cell">10</td>
+                                    <td class="action-cell">
+                                        <button class="action-btn"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="member-info">
+                                            <div class="avatar-circle"></div>
+                                            <span class="member-name">David Brown</span>
+                                        </div>
+                                    </td>
+                                    <td class="role-cell">QA Engineer</td>
+                                    <td>
+                                        <span class="status-indicator">
+                                            <span class="status-dot offline"></span> Offline
+                                        </span>
+                                    </td>
+                                    <td class="tasks-cell">3</td>
+                                    <td class="action-cell">
+                                        <button class="action-btn"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="member-info">
+                                            <div class="avatar-circle"></div>
+                                            <span class="member-name">Emma Davis</span>
+                                        </div>
+                                    </td>
+                                    <td class="role-cell">Marketing</td>
+                                    <td>
+                                        <span class="status-indicator">
+                                            <span class="status-dot online"></span> Online
+                                        </span>
+                                    </td>
+                                    <td class="tasks-cell">5</td>
+                                    <td class="action-cell">
+                                        <button class="action-btn"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="table-footer">
+                        <a href="#" class="view-all-link">View all members &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- TAB CONTENT 2: DEPARTMENTS VIEW -->
+                <div class="tab-content" id="departments-tab">
+                    <div class="departments-grid">
+                        
+                        <div class="department-card">
+                            <div class="dept-header">
+                                <div class="dept-title">
+                                    <i class="fa-solid fa-palette"></i>
+                                    <h4>Design</h4>
+                                </div>
+                                <span class="dept-count">2 Members</span>
+                            </div>
+                            <ul class="dept-member-list">
+                                <li>
+                                    <div class="member-info">
+                                        <div class="avatar-circle"></div>
+                                        <div>
+                                            <div class="member-name">Mike Johnson</div>
+                                            <div class="sub-role">Designer</div>
+                                        </div>
+                                    </div>
+                                    <span class="status-dot away"></span>
+                                </li>
+                                <li>
+                                    <div class="member-info">
+                                        <div class="avatar-circle"></div>
+                                        <div>
+                                            <div class="member-name">Jane Doe</div>
+                                            <div class="sub-role">Product Designer</div>
+                                        </div>
+                                    </div>
+                                    <span class="status-dot online"></span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="department-card">
+                            <div class="dept-header">
+                                <div class="dept-title">
+                                    <i class="fa-solid fa-code"></i>
+                                    <h4>Engineering</h4>
+                                </div>
+                                <span class="dept-count">3 Members</span>
+                            </div>
+                            <ul class="dept-member-list">
+                                <li>
+                                    <div class="member-info">
+                                        <div class="avatar-circle"></div>
+                                        <div>
+                                            <div class="member-name">Sarah Williams</div>
+                                            <div class="sub-role">Developer</div>
+                                        </div>
+                                    </div>
+                                    <span class="status-dot offline"></span>
+                                </li>
+                                <li>
+                                    <div class="member-info">
+                                        <div class="avatar-circle"></div>
+                                        <div>
+                                            <div class="member-name">Alex Smith</div>
+                                            <div class="sub-role">Frontend Engineer</div>
+                                        </div>
+                                    </div>
+                                    <span class="status-dot online"></span>
+                                </li>
+                                <li>
+                                    <div class="member-info">
+                                        <div class="avatar-circle"></div>
+                                        <div>
+                                            <div class="member-name">David Brown</div>
+                                            <div class="sub-role">QA Engineer</div>
+                                        </div>
+                                    </div>
+                                    <span class="status-dot offline"></span>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===================================================
+                INVITE MEMBER MODAL POPUP
+    =================================================== -->
+    <div class="modal-overlay" id="inviteModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Invite New Member</h3>
+                <button class="close-modal-btn" id="closeInviteModalBtn">&times;</button>
+            </div>
+            
+            <form id="inviteMemberForm" class="modal-form">
+                <div class="form-group">
+                    <label for="memberName">Full Name</label>
+                    <input type="text" id="memberName" placeholder="e.g. John Doe" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="memberEmail">Email Address</label>
+                    <input type="email" id="memberEmail" placeholder="e.g. john@meetflow.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="memberPhone">Phone Number</label>
+                    <input type="tel" id="memberPhone" placeholder="e.g. +1 234 567 8900">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="memberDept">Department</label>
+                        <select id="memberDept" required>
+                            <option value="" disabled selected>Select Dept</option>
+                            <option value="Design">Design</option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Product">Product</option>
+                            <option value="Marketing">Marketing</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="memberRole">Role</label>
+                        <select id="memberRole" required>
+                            <option value="" disabled selected>Select Role</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Developer">Developer</option>
+                            <option value="Designer">Designer</option>
+                            <option value="Manager">Manager</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancelInviteBtn">Cancel</button>
+                    <button type="submit" class="btn-primary">Send Invitation</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Team JS -->
+    <script src="../api.js"></script>
+    <script src="Team.js"></script>
+</body>
+
+</html>

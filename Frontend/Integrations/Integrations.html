@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integrations</title>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Integrations CSS -->
+    <link rel="stylesheet" href="Integrations.css">
+</head>
+
+<body>
+
+    <!-- ===================================================
+                        SIDEBAR NAVIGATION
+    =================================================== -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">M</div>
+            <h2>MeetFlow</h2>
+        </div>
+
+        <nav>
+            <ul>
+                <li>
+                    <a href="../Dashboard/Dashboard.html">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Meetings/Meetings.html">
+                        <i class="fa-regular fa-calendar-check"></i>
+                        <span>Meetings</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Tasks/Tasks.html">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>Tasks</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Follow-Ups/Follow-Ups.html">
+                        <i class="fa-solid fa-arrows-spin"></i>
+                        <span>Follow-ups</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Calender/Calender.html">
+                        <i class="fa-regular fa-calendar"></i>
+                        <span>Calendar</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Analytics/Analytics.html">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+
+                <hr class="sidebar-divider">
+
+                <li>
+                    <a href="../Team/Team.html">
+                        <i class="fa-solid fa-user-group"></i>
+                        <span>Team</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Reports/Reports.html">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+
+                <!-- الصفحة النشطة -->
+                <li class="active">
+                    <a href="../Integrations/Integrations.html">
+                        <i class="fa-solid fa-cubes"></i>
+                        <span>Integrations</span>
+                    </a>
+                </li>
+
+                <hr class="sidebar-divider">
+
+                <li>
+                    <a href="../Settings/Settings.html">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="..\Help&Support\Help&Support.html">
+                        <i class="fa-regular fa-circle-question"></i>
+                        <span>Help & Support</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    </aside>
+
+    <!-- ===================================================
+                        MAIN CONTENT AREA
+    =================================================== -->
+    <main class="main-content">
+
+        <!-- PAGE HEADER -->
+        <div class="page-header">
+            <header class="top-header">
+                <button class="toggle-btn" id="toggleSidebar" aria-label="Toggle Sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <!-- Header Title with Icon & Blue Hover Effect -->
+                <div class="header-title">
+                    <i class="fa-solid fa-cubes"></i>
+                    <h1>Integrations</h1>
+                </div>
+            </header>
+        </div>
+
+        <p class="page-description">Connect your favorite tools to automate your MeetFlow workflow.</p>
+
+        <!-- INTEGRATIONS GRID -->
+        <div class="integrations-grid" id="integrationsGrid">
+            
+            <!-- Slack -->
+            <div class="integration-card" data-app="slack">
+                <div class="card-header">
+                    <div class="app-icon slack-icon">
+                        <i class="fa-brands fa-slack"></i>
+                    </div>
+                    <button class="status-badge connected" data-action="toggle">Connected</button>
+                </div>
+                <h3>Slack</h3>
+                <p>Send meeting summaries and reminders directly to Slack channels.</p>
+            </div>
+
+            <!-- Google Calendar -->
+            <div class="integration-card" data-app="google-calendar">
+                <div class="card-header">
+                    <div class="app-icon gcal-icon">
+                        <i class="fa-solid fa-calendar-days"></i>
+                    </div>
+                    <button class="status-badge connected" data-action="toggle">Connected</button>
+                </div>
+                <h3>Google Calendar</h3>
+                <p>Automatically sync your meetings with Google Calendar.</p>
+            </div>
+
+            <!-- Zoom -->
+            <div class="integration-card" data-app="zoom">
+                <div class="card-header">
+                    <div class="app-icon zoom-icon">
+                        <i class="fa-solid fa-video"></i>
+                    </div>
+                    <button class="btn-connect" data-action="toggle">Connect</button>
+                </div>
+                <h3>Zoom</h3>
+                <p>Launch and record video calls directly from MeetFlow.</p>
+            </div>
+
+            <!-- Notion -->
+            <div class="integration-card" data-app="notion">
+                <div class="card-header">
+                    <div class="app-icon notion-icon">
+                        <i class="fa-solid fa-file-pen"></i>
+                    </div>
+                    <button class="btn-connect" data-action="toggle">Connect</button>
+                </div>
+                <h3>Notion</h3>
+                <p>Export meeting notes and action items into Notion pages.</p>
+            </div>
+
+            <!-- Trello -->
+            <div class="integration-card" data-app="trello">
+                <div class="card-header">
+                    <div class="app-icon trello-icon">
+                        <i class="fa-brands fa-trello"></i>
+                    </div>
+                    <button class="btn-connect" data-action="toggle">Connect</button>
+                </div>
+                <h3>Trello</h3>
+                <p>Turn action items into Trello cards automatically.</p>
+            </div>
+
+            <!-- Microsoft Teams -->
+            <div class="integration-card" data-app="teams">
+                <div class="card-header">
+                    <div class="app-icon teams-icon">
+                        <i class="fa-solid fa-users-rectangle"></i>
+                    </div>
+                    <button class="btn-connect" data-action="toggle">Connect</button>
+                </div>
+                <h3>Microsoft Teams</h3>
+                <p>Bring MeetFlow meetings into Microsoft Teams.</p>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Integrations JS -->
+    <script src="../api.js"></script>
+    <script src="Integrations.js"></script>
+</body>
+
+</html>

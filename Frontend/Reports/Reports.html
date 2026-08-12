@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports</title>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Reports CSS -->
+    <link rel="stylesheet" href="Reports.css">
+</head>
+
+<body>
+
+    <!-- ===================================================
+                    SIDEBAR NAVIGATION
+    =================================================== -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">M</div>
+            <h2>MeetFlow</h2>
+        </div>
+
+        <nav>
+            <ul>
+                <li>
+                    <a href="../Dashboard/Dashboard.html">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Meetings/Meetings.html">
+                        <i class="fa-regular fa-calendar-check"></i>
+                        <span>Meetings</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Tasks/Tasks.html">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>Tasks</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Follow-Ups/Follow-Ups.html">
+                        <i class="fa-solid fa-arrows-spin"></i>
+                        <span>Follow-ups</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Calender/Calender.html">
+                        <i class="fa-regular fa-calendar"></i>
+                        <span>Calendar</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Analytics/Analytics.html">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+
+                <hr class="sidebar-divider">
+
+                <li>
+                    <a href="../Team/Team.html">
+                        <i class="fa-solid fa-user-group"></i>
+                        <span>Team</span>
+                    </a>
+                </li>
+
+                <!-- الصفحة النشطة فعلياً -->
+                <li class="active">
+                    <a href="..\Reports\Reports.html">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Integrations/Integrations.html">
+                        <i class="fa-solid fa-cubes"></i>
+                        <span>Integrations</span>
+                    </a>
+                </li>
+
+                <hr class="sidebar-divider">
+
+                <li>
+                    <a href="../Settings/Settings.html">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="..\Help&Support\Help&Support.html">
+                        <i class="fa-regular fa-circle-question"></i>
+                        <span>Help & Support</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    </aside>
+
+    <!-- ===================================================
+                    MAIN CONTENT AREA
+    =================================================== -->
+    <main class="main-content">
+
+        <!-- PAGE HEADER -->
+        <div class="page-header">
+            <header class="top-header">
+                <button class="toggle-btn" id="toggleSidebar" aria-label="Toggle Sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div class="header-title">
+                    <i class="fa-solid fa-file-lines"></i>
+                    <h1>Reports</h1>
+                </div>
+            </header>
+
+            <!-- Timeframe Filter Dropdown -->
+            <div class="header-action">
+                <div class="dropdown-container">
+                    <button class="dropdown-btn" id="timeframeBtn">
+                        <span id="selectedPeriod">This Month</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <div class="dropdown-item" data-value="today">This Day</div>
+                        <div class="dropdown-item active" data-value="month">This Month</div>
+                        <div class="dropdown-item" data-value="year">This Year</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TOP REPORT CARDS GRID -->
+        <section class="reports-grid">
+            
+            <div class="report-card">
+                <div class="card-icon calendar-icon">
+                    <i class="fa-regular fa-calendar-days"></i>
+                </div>
+                <h3>Meetings Report</h3>
+                <a href="#" class="view-report-btn" data-report="meetings">View report</a>
+            </div>
+
+            <div class="report-card">
+                <div class="card-icon check-icon">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h3>Tasks Report</h3>
+                <a href="#" class="view-report-btn" data-report="tasks">View report</a>
+            </div>
+
+            <div class="report-card">
+                <div class="card-icon timer-icon">
+                    <i class="fa-regular fa-clock"></i>
+                </div>
+                <h3>Time Report</h3>
+                <a href="#" class="view-report-btn" data-report="time">View report</a>
+            </div>
+
+            <div class="report-card">
+                <div class="card-icon team-icon">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <h3>Team Performance</h3>
+                <a href="#" class="view-report-btn" data-report="team">View report</a>
+            </div>
+
+        </section>
+
+        <!-- ACTIVITY SUMMARY SECTION -->
+        <section class="summary-section">
+            <div class="content-card">
+                <div class="card-title-container">
+                    <h3>Activity Summary</h3>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="summary-table">
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Value</th>
+                                <th>Change</th>
+                            </tr>
+                        </thead>
+                        <tbody id="summaryTableBody">
+                            <tr>
+                                <td class="metric-name">Total Meetings</td>
+                                <td class="metric-value" id="val-total-meetings">28</td>
+                                <td class="metric-change positive" id="chg-total-meetings"><i class="fa-solid fa-arrow-up"></i> 12%</td>
+                            </tr>
+                            <tr>
+                                <td class="metric-name">Tasks Completed</td>
+                                <td class="metric-value" id="val-tasks-completed">155</td>
+                                <td class="metric-change positive" id="chg-tasks-completed"><i class="fa-solid fa-arrow-up"></i> 18%</td>
+                            </tr>
+                            <tr>
+                                <td class="metric-name">On-time Completion</td>
+                                <td class="metric-value" id="val-ontime-completion">92%</td>
+                                <td class="metric-change positive" id="chg-ontime-completion"><i class="fa-solid fa-arrow-up"></i> 8%</td>
+                            </tr>
+                            <tr>
+                                <td class="metric-name">Average Meeting Duration</td>
+                                <td class="metric-value" id="val-avg-duration">46 min</td>
+                                <td class="metric-change negative" id="chg-avg-duration"><i class="fa-solid fa-arrow-down"></i> 5%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card-footer">
+                    <a href="#" class="view-all-link" id="viewAllReportsBtn">View all reports &rarr;</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Reports JS -->
+    <script src="../api.js"></script>
+    <script src="Reports.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar</title>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="Calendar.css">
+</head>
+<body>
+
+    <!-- ================= Sidebar ================= -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <div class="logo-icon">M</div>
+            <h2>MeetFlow</h2>
+        </div>
+        <nav>
+            <ul>
+                <li>
+                    <a href="../Dashboard/Dashboard.html">
+                        <i class="fa-solid fa-table-columns"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../Meetings/Meetings.html">
+                        <i class="fa-regular fa-calendar"></i>
+                        <span>Meetings</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="..\Tasks\Tasks.html">
+                        <i class="fa-solid fa-check"></i>
+                        <span>Tasks</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="..\Follow-Ups\Follow-Ups.html">
+                        <i class="fa-solid fa-arrow-turn-up"></i>
+                        <span>Follow-ups</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="..\Calender\Calender.html">
+                        <i class="fa-regular fa-calendar-days"></i>
+                        <span>Calendar</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="..\Analytics\Analytics.html">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="..\Team\Team.html">
+                        <i class="fa-solid fa-users"></i>
+                        <span>Team</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="..\Reports\Reports.html">
+                        <i class="fa-regular fa-file-lines"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="..\Integrations\Integrations.html">
+                        <i class="fa-solid fa-plug"></i>
+                        <span>Integrations</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="..\Settings\Settings.html">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <hr class="sidebar-divider">
+                <li>
+                    <a href="..\Help&Support\Help&Support.html">
+                        <i class="fa-regular fa-circle-question"></i>
+                        <span>Help & Support</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- ================= Main Content ================= -->
+    <main class="main-content">
+        
+        <!-- Top Navigation Bar / Calendar Header Controls -->
+        <header class="calendar-header">
+            <div class="header-left">
+                <!-- Hamburger Menu Toggle Button -->
+                <button class="toggle-btn" id="toggleSidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                
+                <!-- Month Navigator -->
+                <div class="month-nav">
+                    <button class="nav-arrow" id="prevMonth"><i class="fa-solid fa-chevron-left"></i></button>
+                    <h2 id="currentMonthYear">May 2024</h2>
+                    <button class="nav-arrow" id="nextMonth"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+
+                <button class="today-btn" id="todayBtn">Today</button>
+            </div>
+
+            <div class="header-right">
+                <div class="view-selector">
+                    <span>Month</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Calendar Container Card -->
+        <div class="calendar-card">
+            
+            <!-- Weekdays Header -->
+            <div class="weekdays-grid">
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+                <div>Sun</div>
+            </div>
+
+            <!-- Dynamic Days Grid -->
+            <div class="days-grid" id="daysGrid">
+                <!-- Grid items generated dynamically via JS or rendered for view -->
+            </div>
+
+        </div>
+
+        <!-- Today's Schedule Card -->
+        <div class="schedule-card">
+            <div class="schedule-header">
+                <h3 id="selectedDateTitle">Today · May 24, 2024</h3>
+                <a href="../Meetings/Meetings.html" class="view-full">View full calendar &rarr;</a>
+            </div>
+
+            <div class="events-list">
+                <div class="event-item">
+                    <span class="event-time">10:00 AM</span>
+                    <span class="event-title">Product Roadmap Review</span>
+                    <span class="event-duration">10:00 AM – 11:00 AM</span>
+                </div>
+                <div class="event-item">
+                    <span class="event-time">02:30 PM</span>
+                    <span class="event-title">Design Sync</span>
+                    <span class="event-duration">02:30 PM – 03:30 PM</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="../api.js"></script>
+    <script src="Calendar.js"></script>
+</body>
+</html>

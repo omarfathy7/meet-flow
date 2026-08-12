@@ -1,0 +1,927 @@
+/* ===================================================
+                    GLOBAL
+=================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+
+body {
+    background-color: #F8FAFC;
+    color: #1E293B;
+    display: flex;
+}
+
+
+/* ===================================================
+                    SIDEBAR
+=================================================== */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 260px;
+    height: 100vh;
+
+    background: #FFFFFF;
+
+    border-right: 1px solid #E5E7EB;
+
+    padding: 28px 16px;
+
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+    overflow: hidden;
+
+    z-index: 1000;
+}
+
+
+.sidebar.close {
+    width: 90px;
+    padding: 28px 14px;
+}
+
+
+.sidebar-divider {
+    border: 0;
+
+    height: 1px;
+
+    background: #E5E7EB;
+
+    margin: 12px 0;
+}
+
+
+/* ===================================================
+                    LOGO
+=================================================== */
+
+.sidebar .logo {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 45px;
+
+    padding-left: 4px;
+}
+
+
+.sidebar .logo-icon {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 12px;
+
+    background: #3461FF;
+
+    color: #FFFFFF;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    font-size: 20px;
+    font-weight: 700;
+
+    flex-shrink: 0;
+}
+
+
+.sidebar .logo h2 {
+    font-size: 22px;
+
+    font-weight: 700;
+
+    color: #111827;
+
+    white-space: nowrap;
+
+    transition: opacity 0.3s ease,
+                width 0.3s ease;
+}
+
+
+.sidebar.close .logo h2 {
+    opacity: 0;
+
+    width: 0;
+
+    overflow: hidden;
+}
+
+
+/* ===================================================
+                    SIDEBAR NAV
+=================================================== */
+
+.sidebar nav ul {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+
+    list-style: none;
+}
+
+
+.sidebar nav ul li {
+    width: 100%;
+}
+
+
+.sidebar nav ul li a {
+    display: flex;
+
+    align-items: center;
+
+    gap: 16px;
+
+    padding: 12px 16px;
+
+    border-radius: 12px;
+
+    color: #475569;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition: all 0.25s ease-in-out;
+
+    white-space: nowrap;
+
+    width: 100%;
+}
+
+
+.sidebar nav ul li a:hover {
+    background: #EFF6FF;
+
+    color: #3461FF;
+
+    transform: translateX(4px);
+}
+
+
+.sidebar nav ul li.active a {
+    background: #3461FF;
+
+    color: #FFFFFF;
+
+    font-weight: 600;
+
+    box-shadow: 0 4px 12px rgba(52, 97, 255, 0.25);
+}
+
+
+.sidebar nav ul li.active a:hover {
+    transform: none;
+}
+
+
+.sidebar nav ul li i {
+    width: 22px;
+
+    text-align: center;
+
+    font-size: 19px;
+
+    flex-shrink: 0;
+
+    transition: transform 0.2s ease;
+}
+
+
+.sidebar nav ul li a:hover i {
+    transform: scale(1.1);
+}
+
+
+.sidebar nav ul li span {
+    transition: opacity 0.3s ease,
+                width 0.3s ease;
+}
+
+
+.sidebar.close nav ul li span {
+    opacity: 0;
+
+    width: 0;
+
+    display: none;
+}
+
+
+.sidebar.close nav ul li a {
+    justify-content: center;
+
+    padding: 14px 0;
+
+    gap: 0;
+}
+
+
+.sidebar.close nav ul li a:hover {
+    transform: none;
+}
+
+
+.sidebar.close nav ul li i {
+    margin: 0 auto;
+}
+
+
+/* ===================================================
+                MAIN CONTENT
+=================================================== */
+
+.main-content {
+    margin-left: 260px;
+
+    padding: 32px 40px;
+
+    width: calc(100% - 260px);
+
+    transition:
+        margin-left 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+body.sidebar-closed .main-content {
+    margin-left: 90px;
+
+    width: calc(100% - 90px);
+}
+
+
+/* ===================================================
+                PAGE HEADER
+=================================================== */
+.page-header {
+    display: grid;
+
+    grid-template-columns: 1fr 600px;
+
+    gap: 32px;
+
+    align-items: center;
+
+    margin-bottom: 18px;
+}
+
+
+/* ===================================================
+                LEFT HEADER
+=================================================== */
+
+.top-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 16px;
+
+    height: 48px;
+}
+
+
+/* ===================================================
+                HAMBURGER BUTTON
+=================================================== */
+
+.toggle-btn {
+    width: 40px;
+    height: 40px;
+
+    background: #FFFFFF;
+
+    border: 1px solid #E2E8F0;
+
+    border-radius: 10px;
+
+    font-size: 18px;
+
+    color: #475569;
+
+    cursor: pointer;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    transition: all 0.25s ease;
+
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+
+    flex-shrink: 0;
+}
+
+
+.toggle-btn:hover {
+    background-color: #EFF6FF;
+
+    border-color: #3461FF;
+
+    color: #3461FF;
+
+    transform: scale(1.05);
+}
+
+
+.toggle-btn:active {
+    transform: scale(0.95);
+}
+
+
+/* ===================================================
+                ADD TASK TITLE
+=================================================== */
+
+.header-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+
+    padding: 4px 8px;
+
+    border-radius: 8px;
+}
+
+
+.header-title h1 {
+    font-size: 26px;
+
+    font-weight: 700;
+
+    color: #0F172A;
+
+    transition:
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.header-title i {
+    font-size: 18px;
+
+    color: #0F172A;
+
+    transition:
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.header-title:hover h1,
+.header-title:hover i {
+    color: #3461FF;
+}
+
+
+.header-title:hover i {
+    transform: translateX(-4px);
+}
+
+
+/* ===================================================
+                CREATED TASKS HEADER
+=================================================== */
+
+.section-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    height: 48px;
+}
+
+
+.section-header h3 {
+    font-size: 26px;
+
+    font-weight: 700;
+
+    color: #0F172A;
+
+    cursor: pointer;
+
+    transition:
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.section-header h3:hover {
+    color: #3461FF;
+
+    transform: translateX(3px);
+}
+
+
+.task-count {
+    font-size: 13px;
+
+    font-weight: 600;
+
+    background: #E0E7FF;
+
+    color: #3461FF;
+
+    padding: 4px 10px;
+
+    border-radius: 20px;
+}
+
+
+/* ===================================================
+                TASKS CONTAINER
+=================================================== */
+
+.tasks-container {
+    display: grid;
+
+    grid-template-columns: 1fr 600px;
+
+    gap: 32px;
+
+    align-items: start;
+}
+
+
+/* ===================================================
+                TASK FORM CARD
+=================================================== */
+
+.task-form-card {
+    background: #FFFFFF;
+
+    border: 1px solid #E5E7EB;
+
+    border-radius: 16px;
+
+    padding: 28px;
+
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+
+    margin-top: 0;
+}
+
+
+/* ===================================================
+                FORM GROUP
+=================================================== */
+
+.form-group {
+    margin-bottom: 20px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    /*
+        زودنا المسافة شوية بين
+        Task Title والـ input
+    */
+    gap: 10px;
+}
+
+
+.form-group label {
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #334155;
+}
+
+
+/* ===================================================
+                FORM INPUTS
+=================================================== */
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+
+    padding: 12px 14px;
+
+    border: 1px solid #E2E8F0;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+
+    color: #0F172A;
+
+    outline: none;
+
+    background: #FAFAFA;
+
+    transition:
+        border-color 0.2s,
+        background-color 0.2s;
+}
+
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: #3461FF;
+
+    background: #FFFFFF;
+}
+
+
+.form-group textarea {
+    resize: vertical;
+}
+
+
+/* ===================================================
+                PRIORITY
+=================================================== */
+
+.priority-options {
+    display: flex;
+
+    gap: 12px;
+}
+
+
+.priority-btn {
+    flex: 1;
+
+    padding: 10px;
+
+    border: 1px solid #E2E8F0;
+
+    border-radius: 10px;
+
+    background: #FFFFFF;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+
+    color: #64748B;
+}
+
+
+.priority-btn.low.active {
+    background: #FEF08A;
+
+    color: #854D0E;
+
+    border-color: #FDE047;
+}
+
+
+.priority-btn.medium.active {
+    background: #DCFCE7;
+
+    color: #166534;
+
+    border-color: #86EFAC;
+}
+
+
+.priority-btn.high.active {
+    background: #FEE2E2;
+
+    color: #991B1B;
+
+    border-color: #FCA5A5;
+}
+
+
+/* ===================================================
+                FORM ACTIONS
+=================================================== */
+
+.form-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    margin-top: 28px;
+}
+
+
+.btn-cancel {
+    background: #F1F5F9;
+
+    border: none;
+
+    padding: 12px 24px;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #475569;
+
+    cursor: pointer;
+}
+
+
+.btn-submit {
+    background: #3461FF;
+
+    border: none;
+
+    padding: 12px 24px;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #FFFFFF;
+
+    cursor: pointer;
+
+    transition: background 0.2s;
+}
+
+
+.btn-submit:hover {
+    background: #254EDB;
+}
+
+
+/* ===================================================
+                RIGHT SIDE TASKS
+=================================================== */
+
+.tasks-list-section {
+    display: flex;
+
+    flex-direction: column;
+
+    /*
+        مهم:
+        مفيش gap هنا لأن الـ header
+        اتنقل لفوق مع Page Header.
+    */
+    margin-top: 0;
+}
+
+
+.tasks-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+
+/* ===================================================
+                TASK ITEM CARD
+=================================================== */
+
+.task-item-card {
+    background: #FFFFFF;
+
+    border: 1px solid #E5E7EB;
+
+    border-radius: 12px;
+
+    padding: 16px 20px;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+.task-item-card:hover {
+    border-color: #3461FF;
+
+    box-shadow: 0 4px 12px rgba(52, 97, 255, 0.08);
+
+    transform: translateY(-2px);
+}
+
+
+/* ===================================================
+                TASK CARD HEADER
+=================================================== */
+
+.task-card-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+
+.task-card-title {
+    font-size: 15px;
+
+    font-weight: 700;
+
+    color: #0F172A;
+}
+
+
+/* ===================================================
+                PRIORITY BADGE
+=================================================== */
+
+.priority-badge {
+    font-size: 12px;
+
+    font-weight: 700;
+
+    padding: 4px 10px;
+
+    border-radius: 6px;
+}
+
+
+.priority-badge.Low {
+    background: #FEF08A;
+
+    color: #854D0E;
+}
+
+
+.priority-badge.Medium {
+    background: #DCFCE7;
+
+    color: #166534;
+}
+
+
+.priority-badge.High {
+    background: #FEE2E2;
+
+    color: #991B1B;
+}
+
+
+/* ===================================================
+                TASK DESCRIPTION
+=================================================== */
+
+.task-card-desc {
+    font-size: 13px;
+
+    color: #64748B;
+
+    line-height: 1.4;
+
+    overflow: hidden;
+
+    line-clamp: 2;
+
+    -webkit-line-clamp: 2;
+
+    display: -webkit-box;
+
+    -webkit-box-orient: vertical;
+}
+
+
+/* ===================================================
+                TASK CARD FOOTER
+=================================================== */
+
+.task-card-footer {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    font-size: 12px;
+
+    color: #94A3B8;
+
+    border-top: 1px dashed #F1F5F9;
+
+    padding-top: 8px;
+}
+
+
+.task-date i {
+    margin-right: 4px;
+}
+
+
+/* ===================================================
+                RESPONSIVE DESIGN
+=================================================== */
+
+@media (max-width: 1024px) {
+
+    .page-header {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .tasks-container {
+        grid-template-columns: 1fr;
+    }
+
+    .section-header {
+        height: auto;
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    .main-content {
+        margin-left: 0 !important;
+
+        width: 100% !important;
+
+        padding: 20px 16px;
+    }
+
+    .sidebar {
+        width: 0;
+
+        padding: 28px 0;
+    }
+
+    .sidebar.close {
+        width: 0;
+    }
+
+    .page-header {
+        gap: 16px;
+    }
+
+    .top-header {
+        height: auto;
+    }
+
+    .header-title h1 {
+        font-size: 22px;
+    }
+
+    .section-header h3 {
+        font-size: 22px;
+    }
+
+    .tasks-container {
+        gap: 20px;
+    }
+
+    .priority-options {
+        flex-direction: column;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn-cancel,
+    .btn-submit {
+        width: 100%;
+    }
+}

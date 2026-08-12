@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Follow-ups</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- FollowUps CSS -->
+    <link rel="stylesheet" href="Follow-Ups.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <!-- ===================================================
+                    SIDEBAR NAVIGATION
+    =================================================== -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">M</div>
+            <h2>MeetFlow</h2>
+        </div>
+
+        <nav>
+            <ul>
+                <li>
+                    <a href="../Dashboard/Dashboard.html">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Meetings/Meetings.html">
+                        <i class="fa-regular fa-calendar-check"></i>
+                        <span>Meetings</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Tasks/Tasks.html">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>Tasks</span>
+                    </a>
+                </li>
+
+                <!-- الصفحة النشطة فعلياً -->
+                <li class="active">
+                    <a href="..\Follow-Ups\Follow-Ups.html">
+                        <i class="fa-solid fa-arrows-spin"></i>
+                        <span>Follow-ups</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Calender/Calender.html">
+                        <i class="fa-regular fa-calendar"></i>
+                        <span>Calendar</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Analytics/Analytics.html">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+
+                <hr class="sidebar-divider">
+
+                <li>
+                    <a href="../Team/Team.html">
+                        <i class="fa-solid fa-user-group"></i>
+                        <span>Team</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Reports/Reports.html">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Integrations/Integrations.html">
+                        <i class="fa-solid fa-cubes"></i>
+                        <span>Integrations</span>
+                    </a>
+                </li>
+
+                <hr class="sidebar-divider">
+
+                <li>
+                    <a href="../Settings/Settings.html">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="..\Help&Support\Help&Support.html">
+                        <i class="fa-regular fa-circle-question"></i>
+                        <span>Help & Support</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    </aside>
+
+
+    <!-- ===================================================
+                    MAIN CONTENT AREA
+    =================================================== -->
+    <main class="main-content">
+
+        <!-- PAGE HEADER -->
+        <div class="page-header">
+            <header class="top-header">
+                <button class="toggle-btn" id="toggleSidebar" aria-label="Toggle Sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div class="header-title">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <h1>Follow-ups</h1>
+                </div>
+            </header>
+
+            <!-- Dropdown Filter Button (This Day / Month / Year) -->
+            <div class="header-action">
+                <div class="dropdown-container">
+                    <button class="dropdown-btn" id="timeframeBtn">
+                        <span id="selectedPeriod">This Day</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <div class="dropdown-item active" data-value="day">This Day</div>
+                        <div class="dropdown-item" data-value="month">This Month</div>
+                        <div class="dropdown-item" data-value="year">This Year</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STATS CARDS -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <span class="badge badge-overdue">Overdue Tasks</span>
+                <h2 id="overdueCount">2</h2>
+                <p class="sub-text alert">Tasks need attention</p>
+            </div>
+            <div class="stat-card">
+                <span class="badge badge-completed">Completed Tasks</span>
+                <h2 id="completedCount">14</h2>
+                <p class="sub-text positive" id="completedTrend"><i class="fa-solid fa-arrow-up"></i> 5% today</p>
+            </div>
+            <div class="stat-card">
+                <span class="card-label">Time Saved</span>
+                <h2 id="timeSaved">1.5h</h2>
+                <p class="sub-text positive"><i class="fa-solid fa-arrow-up"></i> 2%</p>
+            </div>
+            <div class="stat-card">
+                <span class="card-label">Participation</span>
+                <h2 id="participationRate">88%</h2>
+                <p class="sub-text positive"><i class="fa-solid fa-arrow-up"></i> 1%</p>
+            </div>
+        </section>
+
+        <!-- MIDDLE SECTION -->
+        <section class="middle-grid">
+            <!-- Reminders -->
+            <div class="content-card">
+                <h3>Upcoming Reminders</h3>
+                <div class="reminder-list" id="reminderList">
+                    <div class="reminder-item">
+                        <div class="reminder-icon"><i class="fa-regular fa-file-lines"></i></div>
+                        <div class="reminder-info">
+                            <h4>Review design system</h4>
+                            <p>Today, 1:00 PM</p>
+                        </div>
+                    </div>
+                    <div class="reminder-item">
+                        <div class="reminder-icon"><i class="fa-regular fa-comment"></i></div>
+                        <div class="reminder-info">
+                            <h4>Client feedback follow-up</h4>
+                            <p>Today, 5:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Task Completion Rate -->
+            <div class="content-card">
+                <h3>Task Completion Rate</h3>
+                <div class="rate-content">
+                    <div class="rate-total">
+                        <h2 id="totalTasks">9</h2>
+                        <p>Total tasks</p>
+                    </div>
+                    <ul class="rate-breakdown">
+                        <li><span class="dot completed"></span> Completed <strong id="completedRate">5 (56%)</strong></li>
+                        <li><span class="dot in-progress"></span> In Progress <strong id="inProgressRate">2 (22%)</strong></li>
+                        <li><span class="dot todo"></span> To Do <strong id="todoRate">1 (11%)</strong></li>
+                        <li><span class="dot blocked"></span> Blocked <strong id="blockedRate">1 (11%)</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROGRESS CHART -->
+        <section class="bottom-grid">
+            <div class="content-card progress-card">
+                <h3>Overall Progress</h3>
+                <div class="progress-header">
+                    <h2 id="overallPercentage">74%</h2>
+                    <span class="sub-text positive"><i class="fa-solid fa-arrow-up"></i> 3% from yesterday</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="progressChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FollowUps JS -->
+    <script src="../api.js"></script>
+    <script src="Follow-Ups.js"></script>
+</body>
+
+</html>

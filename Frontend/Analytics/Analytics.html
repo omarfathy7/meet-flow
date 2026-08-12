@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Analytics CSS -->
+    <link rel="stylesheet" href="Analytics.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <!-- ===================================================
+                    SIDEBAR NAVIGATION
+    =================================================== -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">M</div>
+            <h2>MeetFlow</h2>
+        </div>
+
+        <nav>
+            <ul>
+                <li>
+                    <a href="../Dashboard/Dashboard.html">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Meetings/Meetings.html">
+                        <i class="fa-regular fa-calendar-check"></i>
+                        <span>Meetings</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Tasks/Tasks.html">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>Tasks</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Follow-Ups/Follow-Ups.html">
+                        <i class="fa-solid fa-arrows-spin"></i>
+                        <span>Follow-ups</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Calender/Calender.html">
+                        <i class="fa-regular fa-calendar"></i>
+                        <span>Calendar</span>
+                    </a>
+                </li>
+
+                <li class="active">
+                    <a href="..\Analytics\Analytics.html">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+
+                <hr class="sidebar-divider">
+
+                <li>
+                    <a href="../Team/Team.html">
+                        <i class="fa-solid fa-user-group"></i>
+                        <span>Team</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Reports/Reports.html">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Integrations/Integrations.html">
+                        <i class="fa-solid fa-cubes"></i>
+                        <span>Integrations</span>
+                    </a>
+                </li>
+
+                <hr class="sidebar-divider">
+
+                <li>
+                    <a href="../Settings/Settings.html">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="..\Help&Support\Help&Support.html">
+                        <i class="fa-regular fa-circle-question"></i>
+                        <span>Help & Support</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    </aside>
+
+
+    <!-- ===================================================
+                    MAIN CONTENT AREA
+    =================================================== -->
+    <main class="main-content">
+
+        <!-- PAGE HEADER -->
+        <div class="page-header">
+            <header class="top-header">
+                <button class="toggle-btn" id="toggleSidebar" aria-label="Toggle Sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div class="header-title">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <h1>Analytics</h1>
+                </div>
+            </header>
+
+            <!-- Dropdown Filter Button -->
+            <div class="header-action">
+                <div class="dropdown-container">
+                    <button class="dropdown-btn" id="timeframeBtn">
+                        <span id="selectedPeriod">This Month</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <div class="dropdown-item" data-value="day">This Day</div>
+                        <div class="dropdown-item active" data-value="month">This Month</div>
+                        <div class="dropdown-item" data-value="year">This Year</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STATS CARDS GRID -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <span class="card-label">Total Meetings</span>
+                <h2 id="totalMeetings">28</h2>
+                <p class="sub-text positive"><i class="fa-solid fa-arrow-up"></i> 12%</p>
+            </div>
+            <div class="stat-card">
+                <span class="card-label">Tasks Completed</span>
+                <h2 id="tasksCompleted">156</h2>
+                <p class="sub-text positive"><i class="fa-solid fa-arrow-up"></i> 18%</p>
+            </div>
+            <div class="stat-card">
+                <span class="card-label">Time Saved</span>
+                <h2 id="timeSaved">24h</h2>
+                <p class="sub-text positive"><i class="fa-solid fa-arrow-up"></i> 8%</p>
+            </div>
+            <div class="stat-card">
+                <span class="card-label">Participation</span>
+                <h2 id="participation">92%</h2>
+                <p class="sub-text positive"><i class="fa-solid fa-arrow-up"></i> 15%</p>
+            </div>
+        </section>
+
+        <!-- CHARTS SECTION -->
+        <section class="middle-grid">
+            <!-- Bar Chart Card -->
+            <div class="content-card meetings-card">
+                <h3>Meetings Over Time</h3>
+                <div class="chart-container">
+                    <canvas id="meetingsChart"></canvas>
+                </div>
+                <a href="#" class="view-full-btn">View full analytics <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+
+            <!-- Doughnut Chart Card -->
+            <div class="content-card tasks-status-card">
+                <h3>Tasks by Status</h3>
+                <div class="doughnut-content">
+                    <div class="chart-container-doughnut">
+                        <canvas id="tasksStatusChart"></canvas>
+                        <div class="doughnut-center-text">
+                            <h2 id="totalTasksCount">28</h2>
+                            <p>Total</p>
+                        </div>
+                    </div>
+                    <ul class="status-legend">
+                        <li><span class="dot completed"></span> Completed <strong id="completedCount">16 (57%)</strong></li>
+                        <li><span class="dot in-progress"></span> In Progress <strong id="inProgressCount">6 (20%)</strong></li>
+                        <li><span class="dot todo"></span> To Do <strong id="toDoCount">4 (11%)</strong></li>
+                        <li><span class="dot blocked"></span> Blocked <strong id="blockedCount">2 (13%)</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Analytics JS -->
+    <script src="../api.js"></script>
+    <script src="Analytics.js"></script>
+</body>
+
+</html>

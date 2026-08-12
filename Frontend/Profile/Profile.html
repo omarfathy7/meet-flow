@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Profile CSS -->
+    <link rel="stylesheet" href="Profile.css">
+</head>
+
+<body>
+
+    <!-- ===================================================
+                        SIDEBAR NAVIGATION
+    =================================================== -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">M</div>
+            <h2>MeetFlow</h2>
+        </div>
+
+        <nav>
+            <ul>
+                <li>
+                    <a href="../Dashboard/Dashboard.html">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Meetings/Meetings.html">
+                        <i class="fa-regular fa-calendar-check"></i>
+                        <span>Meetings</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Tasks/Tasks.html">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>Tasks</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Follow-Ups/Follow-Ups.html">
+                        <i class="fa-solid fa-arrows-spin"></i>
+                        <span>Follow-ups</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Calender/Calender.html">
+                        <i class="fa-regular fa-calendar"></i>
+                        <span>Calendar</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Analytics/Analytics.html">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+
+                <hr class="sidebar-divider">
+
+                <li>
+                    <a href="../Team/Team.html">
+                        <i class="fa-solid fa-user-group"></i>
+                        <span>Team</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Reports/Reports.html">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Integrations/Integrations.html">
+                        <i class="fa-solid fa-cubes"></i>
+                        <span>Integrations</span>
+                    </a>
+                </li>
+
+                <hr class="sidebar-divider">
+
+                <li>
+                    <a href="../Settings/Settings.html">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="..\Help&Support\Help&Support.html">
+                        <i class="fa-regular fa-circle-question"></i>
+                        <span>Help & Support</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    </aside>
+
+    <!-- ===================================================
+                        MAIN CONTENT AREA
+    =================================================== -->
+    <main class="main-content">
+
+        <!-- PAGE HEADER -->
+        <div class="page-header">
+            <header class="top-header">
+                <button class="toggle-btn" id="toggleSidebar" aria-label="Toggle Sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <!-- Header Title with Icon & Blue Hover Effect -->
+                <div class="header-title">
+                    <i class="fa-solid fa-user"></i>
+                    <h1>Profile</h1>
+                </div>
+            </header>
+        </div>
+
+        <p class="page-description">Manage your profile details and personal account settings.</p>
+
+        <!-- PROFILE LAYOUT CONTAINER -->
+        <div class="profile-layout">
+
+            <!-- INNER SETTINGS MENU (القائمة التفاعلية على اليسار) -->
+            <div class="profile-nav-card">
+                <ul class="profile-nav-list" id="profileNavList">
+                    <li class="active" data-tab="profile-info"><a href="javascript:void(0)">Profile Information</a></li>
+                    <li data-tab="account-settings"><a href="javascript:void(0)">Account Settings</a></li>
+                    <li data-tab="notifications"><a href="javascript:void(0)">Notifications</a></li>
+                    <li data-tab="calendar-integrations"><a href="javascript:void(0)">Calendar & Integrations</a></li>
+                    <li data-tab="appearance"><a href="javascript:void(0)">Appearance</a></li>
+                    <li data-tab="language"><a href="javascript:void(0)">Language</a></li>
+                    <li data-tab="privacy-security"><a href="javascript:void(0)">Privacy & Security</a></li>
+                    <li data-tab="help-support"><a href="javascript:void(0)">Help & Support</a></li>
+                    <li class="logout-item"><a href="../Login/Login.html">Log out</a></li>
+                </ul>
+            </div>
+
+            <!-- DYNAMIC TAB PANELS CONTAINER -->
+            <div class="profile-tab-panels">
+
+                <!-- TAB 1: PROFILE INFORMATION -->
+                <div class="profile-card tab-panel active" id="tab-profile-info">
+                    <div class="profile-card-top">
+                        <div class="user-avatar-wrapper">
+                            <div class="user-avatar">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <div class="user-header-text">
+                                <h2 id="val-display-name">Alex Johnson</h2>
+                                <span id="val-display-email">alex@example.com</span>
+                            </div>
+                        </div>
+
+                        <button class="btn-connect" id="openEditBtn">
+                            <i class="fa-solid fa-pen"></i> Edit
+                        </button>
+                    </div>
+
+                    <div class="profile-details-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">Full Name</span>
+                            <span class="detail-value" id="val-fullname">Alex Johnson</span>
+                        </div>
+
+                        <div class="detail-item">
+                            <span class="detail-label">Email</span>
+                            <span class="detail-value" id="val-email">alex@example.com</span>
+                        </div>
+
+                        <div class="detail-item">
+                            <span class="detail-label">Phone</span>
+                            <span class="detail-value" id="val-phone">+20 101 234 5678</span>
+                        </div>
+
+                        <div class="detail-item">
+                            <span class="detail-label">Role</span>
+                            <span class="detail-value" id="val-role">Admin</span>
+                        </div>
+
+                        <div class="detail-item">
+                            <span class="detail-label">Department</span>
+                            <span class="detail-value" id="val-department">Product</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: ACCOUNT SETTINGS -->
+                <div class="profile-card tab-panel" id="tab-account-settings">
+                    <div class="panel-header">
+                        <h3>Account Settings</h3>
+                        <p>Manage your account password, timezone, and security preferences.</p>
+                    </div>
+                    <div class="settings-options-list">
+                        <div class="setting-row">
+                            <div class="setting-text">
+                                <h4>Change Password</h4>
+                                <p>Update your password regularly to keep your account secure.</p>
+                            </div>
+                            <button class="btn-secondary-action">Update</button>
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-text">
+                                <h4>Two-Factor Authentication (2FA)</h4>
+                                <p>Add an extra layer of security to your account.</p>
+                            </div>
+                            <button class="btn-secondary-action">Enable</button>
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-text">
+                                <h4>Timezone</h4>
+                                <p>Currently set to GMT+02:00 (Cairo Standard Time).</p>
+                            </div>
+                            <button class="btn-secondary-action">Change</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 3: NOTIFICATIONS -->
+                <div class="profile-card tab-panel" id="tab-notifications">
+                    <div class="panel-header">
+                        <h3>Notification Preferences</h3>
+                        <p>Choose how and when you want to receive updates.</p>
+                    </div>
+                    <div class="settings-options-list">
+                        <div class="setting-row">
+                            <div class="setting-text">
+                                <h4>Email Notifications</h4>
+                                <p>Receive email updates for meeting summaries and tasks.</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-text">
+                                <h4>WhatsApp / SMS Alerts</h4>
+                                <p>Get urgent meeting reminders directly on your phone.</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-text">
+                                <h4>Browser Push Notifications</h4>
+                                <p>Show notifications in your browser while working.</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 4: CALENDAR & INTEGRATIONS -->
+                <div class="profile-card tab-panel" id="tab-calendar-integrations">
+                    <div class="panel-header">
+                        <h3>Calendar & Integrations</h3>
+                        <p>Connect your calendar accounts to sync meeting schedules seamlessly.</p>
+                    </div>
+                    <div class="settings-options-list">
+                        <div class="setting-row">
+                            <div class="setting-text">
+                                <h4>Google Calendar</h4>
+                                <p>Status: Connected (alex@example.com)</p>
+                            </div>
+                            <button class="btn-secondary-action danger">Disconnect</button>
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-text">
+                                <h4>Outlook Calendar</h4>
+                                <p>Status: Not connected</p>
+                            </div>
+                            <button class="btn-connect">Connect</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 5: APPEARANCE -->
+                <div class="profile-card tab-panel" id="tab-appearance">
+                    <div class="panel-header">
+                        <h3>Appearance Settings</h3>
+                        <p>Customize how MeetFlow looks on your screen.</p>
+                    </div>
+                    <div class="settings-options-list">
+                        <div class="setting-row">
+                            <div class="setting-text">
+                                <h4>Theme Mode</h4>
+                                <p>Select Light or Dark interface theme.</p>
+                            </div>
+                            <select class="form-select">
+                                <option value="light" selected>Light Mode</option>
+                                <option value="dark">Dark Mode</option>
+                                <option value="system">System Default</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 6: LANGUAGE -->
+                <div class="profile-card tab-panel" id="tab-language">
+                    <div class="panel-header">
+                        <h3>Language & Region</h3>
+                        <p>Select your preferred language for the interface.</p>
+                    </div>
+                    <div class="settings-options-list">
+                        <div class="setting-row">
+                            <div class="setting-text">
+                                <h4>Display Language</h4>
+                                <p>Choose language for system text and menus.</p>
+                            </div>
+                            <select class="form-select">
+                                <option value="en" selected>English (US)</option>
+                                <option value="ar">العربية (Arabic)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 7: PRIVACY & SECURITY -->
+                <div class="profile-card tab-panel" id="tab-privacy-security">
+                    <div class="panel-header">
+                        <h3>Privacy & Security</h3>
+                        <p>Control data privacy and active session logins.</p>
+                    </div>
+                    <div class="settings-options-list">
+                        <div class="setting-row">
+                            <div class="setting-text">
+                                <h4>Active Sessions</h4>
+                                <p>You are logged in on 2 device(s).</p>
+                            </div>
+                            <button class="btn-secondary-action">Log out from all devices</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 8: HELP & SUPPORT -->
+                <div class="profile-card tab-panel" id="tab-help-support">
+                    <div class="panel-header">
+                        <h3>Help & Support</h3>
+                        <p>Need help? Contact our support team or browse FAQs.</p>
+                    </div>
+                    <div class="settings-options-list">
+                        <div class="setting-row">
+                            <div class="setting-text">
+                                <h4>Help Center</h4>
+                                <p>Read articles and guides on how to use MeetFlow.</p>
+                            </div>
+                            <button class="btn-connect">Visit Help Center</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- ===================================================
+                    EDIT PROFILE MODAL
+    =================================================== -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Edit Profile Information</h3>
+                <button class="close-modal-x" id="closeModalCross">&times;</button>
+            </div>
+            <form id="editProfileForm">
+                
+                <div class="form-group">
+                    <label for="input-fullname">Full Name</label>
+                    <input type="text" id="input-fullname" class="form-input" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="input-email">Email Address</label>
+                    <div class="input-verify-wrapper">
+                        <input type="email" id="input-email" class="form-input" required />
+                        <button type="button" class="btn-verify" id="verifyEmailBtn">Verify Email</button>
+                    </div>
+                    <div class="otp-box" id="emailOtpBox">
+                        <input type="text" id="emailOtpInput" class="form-input" placeholder="Enter Email OTP Code" />
+                        <button type="button" class="btn-confirm-otp" id="confirmEmailOtp">Confirm</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="input-phone">Phone Number</label>
+                    <div class="input-verify-wrapper">
+                        <input type="text" id="input-phone" class="form-input" required />
+                        <button type="button" class="btn-verify" id="verifyPhoneBtn">Verify Phone</button>
+                    </div>
+                    <div class="otp-box" id="phoneOtpBox">
+                        <input type="text" id="phoneOtpInput" class="form-input" placeholder="Enter WhatsApp/SMS OTP Code" />
+                        <button type="button" class="btn-confirm-otp" id="confirmPhoneOtp">Confirm</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="input-role">Role</label>
+                    <input type="text" id="input-role" class="form-input" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="input-department">Department</label>
+                    <input type="text" id="input-department" class="form-input" required />
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" id="closeModalBtn">Cancel</button>
+                    <button type="submit" class="btn-connect" id="saveChangesBtn">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Profile JS -->
+    <script src="../api.js"></script>
+    <script src="Profile.js"></script>
+</body>
+
+</html>

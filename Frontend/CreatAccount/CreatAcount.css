@@ -1,0 +1,342 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+
+/*Left Panel */
+
+.left-panel {
+    width: 50%;
+    height: 100vh;
+    background-color: #0052cc;
+    color: #ffffff;
+    padding: 60px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.left-content {
+    margin-bottom: 20px;
+    max-width: 100%;
+}
+
+.left-content h1 {
+    font-size: 42px;
+    line-height: 1.25;
+    margin-bottom: 70px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    white-space: nowrap;
+}
+
+.left-content p {
+    font-size: 16px;
+    color: #d0e1fd;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    max-width: 85%;
+}
+
+.preview-card {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    max-width: 90%;
+}
+
+.preview-card i {
+    font-size: 56px;
+    color: #ffffff;
+}
+
+/* Right Panel */
+
+.right-panel {
+    width: 50%;
+    height: 100vh;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    overflow-y: auto;
+}
+
+.form-wrapper {
+    width: 100%;
+    max-width: 400px;
+}
+
+.form-wrapper h2.title-hover {
+    font-size: 28px;
+    color: #172b4d;
+    font-weight: 700;
+    margin-bottom: 6px;
+    transition: color 0.3s ease;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.form-wrapper h2.title-hover:hover {
+    color: #0052cc;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: #6b778c;
+    margin-bottom: 28px;
+}
+
+/* Social Buttons */
+
+.social-buttons {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.btn-social {
+    flex: 1;
+    padding: 11px;
+    border: 1px solid #dfe1e6;
+    background: #ffffff;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #344563;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.2s ease;
+}
+
+.btn-social:hover {
+    background-color: #f4f5f7;
+    border-color: #c1c7d0;
+}
+
+.social-icon {
+    display: block;
+}
+
+/* Divider */
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #8993a4;
+    font-size: 12px;
+    margin: 22px 0;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #ebecf0;
+}
+
+.divider span {
+    padding: 0 12px;
+}
+
+/* Form */
+
+.form-row {
+    display: flex;
+    gap: 12px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #344563;
+    margin-bottom: 6px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid #dfe1e6;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+    border-color: #0052cc;
+    box-shadow: 0 0 0 2px rgba(0, 82, 204, 0.2);
+}
+
+.input-eye-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-eye-container input {
+    padding-right: 36px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    color: #6b778c;
+    cursor: pointer;
+    font-size: 14px;
+    transition: color 0.2s ease;
+}
+
+.toggle-password:hover {
+    color: #0052cc;
+}
+
+/* Terms */
+
+.terms-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.terms-group input[type="checkbox"] {
+    accent-color: #0052cc;
+    cursor: pointer;
+}
+
+.terms-group a {
+    color: #0052cc;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.terms-group a:hover {
+    text-decoration: underline;
+}
+
+/* Create Account Button */
+
+.btn-primary {
+    width: 100%;
+    padding: 13px;
+    background-color: #0052cc;
+    border: none;
+    border-radius: 6px;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #0065ff;
+}
+
+/* Login Link */
+
+.login-link {
+    text-align: center;
+    font-size: 13px;
+    color: #6b778c;
+    margin-top: 26px;
+}
+
+.login-link a {
+    color: #0052cc;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+
+@media (max-width: 850px) {
+    html,
+    body {
+        overflow: auto;
+    }
+
+    .container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .left-panel,
+    .right-panel {
+        width: 100%;
+        height: auto;
+        padding: 40px 20px;
+    }
+
+    .left-content h1 {
+        white-space: normal;
+    }
+}
+
+/* Phone Input */
+
+.phone-group {
+    width: 100%;
+}
+
+.phone-input-wrapper {
+    width: 100%;
+}
+
+.iti {
+    width: 100%;
+}
+
+.iti__country-list {
+    max-width: 300px;
+    z-index: 10;
+}

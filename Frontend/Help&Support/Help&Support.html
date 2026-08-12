@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help&Support</title>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Help CSS -->
+    <link rel="stylesheet" href="Help&Support.css">
+</head>
+
+<body>
+
+    <!-- ===================================================
+                        SIDEBAR NAVIGATION
+    =================================================== -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">M</div>
+            <h2>MeetFlow</h2>
+        </div>
+
+        <nav>
+            <ul>
+                <li>
+                    <a href="../Dashboard/Dashboard.html">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Meetings/Meetings.html">
+                        <i class="fa-regular fa-calendar-check"></i>
+                        <span>Meetings</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Tasks/Tasks.html">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>Tasks</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Follow-Ups/Follow-Ups.html">
+                        <i class="fa-solid fa-arrows-spin"></i>
+                        <span>Follow-ups</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Calender/Calender.html">
+                        <i class="fa-regular fa-calendar"></i>
+                        <span>Calendar</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Analytics/Analytics.html">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+
+                <hr class="sidebar-divider">
+
+                <li>
+                    <a href="../Team/Team.html">
+                        <i class="fa-solid fa-user-group"></i>
+                        <span>Team</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Reports/Reports.html">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Integrations/Integrations.html">
+                        <i class="fa-solid fa-cubes"></i>
+                        <span>Integrations</span>
+                    </a>
+                </li>
+
+                <hr class="sidebar-divider">
+
+                <li>
+                    <a href="../Settings/Settings.html">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+
+                <!-- الصفحة النشطة -->
+                <li class="active">
+                    <a href="..\Help&Support\Help&Support.html">
+                        <i class="fa-regular fa-circle-question"></i>
+                        <span>Help & Support</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Need a hand Card in Sidebar -->
+        <div class="sidebar-help-card">
+            <h4>Need a hand?</h4>
+            <p>Chat with our support team — we usually reply in under 5 minutes.</p>
+            <button class="btn-live-chat-sidebar" id="sidebarChatBtn">Start Live Chat</button>
+        </div>
+
+    </aside>
+
+    <!-- ===================================================
+                        MAIN CONTENT AREA
+    =================================================== -->
+    <main class="main-content">
+
+        <!-- TOP BAR / HEADER -->
+        <header class="top-header">
+            <div class="header-left">
+                <button class="toggle-btn" id="toggleSidebar" aria-label="Toggle Sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <!-- Animated Title -->
+                <div class="header-title">
+                    <i class="fa-regular fa-circle-question"></i>
+                    <h1>Help & Support</h1>
+                </div>
+            </div>
+
+            <!-- Top Search and User Profile -->
+            <div class="header-right">
+                <div class="top-search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search meetings, tasks, or people..." id="topSearchInput">
+                </div>
+                <button class="icon-btn" aria-label="Notifications">
+                    <i class="fa-regular fa-bell"></i>
+                </button>
+                <a href="..\Profile\Profile.html" class="user-profile">
+                    <div class="avatar">AJ</div>
+                    <div class="user-info">
+                        <span class="user-name">Alex Johnson</span>
+                        <span class="user-role">Admin</span>
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <!-- HERO BANNER SEARCH SECTION -->
+        <section class="help-hero">
+            <span class="hero-tag">HELP CENTER</span>
+            <h2>How can we help you, Alex?</h2>
+            <p>Search our knowledge base or reach out to the MeetFlow support team.</p>
+            
+            <div class="hero-search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="heroSearchInput" placeholder="Search articles, guides, and FAQs...">
+                <button id="heroSearchBtn">Search</button>
+            </div>
+        </section>
+
+        <!-- BROWSE BY TOPIC GRID -->
+        <section class="topics-section">
+            <div class="section-header">
+                <h3>Browse by topic</h3>
+            </div>
+            
+            <div class="topics-grid">
+                
+                <div class="topic-card" data-topic="getting-started">
+                    <div class="topic-icon icon-blue">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <h4>Getting Started</h4>
+                    <span>12 articles</span>
+                </div>
+
+                <div class="topic-card" data-topic="meetings">
+                    <div class="topic-icon icon-green">
+                        <i class="fa-regular fa-calendar-check"></i>
+                    </div>
+                    <h4>Meetings</h4>
+                    <span>18 articles</span>
+                </div>
+
+                <div class="topic-card" data-topic="integrations">
+                    <div class="topic-icon icon-purple">
+                        <i class="fa-solid fa-cubes"></i>
+                    </div>
+                    <h4>Integrations</h4>
+                    <span>9 articles</span>
+                </div>
+
+                <div class="topic-card" data-topic="billing">
+                    <div class="topic-icon icon-orange">
+                        <i class="fa-solid fa-credit-card"></i>
+                    </div>
+                    <h4>Billing & Plans</h4>
+                    <span>7 articles</span>
+                </div>
+
+                <div class="topic-card" data-topic="account">
+                    <div class="topic-icon icon-red">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <h4>Account & Security</h4>
+                    <span>11 articles</span>
+                </div>
+
+                <div class="topic-card" data-topic="notifications">
+                    <div class="topic-icon icon-sky">
+                        <i class="fa-regular fa-bell"></i>
+                    </div>
+                    <h4>Notifications</h4>
+                    <span>6 articles</span>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- FREQUENTLY ASKED QUESTIONS SECTION -->
+        <section class="faq-section">
+            <div class="section-header">
+                <h3>Frequently Asked Questions</h3>
+                <a href="#" class="view-all-link" id="viewAllFaqs">View all FAQs <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+
+            <div class="faq-list" id="faqList">
+                
+                <div class="faq-item" data-keywords="reschedule meeting cancel schedule">
+                    <div class="faq-header">
+                        <span class="faq-num">01</span>
+                        <div class="faq-title-group">
+                            <span class="faq-question">How do I reschedule a meeting?</span>
+                            <span class="faq-meta">Meetings • Updated 2 days ago</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right faq-arrow"></i>
+                    </div>
+                    <div class="faq-body">
+                        <p>To reschedule a meeting, navigate to the <strong>Meetings</strong> tab, select the meeting card, and click on the "Reschedule" button. Choose your new date and time and notify attendees automatically.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-keywords="ai summary meeting notes summary transcription">
+                    <div class="faq-header">
+                        <span class="faq-num">02</span>
+                        <div class="faq-title-group">
+                            <span class="faq-question">How does AI Summary work for meeting notes?</span>
+                            <span class="faq-meta">Meetings • Updated 1 week ago</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right faq-arrow"></i>
+                    </div>
+                    <div class="faq-body">
+                        <p>Our built-in AI listens to audio recordings, transcribes conversation points, extracts main decisions, and generates actionable summary notes within minutes after the call ends.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-keywords="google calendar connect sync integration">
+                    <div class="faq-header">
+                        <span class="faq-num">03</span>
+                        <div class="faq-title-group">
+                            <span class="faq-question">Can I connect MeetFlow to Google Calendar?</span>
+                            <span class="faq-meta">Integrations • Updated 2 weeks ago</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right faq-arrow"></i>
+                    </div>
+                    <div class="faq-body">
+                        <p>Yes! Go to the <strong>Integrations</strong> page in the sidebar, locate Google Calendar, and click "Connect". Follow the OAuth prompts to sync events instantly.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-keywords="upgrade change billing plan payment subscription">
+                    <div class="faq-header">
+                        <span class="faq-num">04</span>
+                        <div class="faq-title-group">
+                            <span class="faq-question">How do I upgrade or change my billing plan?</span>
+                            <span class="faq-meta">Billing & Plans • Updated 3 weeks ago</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right faq-arrow"></i>
+                    </div>
+                    <div class="faq-body">
+                        <p>Navigate to <strong>Settings > Billing</strong>, where you can view current plan details, upgrade to Pro/Enterprise tier, or switch your payment method easily.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-keywords="invite manage team members user roles permissions">
+                    <div class="faq-header">
+                        <span class="faq-num">05</span>
+                        <div class="faq-title-group">
+                            <span class="faq-question">How do I invite and manage team members?</span>
+                            <span class="faq-meta">Team • Updated 2 weeks ago</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right faq-arrow"></i>
+                    </div>
+                    <div class="faq-body">
+                        <p>Head to the <strong>Team</strong> section in your sidebar, click "Invite Member", type their email address, and assign an Admin or Member role.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-keywords="security privacy encrypted meeting data encryption">
+                    <div class="faq-header">
+                        <span class="faq-num">06</span>
+                        <div class="faq-title-group">
+                            <span class="faq-question">Is my meeting data encrypted and secure?</span>
+                            <span class="faq-meta">Account & Security • Updated 1 month ago</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right faq-arrow"></i>
+                    </div>
+                    <div class="faq-body">
+                        <p>All data is encrypted in transit using TLS 1.3 and at rest with AES-256 standards. We ensure strict SOC2 compliance and zero unauthorized access.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CONTACT SUPPORT SECTION -->
+        <section class="contact-support-section">
+            <div class="section-header">
+                <h3>Contact Support</h3>
+            </div>
+
+            <div class="contact-cards-container">
+                
+                <!-- Live Chat -->
+                <div class="contact-card">
+                    <div class="contact-info">
+                        <div class="contact-icon icon-blue-bg">
+                            <i class="fa-regular fa-comments"></i>
+                        </div>
+                        <div>
+                            <h4>Live Chat</h4>
+                            <p>Avg. reply time under 5 min</p>
+                        </div>
+                    </div>
+                    <span class="status-indicator status-online">Online</span>
+                </div>
+
+                <!-- Email Support -->
+                <div class="contact-card">
+                    <div class="contact-info">
+                        <div class="contact-icon icon-green-bg">
+                            <i class="fa-regular fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h4>Email Support</h4>
+                            <p>support@meetflow.com</p>
+                        </div>
+                    </div>
+                    <span class="status-indicator status-wait">~2 hrs</span>
+                </div>
+
+                <!-- Call Us -->
+                <div class="contact-card">
+                    <div class="contact-info">
+                        <div class="contact-icon icon-purple-bg">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <div>
+                            <h4>Call Us</h4>
+                            <p>+1 (800) 123-4567</p>
+                        </div>
+                    </div>
+                    <span class="status-indicator status-hours">9AM–5PM</span>
+                </div>
+
+                <!-- System Operational Bar -->
+                <div class="system-status-bar">
+                    <span class="pulse-dot"></span>
+                    <span>All systems operational</span>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Help JS -->
+    <script src="../api.js"></script>
+    <script src="Help&Support.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,466 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background-color: #F8FAFC;
+    color: #1E293B;
+    display: flex;
+}
+
+/* ===================================================
+                SIDEBAR (EXACT MATCH)
+=================================================== */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 100vh;
+    background: #FFFFFF;
+    border-right: 1px solid #E5E7EB;
+    padding: 28px 16px;
+    transition: .35s ease;
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.sidebar.close {
+    width: 90px;
+    padding: 28px 14px;
+}
+
+.sidebar-divider {
+    border: 0;
+    height: 1px;
+    background: #E5E7EB;
+    margin: 12px 0;
+}
+
+.sidebar .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 45px;
+    padding-left: 4px;
+}
+
+.sidebar .logo-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: #3461FF;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.sidebar .logo h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111827;
+    white-space: nowrap;
+    transition: .3s;
+}
+
+.sidebar.close .logo h2 {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+}
+
+.sidebar nav ul {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    list-style: none;
+}
+
+.sidebar nav ul li {
+    width: 100%;
+}
+
+.sidebar nav ul li a {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    color: #64748B;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: .3s;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.sidebar nav ul li a:hover {
+    background: #F1F5F9;
+    color: #3461FF;
+}
+
+.sidebar nav ul li.active a {
+    background: #3461FF;
+    color: #FFFFFF;
+    font-weight: 600;
+}
+
+.sidebar nav ul li i {
+    width: 22px;
+    text-align: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.sidebar nav ul li span {
+    transition: .3s;
+}
+
+.sidebar.close nav ul li span {
+    opacity: 0;
+    width: 0;
+    display: none;
+}
+
+.sidebar.close nav ul li a {
+    justify-content: center;
+    padding: 14px 0;
+    gap: 0;
+}
+
+.sidebar.close nav ul li i {
+    margin: 0 auto;
+}
+
+/* ===================================================
+                MAIN CONTENT & HEADER
+=================================================== */
+
+.main-content {
+    margin-left: 260px;
+    padding: 36px 48px;
+    width: calc(100% - 260px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Page Header Title */
+.back-link {
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: #0F172A;
+    font-size: 26px; /* تكبير العنوان ليكون بارزاً ومطابقاً للتصميم */
+    font-weight: 700;
+    text-decoration: none;
+    margin-bottom: 28px;
+    transition: color 0.2s ease;
+}
+
+.back-link i {
+    font-size: 20px;
+}
+
+.back-link:hover {
+    color: #3461FF;
+}
+
+/* Form Container Card */
+.form-card {
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 36px;
+    width: 100%;
+    max-width: 720px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.form-group {
+    margin-bottom: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1E293B;
+}
+
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group input[type="time"],
+.form-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #334155;
+    outline: none;
+    background-color: #FFFFFF;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #3461FF;
+    box-shadow: 0 0 0 3px rgba(52, 97, 255, 0.1);
+}
+
+/* Date & Time Input Styling with Custom Icon Popup */
+.input-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon-wrapper input {
+    cursor: pointer;
+    width: 100%;
+}
+
+.input-icon-wrapper .icon {
+    position: absolute;
+    right: 16px;
+    color: #64748B;
+    pointer-events: none;
+    font-size: 16px;
+}
+
+/* Hide native browser date icon to use custom icon */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+/* Participants */
+.participants-list {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+}
+
+.avatar-1 { background-color: #BFDBFE; }
+.avatar-2 { background-color: #DDD6FE; }
+.avatar-3 { background-color: #C7D2FE; }
+
+.add-participant-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px dashed #94A3B8;
+    background: transparent;
+    color: #64748B;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.add-participant-btn:hover {
+    border-color: #3461FF;
+    color: #3461FF;
+}
+
+/* Attachments Placeholder */
+.file-placeholder {
+    display: block;
+    padding: 12px 16px;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    color: #94A3B8;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* Toggle Switch */
+.toggle-group {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+}
+
+.toggle-group span {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+
+.switch input { opacity: 0; width: 0; height: 0; }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #E2E8F0;
+    transition: .3s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+}
+
+input:checked + .slider { background-color: #3461FF; }
+input:checked + .slider:before { transform: translateX(20px); }
+
+/* Buttons & Animations */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 32px;
+}
+
+.btn {
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                box-shadow 0.2s ease, 
+                background-color 0.2s ease;
+}
+
+.btn-cancel {
+    background-color: #F1F5F9;
+    color: #475569;
+}
+
+.btn-cancel:hover {
+    background-color: #E2E8F0;
+    color: #0F172A;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.btn-cancel:active {
+    transform: translateY(0) scale(0.97);
+}
+
+.btn-create {
+    background-color: #3461FF;
+    color: #FFFFFF;
+}
+
+.btn-create:hover {
+    background-color: #254EDB;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(52, 97, 255, 0.35);
+}
+
+.btn-create:active {
+    transform: translateY(0) scale(0.97);
+    box-shadow: 0 2px 8px rgba(52, 97, 255, 0.2);
+}
+
+/* ===================================================
+              RESPONSIVE DESIGN (MEDIA QUERIES)
+=================================================== */
+
+/* للتابلت والشاشات المتوسطة (768px وأقل) */
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 24px 16px;
+    }
+
+    .form-card {
+        padding: 24px 18px;
+    }
+
+    .back-link {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+}
+
+/* للموبايل والشاشات الصغيرة (576px وأقل) */
+@media (max-width: 576px) {
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+        gap: 10px;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 14px 0;
+    }
+
+    .toggle-group {
+        align-items: center;
+    }
+}
+
+.sidebar nav ul li a {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    color: #475569;
+    font-size: 15px;
+    font-weight: 600; /* تغيير من 500 إلى 600 للتطابق الكامل */
+    text-decoration: none;
+    transition: .3s;
+    white-space: nowrap;
+    width: 100%;
+}

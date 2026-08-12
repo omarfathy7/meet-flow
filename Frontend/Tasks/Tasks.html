@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasks</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Tasks CSS -->
+    <link rel="stylesheet" href="Tasks.css">
+</head>
+
+<body>
+
+    <!-- ===================================================
+                    SIDEBAR NAVIGATION
+    =================================================== -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">M</div>
+            <h2>MeetFlow</h2>
+        </div>
+
+        <nav>
+            <ul>
+
+                <li>
+                    <a href="../Dashboard/Dashboard.html">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Meetings/Meetings.html">
+                        <i class="fa-regular fa-calendar-check"></i>
+                        <span>Meetings</span>
+                    </a>
+                </li>
+
+                <li class="active">
+                    <a href="..\Tasks\Tasks.html">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>Tasks</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Follow-Ups/Follow-Ups.html">
+                        <i class="fa-solid fa-arrows-spin"></i>
+                        <span>Follow-ups</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Calender/Calender.html">
+                        <i class="fa-regular fa-calendar"></i>
+                        <span>Calendar</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Analytics/Analytics.html">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+
+                <hr class="sidebar-divider">
+
+                <li>
+                    <a href="../Team/Team.html">
+                        <i class="fa-solid fa-user-group"></i>
+                        <span>Team</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Reports/Reports.html">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Integrations/Integrations.html">
+                        <i class="fa-solid fa-cubes"></i>
+                        <span>Integrations</span>
+                    </a>
+                </li>
+
+                <hr class="sidebar-divider">
+
+                <li>
+                    <a href="../Settings/Settings.html">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="..\Help&Support.html">
+                        <i class="fa-regular fa-circle-question"></i>
+                        <span>Help & Support</span>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+
+    </aside>
+
+
+    <!-- ===================================================
+                    MAIN CONTENT AREA
+    =================================================== -->
+    <main class="main-content">
+
+        <!-- ===================================================
+                        PAGE HEADERS
+        =================================================== -->
+        <div class="page-header">
+
+            <!-- LEFT HEADER -->
+            <header class="top-header">
+
+                <button class="toggle-btn"
+                    id="toggleSidebar"
+                    aria-label="Toggle Sidebar">
+
+                    <i class="fa-solid fa-bars"></i>
+
+                </button>
+
+                <div class="header-title">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    <h1>Add Task</h1>
+
+                </div>
+
+            </header>
+
+
+            <!-- RIGHT HEADER -->
+            <div class="section-header">
+
+                <h3>Created Tasks</h3>
+
+                <span class="task-count">1 Tasks</span>
+
+            </div>
+
+        </div>
+
+
+        <!-- ===================================================
+                        TASKS CONTAINER
+        =================================================== -->
+        <div class="tasks-container">
+
+
+            <!-- ===================================================
+                        LEFT SIDE: TASK FORM
+            =================================================== -->
+            <section class="task-form-card">
+
+                <form id="taskForm">
+
+                    <!-- Task Title -->
+                    <div class="form-group">
+
+                        <label for="taskTitle">
+                            Task Title
+                        </label>
+
+                        <input
+                            type="text"
+                            id="taskTitle"
+                            placeholder="Enter task title"
+                            required>
+
+                    </div>
+
+
+                    <!-- Description -->
+                    <div class="form-group">
+
+                        <label for="taskDescription">
+                            Description
+                        </label>
+
+                        <textarea
+                            id="taskDescription"
+                            rows="4"
+                            placeholder="Add task description..."></textarea>
+
+                    </div>
+
+
+                    <!-- Assignee -->
+                    <div class="form-group">
+
+                        <label for="taskAssignee">
+                            Assignee
+                        </label>
+
+                        <select id="taskAssignee">
+
+                            <option value="" disabled selected>
+                                Select assignee
+                            </option>
+
+                            <option value="john">
+                                John Doe
+                            </option>
+
+                            <option value="sarah">
+                                Sarah Smith
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Deadline -->
+                    <div class="form-group">
+
+                        <label for="taskDeadline">
+                            Deadline
+                        </label>
+
+                        <input
+                            type="date"
+                            id="taskDeadline">
+
+                    </div>
+
+
+                    <!-- Priority -->
+                    <div class="form-group">
+
+                        <label>
+                            Priority
+                        </label>
+
+                        <div class="priority-options">
+
+                            <button
+                                type="button"
+                                class="priority-btn low">
+                                Low
+                            </button>
+
+                            <button
+                                type="button"
+                                class="priority-btn medium">
+                                Medium
+                            </button>
+
+                            <button
+                                type="button"
+                                class="priority-btn high active">
+                                High
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Status -->
+                    <div class="form-group">
+
+                        <label for="taskStatus">
+                            Status
+                        </label>
+
+                        <select id="taskStatus">
+
+                            <option value="todo">
+                                To Do
+                            </option>
+
+                            <option value="in-progress">
+                                In Progress
+                            </option>
+
+                            <option value="completed">
+                                Completed
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Project -->
+                    <div class="form-group">
+
+                        <label for="taskProject">
+                            Add to project
+                        </label>
+
+                        <select id="taskProject">
+
+                            <option value="" disabled selected>
+                                Select project
+                            </option>
+
+                            <option value="meetflow">
+                                MeetFlow UI
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+
+                        <button
+                            type="button"
+                            class="btn-cancel">
+                            Cancel
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="btn-submit">
+                            Create Task
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+
+            <!-- ===================================================
+                    RIGHT SIDE: CREATED TASKS
+            =================================================== -->
+            <section class="tasks-list-section">
+
+                <div class="tasks-list">
+                    <!-- Tasks populated dynamically from API -->
+                    <p style="color: #94A3B8; font-size: 14px; text-align: center; margin-top: 20px;">Loading tasks...</p>
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- ===================================================
+                        JAVASCRIPT
+    =================================================== -->
+    <script src="../api.js"></script>
+    <script src="Tasks.js"></script>
+
+</body>
+
+</html>

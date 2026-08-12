@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Settings CSS -->
+    <link rel="stylesheet" href="Settings.css">
+</head>
+
+<body>
+
+    <!-- ===================================================
+                    SIDEBAR NAVIGATION
+    =================================================== -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">M</div>
+            <h2>MeetFlow</h2>
+        </div>
+
+        <nav>
+            <ul>
+                <li>
+                    <a href="../Dashboard/Dashboard.html">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Meetings/Meetings.html">
+                        <i class="fa-regular fa-calendar-check"></i>
+                        <span>Meetings</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Tasks/Tasks.html">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>Tasks</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Follow-Ups/Follow-Ups.html">
+                        <i class="fa-solid fa-arrows-spin"></i>
+                        <span>Follow-ups</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Calender/Calender.html">
+                        <i class="fa-regular fa-calendar"></i>
+                        <span>Calendar</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Analytics/Analytics.html">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+
+                <hr class="sidebar-divider">
+
+                <li>
+                    <a href="../Team/Team.html">
+                        <i class="fa-solid fa-user-group"></i>
+                        <span>Team</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Reports/Reports.html">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Integrations/Integrations.html">
+                        <i class="fa-solid fa-cubes"></i>
+                        <span>Integrations</span>
+                    </a>
+                </li>
+
+                <hr class="sidebar-divider">
+
+                <!-- الصفحة النشطة -->
+                <li class="active">
+                    <a href="..\Settings\Settings.html">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="..\Help&Support\Help&Support.html">
+                        <i class="fa-regular fa-circle-question"></i>
+                        <span>Help & Support</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    </aside>
+
+    <!-- ===================================================
+                    MAIN CONTENT AREA
+    =================================================== -->
+    <main class="main-content">
+
+        <!-- PAGE HEADER -->
+        <div class="page-header">
+            <header class="top-header">
+                <button class="toggle-btn" id="toggleSidebar" aria-label="Toggle Sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div class="header-title">
+                    <i class="fa-solid fa-gear"></i>
+                    <h1>Settings</h1>
+                </div>
+            </header>
+        </div>
+
+        <!-- SETTINGS CONTAINER LAYOUT -->
+        <div class="settings-container">
+
+            <!-- INNER NAVIGATION MENU -->
+            <div class="settings-sidebar">
+                <ul class="settings-nav">
+                    <li class="nav-item active" data-tab="general">General</li>
+                    <li class="nav-item" data-tab="notifications">Notifications</li>
+                    <li class="nav-item" data-tab="calendar">Calendar</li>
+                    <li class="nav-item" data-tab="integrations">Integrations</li>
+                    <li class="nav-item" data-tab="security">Security</li>
+                    <li class="nav-item" data-tab="billing">Billing</li>
+                </ul>
+            </div>
+
+            <!-- DYNAMIC SETTINGS CONTENT PANEL -->
+            <div class="settings-panel">
+
+                <!-- 1. GENERAL SETTINGS TAB -->
+                <div class="tab-content active" id="tab-general">
+                    <h2>General Settings</h2>
+                    <form class="settings-form" id="generalForm">
+                        <div class="form-group full-width">
+                            <label for="companyName">Company Name</label>
+                            <input type="text" id="companyName" value="MeetFlow Inc.">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="timeZone">Time Zone</label>
+                            <select id="timeZone">
+                                <option value="Cairo" selected>(GMT+02:00) Cairo</option>
+                                <option value="UTC">UTC (Coordinated Universal Time)</option>
+                                <option value="EST">EST (Eastern Standard Time)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="dateFormat">Date Format</label>
+                                <select id="dateFormat">
+                                    <option value="MM/DD/YYYY" selected>MM/DD/YYYY</option>
+                                    <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                                    <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="startOfWeek">Start of Week</label>
+                                <select id="startOfWeek">
+                                    <option value="Monday" selected>Monday</option>
+                                    <option value="Sunday">Sunday</option>
+                                    <option value="Saturday">Saturday</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="defaultDuration">Default Meeting Duration</label>
+                            <select id="defaultDuration">
+                                <option value="30">30 min</option>
+                                <option value="45">45 min</option>
+                                <option value="60" selected>60 min</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn-save">Save Changes</button>
+                    </form>
+                </div>
+
+                <!-- 2. NOTIFICATIONS TAB -->
+                <div class="tab-content" id="tab-notifications">
+                    <h2>Notification Preferences</h2>
+                    <form class="settings-form" id="notificationsForm">
+                        <div class="toggle-group">
+                            <div>
+                                <h4>Email Notifications</h4>
+                                <p>Receive daily summaries and meeting reminders via email.</p>
+                            </div>
+                            <input type="checkbox" id="emailNotif" class="toggle-checkbox" checked>
+                        </div>
+
+                        <div class="toggle-group">
+                            <div>
+                                <h4>Desktop Push Notifications</h4>
+                                <p>Get instant alerts when a new meeting is scheduled.</p>
+                            </div>
+                            <input type="checkbox" id="pushNotif" class="toggle-checkbox" checked>
+                        </div>
+
+                        <button type="submit" class="btn-save">Save Changes</button>
+                    </form>
+                </div>
+
+                <!-- 3. CALENDAR TAB -->
+                <div class="tab-content" id="tab-calendar">
+                    <h2>Calendar Preferences</h2>
+                    <form class="settings-form" id="calendarForm">
+                        <div class="form-group full-width">
+                            <label for="defaultView">Default Calendar View</label>
+                            <select id="defaultView">
+                                <option value="month">Month View</option>
+                                <option value="week" selected>Week View</option>
+                                <option value="day">Day View</option>
+                            </select>
+                        </div>
+
+                        <div class="toggle-group">
+                            <div>
+                                <h4>Show Weekends</h4>
+                                <p>Include Saturday and Sunday in your calendar grid.</p>
+                            </div>
+                            <input type="checkbox" id="showWeekends" class="toggle-checkbox">
+                        </div>
+
+                        <button type="submit" class="btn-save">Save Changes</button>
+                    </form>
+                </div>
+
+                <!-- 4. INTEGRATIONS TAB -->
+                <div class="tab-content" id="tab-integrations">
+                    <h2>Connected Apps</h2>
+                    <p class="tab-desc">Manage third-party tools connected to MeetFlow.</p>
+                    <div class="integration-item">
+                        <span>Google Calendar</span>
+                        <button type="button" class="btn-connect connected">Connected</button>
+                    </div>
+                    <div class="integration-item">
+                        <span>Slack</span>
+                        <button type="button" class="btn-connect">Connect</button>
+                    </div>
+                </div>
+
+                <!-- 5. SECURITY TAB (WITH EMAIL VERIFICATION) -->
+                <div class="tab-content" id="tab-security">
+                    <h2>Security & Password</h2>
+                    
+                    <!-- STEP 1: EMAIL VERIFICATION STEP -->
+                    <div id="securityVerificationStep" class="verification-box">
+                        <div class="lock-icon-container">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <h3>Identity Verification Required</h3>
+                        <p>To update your password, we need to verify your email address for security reasons.</p>
+                        
+                        <div class="form-group full-width" style="margin-top: 16px;">
+                            <label for="userEmail">Registered Email</label>
+                            <input type="email" id="userEmail" placeholder="user@example.com">
+                        </div>
+
+                        <button type="button" class="btn-save" id="sendCodeBtn" style="width: 100%; margin-top: 16px;">
+                            Send Verification Code
+                        </button>
+
+                        <!-- Verification Code Input Box (Hidden initially) -->
+                        <div id="otpInputContainer" class="otp-container" style="display: none;">
+                            <div class="form-group full-width">
+                                <label for="otpCode">Enter 6-Digit Code</label>
+                                <input type="text" id="otpCode" placeholder="******" maxlength="6" style="text-align: center; letter-spacing: 4px; font-weight: bold; font-size: 18px;">
+                            </div>
+                            <button type="button" class="btn-save" id="verifyCodeBtn" style="width: 100%; margin-top: 12px; background: #16A34A;">
+                                Verify Code
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2: PASSWORD UPDATE FORM (LOCKED INITIALLY) -->
+                    <form class="settings-form locked-form" id="securityForm">
+                        <div class="form-group full-width">
+                            <label for="currPass">Current Password</label>
+                            <input type="password" id="currPass" placeholder="••••••••" disabled required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="newPass">New Password</label>
+                            <input type="password" id="newPass" placeholder="••••••••" disabled required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="confirmPass">Confirm New Password</label>
+                            <input type="password" id="confirmPass" placeholder="••••••••" disabled required>
+                        </div>
+                        <button type="submit" class="btn-save" id="updatePassBtn" disabled>Update Password</button>
+                    </form>
+                </div>
+
+                <!-- 6. BILLING TAB -->
+                <div class="tab-content" id="tab-billing">
+                    <h2>Billing & Plans</h2>
+                    <div class="plan-card">
+                        <h3>Current Plan: Pro Team</h3>
+                        <p>Renews on September 1, 2026</p>
+                        <button type="button" class="btn-upgrade">Upgrade Plan</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Settings JS -->
+    <script src="../api.js"></script>
+    <script src="Settings.js"></script>
+</body>
+
+</html>

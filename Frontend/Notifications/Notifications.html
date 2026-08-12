@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Notifications</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Notifications CSS -->
+    <link rel="stylesheet" href="Notifications.css">
+</head>
+
+<body>
+
+    <!-- ===================================================
+                        SIDEBAR
+    =================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">M</div>
+            <h2>MeetFlow</h2>
+        </div>
+
+        <nav>
+            <ul>
+
+                <li>
+                    <a href="../Dashboard/Dashboard.html">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Meetings/Meetings.html">
+                        <i class="fa-regular fa-calendar-check"></i>
+                        <span>Meetings</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Tasks/Tasks.html">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>Tasks</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Follow-Ups/Follow-Ups.html">
+                        <i class="fa-solid fa-arrows-spin"></i>
+                        <span>Follow-ups</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Calender/Calender.html">
+                        <i class="fa-regular fa-calendar"></i>
+                        <span>Calendar</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Analytics/Analytics.html">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+
+                <hr class="sidebar-divider">
+
+                <li>
+                    <a href="../Team/Team.html">
+                        <i class="fa-solid fa-user-group"></i>
+                        <span>Team</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Reports/Reports.html">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Integrations/Integrations.html">
+                        <i class="fa-solid fa-cubes"></i>
+                        <span>Integrations</span>
+                    </a>
+                </li>
+
+                <hr class="sidebar-divider">
+
+                <li>
+                    <a href="../Settings/Settings.html">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Help&Support/Help&Support.html">
+                        <i class="fa-regular fa-circle-question"></i>
+                        <span>Help & Support</span>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+
+    </aside>
+
+
+    <!-- ===================================================
+                        MAIN CONTENT
+    =================================================== -->
+
+    <main class="main-content">
+
+        <!-- HEADER -->
+
+        <div class="page-header">
+
+            <header class="top-header">
+
+                <!-- Burger -->
+                <button class="toggle-btn"
+                    id="toggleSidebar"
+                    aria-label="Toggle Sidebar">
+
+                    <i class="fa-solid fa-bars"></i>
+
+                </button>
+
+
+                <!-- PAGE TITLE -->
+
+                <div class="header-title">
+
+                    <i class="fa-regular fa-bell"></i>
+
+                    <h1>Notifications</h1>
+
+                </div>
+
+            </header>
+
+
+            <!-- RIGHT HEADER -->
+
+            <div class="header-right">
+
+                <!-- Notification icon -->
+
+                <a href="Notifications.html"
+                    class="notification-btn"
+                    title="Notifications">
+
+                    <i class="fa-regular fa-bell"></i>
+
+                    <span class="notification-badge"
+                        id="notificationBadge">4</span>
+
+                </a>
+
+
+                <!-- PROFILE -->
+
+                <a href="../Profile/Profile.html"
+                    class="header-profile">
+
+                    <div class="header-avatar">
+                        AJ
+                    </div>
+
+                    <div class="header-user-info">
+
+                        <span class="header-user-name">
+                            Alex Johnson
+                        </span>
+
+                        <span class="header-user-role">
+                            Admin
+                        </span>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+
+        <p class="page-description">
+            Stay updated with your meetings, tasks, and account activity.
+        </p>
+
+
+        <!-- ===================================================
+                    NOTIFICATIONS CONTAINER
+        =================================================== -->
+
+        <section class="notifications-container">
+
+
+            <!-- TOP CONTROLS -->
+
+            <div class="notifications-top">
+
+                <div>
+
+                    <h2>Your Notifications</h2>
+
+                    <p>
+                        You have
+                        <strong id="unreadCount">4</strong>
+                        unread notifications.
+                    </p>
+
+                </div>
+
+
+                <div class="notification-actions">
+
+                    <button
+                        class="action-btn"
+                        id="markAllReadBtn">
+
+                        <i class="fa-solid fa-check-double"></i>
+
+                        Mark all as read
+
+                    </button>
+
+                    <button
+                        class="action-btn danger"
+                        id="clearAllBtn">
+
+                        <i class="fa-solid fa-trash"></i>
+
+                        Clear all
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ===================================================
+                            FILTER TABS
+            =================================================== -->
+
+            <div class="notification-tabs">
+
+                <button
+                    class="notification-tab active"
+                    data-filter="all">
+
+                    All
+
+                </button>
+
+                <button
+                    class="notification-tab"
+                    data-filter="unread">
+
+                    Unread
+
+                </button>
+
+                <button
+                    class="notification-tab"
+                    data-filter="meeting">
+
+                    Meetings
+
+                </button>
+
+                <button
+                    class="notification-tab"
+                    data-filter="task">
+
+                    Tasks
+
+                </button>
+
+                <button
+                    class="notification-tab"
+                    data-filter="system">
+
+                    System
+
+                </button>
+
+            </div>
+
+
+            <!-- ===================================================
+                SEARCH & FILTERS
+            =================================================== -->
+
+            <div class="notification-controls">
+
+                <!-- SEARCH BAR -->
+                <div class="notification-search">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input
+                        type="text"
+                        id="notificationSearch"
+                        placeholder="Search notifications...">
+
+                </div>
+
+
+                <!-- FILTERED BY -->
+                <div class="filter-box">
+
+                    <label>Filtered by</label>
+
+                    <select id="filterType">
+
+                        <option value="all">All notifications</option>
+                        <option value="unread">Unread</option>
+                        <option value="meeting">Meetings</option>
+                        <option value="task">Tasks</option>
+                        <option value="system">System</option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- BY DATE -->
+                <div class="filter-box">
+
+                    <label>By date</label>
+
+                    <select id="filterDate">
+
+                        <option value="all">All dates</option>
+                        <option value="today">Today</option>
+                        <option value="yesterday">Yesterday</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- ===================================================
+                        NOTIFICATIONS LIST
+            =================================================== -->
+
+            <div
+                class="notifications-list"
+                id="notificationsList">
+
+
+                <!-- NOTIFICATION 1 -->
+
+                <div class="notification-item unread"
+                    data-type="meeting"
+                    data-id="1">
+
+                    <div class="notification-icon meeting">
+
+                        <i class="fa-solid fa-calendar-check"></i>
+
+                    </div>
+
+
+                    <div class="notification-content">
+
+                        <div class="notification-title-row">
+
+                            <h3>Upcoming meeting</h3>
+
+                            <span class="notification-dot"></span>
+
+                        </div>
+
+                        <p>
+                            Your meeting with the Product Team
+                            starts in 30 minutes.
+                        </p>
+
+                        <span class="notification-time">
+                            <i class="fa-regular fa-clock"></i>
+                            10 minutes ago
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        class="notification-delete"
+                        title="Delete notification">
+
+                        <i class="fa-solid fa-xmark"></i>
+
+                    </button>
+
+                </div>
+
+
+                <!-- NOTIFICATION 2 -->
+
+                <div class="notification-item unread"
+                    data-type="task"
+                    data-id="2">
+
+                    <div class="notification-icon task">
+
+                        <i class="fa-solid fa-list-check"></i>
+
+                    </div>
+
+
+                    <div class="notification-content">
+
+                        <div class="notification-title-row">
+
+                            <h3>Task assigned to you</h3>
+
+                            <span class="notification-dot"></span>
+
+                        </div>
+
+                        <p>
+                            Sarah assigned you a new task:
+                            "Review Q3 analytics report".
+                        </p>
+
+                        <span class="notification-time">
+                            <i class="fa-regular fa-clock"></i>
+                            35 minutes ago
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        class="notification-delete"
+                        title="Delete notification">
+
+                        <i class="fa-solid fa-xmark"></i>
+
+                    </button>
+
+                </div>
+
+
+                <!-- NOTIFICATION 3 -->
+
+                <div class="notification-item unread"
+                    data-type="meeting"
+                    data-id="3">
+
+                    <div class="notification-icon meeting">
+
+                        <i class="fa-solid fa-video"></i>
+
+                    </div>
+
+
+                    <div class="notification-content">
+
+                        <div class="notification-title-row">
+
+                            <h3>Meeting invitation</h3>
+
+                            <span class="notification-dot"></span>
+
+                        </div>
+
+                        <p>
+                            You have been invited to
+                            "Weekly Product Sync".
+                        </p>
+
+                        <span class="notification-time">
+                            <i class="fa-regular fa-clock"></i>
+                            1 hour ago
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        class="notification-delete"
+                        title="Delete notification">
+
+                        <i class="fa-solid fa-xmark"></i>
+
+                    </button>
+
+                </div>
+
+
+                <!-- NOTIFICATION 4 -->
+
+                <div class="notification-item unread"
+                    data-type="system"
+                    data-id="4">
+
+                    <div class="notification-icon system">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                    </div>
+
+
+                    <div class="notification-content">
+
+                        <div class="notification-title-row">
+
+                            <h3>Security update</h3>
+
+                            <span class="notification-dot"></span>
+
+                        </div>
+
+                        <p>
+                            Your account security settings
+                            were successfully updated.
+                        </p>
+
+                        <span class="notification-time">
+                            <i class="fa-regular fa-clock"></i>
+                            2 hours ago
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        class="notification-delete"
+                        title="Delete notification">
+
+                        <i class="fa-solid fa-xmark"></i>
+
+                    </button>
+
+                </div>
+
+
+                <!-- NOTIFICATION 5 -->
+
+                <div class="notification-item"
+                    data-type="task"
+                    data-id="5">
+
+                    <div class="notification-icon task">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    </div>
+
+
+                    <div class="notification-content">
+
+                        <div class="notification-title-row">
+
+                            <h3>Task completed</h3>
+
+                        </div>
+
+                        <p>
+                            The task "Prepare monthly report"
+                            has been completed.
+                        </p>
+
+                        <span class="notification-time">
+                            <i class="fa-regular fa-clock"></i>
+                            Yesterday
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        class="notification-delete"
+                        title="Delete notification">
+
+                        <i class="fa-solid fa-xmark"></i>
+
+                    </button>
+
+                </div>
+
+
+                <!-- NOTIFICATION 6 -->
+
+                <div class="notification-item"
+                    data-type="system"
+                    data-id="6">
+
+                    <div class="notification-icon system">
+
+                        <i class="fa-solid fa-rotate"></i>
+
+                    </div>
+
+
+                    <div class="notification-content">
+
+                        <div class="notification-title-row">
+
+                            <h3>System update</h3>
+
+                        </div>
+
+                        <p>
+                            MeetFlow has been updated with
+                            new improvements and fixes.
+                        </p>
+
+                        <span class="notification-time">
+                            <i class="fa-regular fa-clock"></i>
+                            Yesterday
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        class="notification-delete"
+                        title="Delete notification">
+
+                        <i class="fa-solid fa-xmark"></i>
+
+                    </button>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- EMPTY STATE -->
+
+            <div
+                class="empty-state"
+                id="emptyState">
+
+                <div class="empty-icon">
+
+                    <i class="fa-regular fa-bell-slash"></i>
+
+                </div>
+
+                <h3>No notifications found</h3>
+
+                <p>
+                    You're all caught up!
+                </p>
+
+            </div>
+
+
+            <!-- LOAD MORE -->
+
+            <button
+                class="load-more-btn"
+                id="loadMoreBtn">
+
+                Load more
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+            </button>
+
+        </section>
+
+    </main>
+
+
+    <!-- Notifications JS -->
+
+    <script src="../api.js"></script>
+    <script src="Notifications.js"></script>
+
+</body>
+
+</html>

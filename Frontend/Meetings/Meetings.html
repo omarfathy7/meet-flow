@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meetings</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="Meetings.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- ================= Sidebar ================= -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">M</div>
+            <h2>MeetFlow</h2>
+        </div>
+
+        <nav>
+            <ul>
+                
+                <li>
+                    <a href="..\Dashboard\Dashboard.html">
+                        <i class="fa-solid fa-table-columns"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="active">
+                    <a href="..\Meetings\Meetings.html">
+                        <i class="fa-regular fa-calendar"></i>
+                        <span>Meetings</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="..\Tasks\tasks.html">
+                        <i class="fa-solid fa-check"></i>
+                        <span>Tasks</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="..\Follow-Ups\follow-ups.html">
+                        <i class="fa-solid fa-arrow-turn-up"></i>
+                        <span>Follow-ups</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="..\Calender\calendar.html">
+                        <i class="fa-regular fa-calendar-days"></i>
+                        <span>Calendar</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="..\Analytics\Analytics.html">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Team/Team.html">
+                        <i class="fa-solid fa-users"></i>
+                        <span>Team</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Reports/Reports.html">
+                        <i class="fa-regular fa-file-lines"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="..\Integrations\Integrations.html">
+                        <i class="fa-solid fa-plug"></i>
+                        <span>Integrations</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="..\Settings\Settings.html">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+
+                <hr class="sidebar-divider">
+
+                <li>
+                    <a href="..\Help&Support\Help&Support.html">
+                        <i class="fa-regular fa-circle-question"></i>
+                        <span>Help & Support</span>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+
+    </aside>
+
+    <!-- ================= Main ================= -->
+    <main class="main-content" id="mainContent">
+
+        <!-- Top Bar -->
+        <header class="topbar">
+
+            <div class="menu-toggle" id="menuToggle">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+
+            <div class="search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search meetings, tasks, or people...">
+            </div>
+
+            <div class="top-right">
+
+                <button class="notification">
+                    <i class="fa-solid fa-bell"></i>
+                </button>
+
+                <div class="profile">
+                    <img src="https://ui-avatars.com/api/?name=Alex+Johnson&background=EEF3FF&color=3461FF" alt="Profile">
+                    <span>Alex Johnson</span>
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- Welcome / Page Header -->
+        <section class="welcome">
+
+            <div>
+                <h1>Meetings</h1>
+                <p>Manage and track all your scheduled sessions</p>
+            </div>
+
+            <div class="header-actions">
+                <button class="filter-dropdown-btn">
+                    <i class="fa-solid fa-chevron-down"></i>
+                    <span>All Meetings</span>
+                </button>
+                <a href="..\CreatMeeting\CreatMeeting.html" class="create-btn">
+                    + Create Meeting
+                </a>
+            </div>
+
+        </section>
+
+        <!-- Main Meetings Content Container -->
+        <section class="meetings-page-card">
+
+            <!-- Filter Tabs -->
+            <div class="meetings-tabs" id="meetingsTabs">
+                <button class="tab-btn active" data-tab="upcoming">Upcoming</button>
+                <button class="tab-btn" data-tab="past">Past</button>
+                <button class="tab-btn" data-tab="cancelled">Cancelled</button>
+            </div>
+
+            <!-- Grouped Meetings List — populated dynamically from API -->
+            <div class="meetings-group-list">
+                <div style="text-align:center; padding:40px 20px; color:#94A3B8;">
+                    <i class="fa-regular fa-calendar" style="font-size:48px; margin-bottom:12px; display:block; opacity:0.5;"></i>
+                    <p style="font-size:15px;">Loading meetings...</p>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="../api.js"></script>
+    <script src="Meetings.js"></script>
+
+</body>
+</html>
