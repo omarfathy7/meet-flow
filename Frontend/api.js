@@ -77,7 +77,7 @@ async function fetchAPI(endpoint, options = {}) {
 async function tryRefreshToken() {
     const refreshToken = localStorage.getItem("refreshToken");
     const accessToken = localStorage.getItem("accessToken");
-    
+
     if (!refreshToken) {
         alert("Debug Info: No refresh token found in localStorage. The backend might not have sent it during login.");
         return false;
@@ -91,10 +91,7 @@ async function tryRefreshToken() {
                 "Accept": "application/json",
                 "Authorization": `Bearer ${accessToken}`
             },
-            body: JSON.stringify({ 
-                refreshToken: refreshToken,
-                accessToken: accessToken 
-            })
+            body: JSON.stringify({ refreshToken: refreshToken })
         });
 
         if (!response.ok) {
@@ -275,8 +272,8 @@ function showToast(message, type = "success") {
         color: #fff; box-shadow: 0 8px 24px rgba(0,0,0,0.18);
         animation: toastSlideIn 0.35s ease; max-width: 380px;
         background: ${type === "success" ? "linear-gradient(135deg, #16A34A, #15803D)" :
-                     type === "error" ? "linear-gradient(135deg, #DC2626, #B91C1C)" :
-                     "linear-gradient(135deg, #2563EB, #1D4ED8)"};
+            type === "error" ? "linear-gradient(135deg, #DC2626, #B91C1C)" :
+                "linear-gradient(135deg, #2563EB, #1D4ED8)"};
     `;
 
     // Add animation keyframes if not present

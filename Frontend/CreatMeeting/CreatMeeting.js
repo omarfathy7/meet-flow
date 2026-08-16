@@ -91,6 +91,7 @@ async function createMeeting() {
     const time = document.getElementById("time");
     const agenda = document.getElementById("agenda");
     const workspaceSelect = document.getElementById("workspaceSelect");
+    const addToCalendar = document.getElementById("addToCalendar");
 
     if (!title || !title.value.trim()) {
         showToast("Please enter a meeting title", "error");
@@ -100,7 +101,14 @@ async function createMeeting() {
     // Build meetingDate from date + time inputs
     const dateVal = date ? date.value : new Date().toISOString().split("T")[0];
     const timeVal = time ? time.value : "10:00";
-    const meetingDate = new Date(`${dateVal}T${timeVal}:00`).toISOString();
+    const meetingDateValue = new Date(`${dateVal}T${timeVal}:00`);
+
+    if (Number.isNaN(meetingDateValue.getTime())) {
+        showToast("Please choose a valid meeting date and time", "error");
+        return;
+    }
+
+    const meetingDate = meetingDateValue.toISOString();
 
     // Get workspace ID
     let workspaceId = 1;
@@ -136,10 +144,12 @@ async function createMeeting() {
             showToast("Meeting created successfully!");
             // Store workspace ID for future use
             localStorage.setItem("currentWorkspaceId", workspaceId);
-            // Redirect to meetings page after short delay
-            setTimeout(() => {
-                window.location.href = "../Meetings/Meetings.html";
-            }, 1000);
+            showCalendarResult({
+                title: payload.title,
+                description: payload.description,
+                startDate: meetingDateValue,
+                enabled: !addToCalendar || addToCalendar.checked
+            });
         } else {
             showToast("Failed to create meeting", "error");
         }
@@ -151,4 +161,46 @@ async function createMeeting() {
             submitBtn.textContent = originalText;
         }
     }
+}
+
+function showCalendarResult({ title, description, startDate, enabled }) {
+    const resultPanel = document.getElementById("calendarResult");
+    const calendarLink = document.getElementById("googleCalendarLink");
+    const resultMessage = document.getElementById("calendarResultMessage");
+    const formActions = document.querySelector(".form-actions");
+
+    if (!resultPanel) return;
+
+    if (enabled && calendarLink) {
+        calendarLink.href = buildGoogleCalendarUrl(title, description, startDate);
+        calendarLink.hidden = false;
+        if (resultMessage) {
+            resultMessage.textContent = "Your meeting is saved in MeetFlow. Add it to Google Calendar when you are ready.";
+        }
+    } else if (calendarLink) {
+        calendarLink.hidden = true;
+        if (resultMessage) {
+            resultMessage.textContent = "Your meeting is saved in MeetFlow.";
+        }
+    }
+
+    resultPanel.hidden = false;
+    if (formActions) formActions.hidden = true;
+    resultPanel.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function buildGoogleCalendarUrl(title, description, startDate) {
+    const endDate = new Date(startDate.getTime() + 60 * 60 * 1000);
+    const params = new URLSearchParams({
+        action: "TEMPLATE",
+        text: title,
+        dates: `${formatGoogleCalendarDate(startDate)}/${formatGoogleCalendarDate(endDate)}`,
+        details: description || "Created from MeetFlow"
+    });
+
+    return `https://calendar.google.com/calendar/render?${params.toString()}`;
+}
+
+function formatGoogleCalendarDate(date) {
+    return date.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
 }

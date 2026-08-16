@@ -194,7 +194,7 @@ taskTabs.forEach((tab) => {
                 <div class="meeting-details">
                     <h4>${escapeHtml(m.title)}</h4>
                 </div>
-                <button class="join-btn" onclick="window.location.href='../Meetings/Details.html?id=${m.id}'">Join</button>
+                <button class="join-btn" onclick="window.location.href='../Meetings/Meetings.html?id=${m.id}'">Join</button>
             </div>
         `;
             meetingsSection.insertAdjacentHTML("beforeend", itemHtml);

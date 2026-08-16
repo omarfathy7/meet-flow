@@ -161,7 +161,8 @@ body {
     align-items: center;
     gap: 16px;
     color: #0F172A;
-    font-size: 26px; /* تكبير العنوان ليكون بارزاً ومطابقاً للتصميم */
+    font-size: 26px;
+    /* تكبير العنوان ليكون بارزاً ومطابقاً للتصميم */
     font-weight: 700;
     text-decoration: none;
     margin-bottom: 28px;
@@ -274,9 +275,17 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     border-radius: 50%;
 }
 
-.avatar-1 { background-color: #BFDBFE; }
-.avatar-2 { background-color: #DDD6FE; }
-.avatar-3 { background-color: #C7D2FE; }
+.avatar-1 {
+    background-color: #BFDBFE;
+}
+
+.avatar-2 {
+    background-color: #DDD6FE;
+}
+
+.avatar-3 {
+    background-color: #C7D2FE;
+}
 
 .add-participant-btn {
     width: 38px;
@@ -328,12 +337,19 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     height: 24px;
 }
 
-.switch input { opacity: 0; width: 0; height: 0; }
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
 
 .slider {
     position: absolute;
     cursor: pointer;
-    top: 0; left: 0; right: 0; bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background-color: #E2E8F0;
     transition: .3s;
     border-radius: 24px;
@@ -351,8 +367,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     border-radius: 50%;
 }
 
-input:checked + .slider { background-color: #3461FF; }
-input:checked + .slider:before { transform: translateX(20px); }
+input:checked+.slider {
+    background-color: #3461FF;
+}
+
+input:checked+.slider:before {
+    transform: translateX(20px);
+}
 
 /* Buttons & Animations */
 .form-actions {
@@ -369,9 +390,9 @@ input:checked + .slider:before { transform: translateX(20px); }
     font-weight: 600;
     border: none;
     cursor: pointer;
-    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), 
-                box-shadow 0.2s ease, 
-                background-color 0.2s ease;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
 }
 
 .btn-cancel {
@@ -404,6 +425,55 @@ input:checked + .slider:before { transform: translateX(20px); }
 .btn-create:active {
     transform: translateY(0) scale(0.97);
     box-shadow: 0 2px 8px rgba(52, 97, 255, 0.2);
+}
+
+.calendar-result {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    margin-top: 24px;
+    padding: 18px;
+    border: 1px solid #BFDBFE;
+    border-radius: 12px;
+    background: #EFF6FF;
+}
+
+.calendar-result[hidden] {
+    display: none;
+}
+
+.calendar-result h3 {
+    font-size: 16px;
+    margin-bottom: 4px;
+    color: #1E293B;
+}
+
+.calendar-result p {
+    font-size: 13px;
+    color: #475569;
+    line-height: 1.5;
+}
+
+.calendar-result-actions {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.btn-calendar {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #16A34A;
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.btn-calendar:hover {
+    background: #15803D;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(22, 163, 74, 0.24);
 }
 
 /* ===================================================
@@ -440,6 +510,15 @@ input:checked + .slider:before { transform: translateX(20px); }
         gap: 10px;
     }
 
+    .calendar-result {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .calendar-result-actions {
+        flex-direction: column;
+    }
+
     .btn {
         width: 100%;
         padding: 14px 0;
@@ -458,7 +537,8 @@ input:checked + .slider:before { transform: translateX(20px); }
     border-radius: 12px;
     color: #475569;
     font-size: 15px;
-    font-weight: 600; /* تغيير من 500 إلى 600 للتطابق الكامل */
+    font-weight: 600;
+    /* تغيير من 500 إلى 600 للتطابق الكامل */
     text-decoration: none;
     transition: .3s;
     white-space: nowrap;

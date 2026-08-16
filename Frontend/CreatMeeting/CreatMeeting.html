@@ -32,56 +32,56 @@
                     </a>
                 </li>
                 <li>
-                    <a href="tasks.html">
+                    <a href="../Tasks/Tasks.html">
                         <i class="fa-solid fa-check"></i>
                         <span>Tasks</span>
                     </a>
                 </li>
                 <li>
-                    <a href="follow-ups.html">
+                    <a href="../Follow-Ups/Follow-Ups.html">
                         <i class="fa-solid fa-arrow-turn-up"></i>
                         <span>Follow-ups</span>
                     </a>
                 </li>
                 <li>
-                    <a href="calendar.html">
+                    <a href="../Calender/Calender.html">
                         <i class="fa-regular fa-calendar-days"></i>
                         <span>Calendar</span>
                     </a>
                 </li>
                 <li>
-                    <a href="analytics.html">
+                    <a href="../Analytics/Analytics.html">
                         <i class="fa-solid fa-chart-line"></i>
                         <span>Analytics</span>
                     </a>
                 </li>
                 <li>
-                    <a href="team.html">
+                    <a href="../Team/Team.html">
                         <i class="fa-solid fa-users"></i>
                         <span>Team</span>
                     </a>
                 </li>
                 <li>
-                    <a href="reports.html">
+                    <a href="../Reports/Reports.html">
                         <i class="fa-regular fa-file-lines"></i>
                         <span>Reports</span>
                     </a>
                 </li>
                 <li>
-                    <a href="integrations.html">
+                    <a href="../Integrations/Integrations.html">
                         <i class="fa-solid fa-plug"></i>
                         <span>Integrations</span>
                     </a>
                 </li>
                 <li>
-                    <a href="settings.html">
+                    <a href="../Settings/Settings.html">
                         <i class="fa-solid fa-gear"></i>
                         <span>Settings</span>
                     </a>
                 </li>
                 <hr class="sidebar-divider">
                 <li>
-                    <a href="help.html">
+                    <a href="../Help&Support/Help&Support.html">
                         <i class="fa-regular fa-circle-question"></i>
                         <span>Help & Support</span>
                     </a>
@@ -92,7 +92,7 @@
 
     <!-- ================= Main Content ================= -->
     <main class="main-content">
-        
+
         <!-- Back Navigation Header -->
         <a href="../Meetings/Meetings.html" class="back-link">
             <i class="fa-solid fa-arrow-left"></i>
@@ -102,7 +102,7 @@
         <!-- Form Card Container -->
         <div class="form-card">
             <form id="createMeetingForm">
-                
+
                 <!-- Workspace -->
                 <div class="form-group">
                     <label for="workspaceSelect">Workspace</label>
@@ -122,7 +122,7 @@
                     <div class="form-group">
                         <label for="date">Date</label>
                         <div class="input-icon-wrapper">
-                            <input type="date" id="date" value="2026-08-08" onclick="this.showPicker()">
+                            <input type="date" id="date" onclick="this.showPicker()">
                             <i class="fa-regular fa-calendar icon"></i>
                         </div>
                     </div>
@@ -167,9 +167,23 @@
                 <div class="form-group toggle-group">
                     <span>Add to calendar</span>
                     <label class="switch">
-                        <input type="checkbox" checked>
+                        <input type="checkbox" id="addToCalendar" checked>
                         <span class="slider round"></span>
                     </label>
+                </div>
+
+                <div class="calendar-result" id="calendarResult" hidden>
+                    <div>
+                        <h3>Meeting created</h3>
+                        <p id="calendarResultMessage">Your meeting is saved in MeetFlow. Add it to Google Calendar when you are ready.</p>
+                    </div>
+                    <div class="calendar-result-actions">
+                        <a href="#" id="googleCalendarLink" class="btn btn-calendar" target="_blank" rel="noopener">
+                            <i class="fa-regular fa-calendar-plus"></i>
+                            Add to Google Calendar
+                        </a>
+                        <a href="../Meetings/Meetings.html" class="btn btn-cancel">View Meetings</a>
+                    </div>
                 </div>
 
                 <!-- Action Buttons -->
@@ -183,8 +197,8 @@
 
     </main>
 
-      <script src="../api.js"></script>
-      <script src="CreatMeeting.js"></script>
+    <script src="../api.js"></script>
+    <script src="CreatMeeting.js"></script>
 
 </body>
 </html>

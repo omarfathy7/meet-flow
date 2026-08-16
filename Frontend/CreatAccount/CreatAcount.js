@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const GOOGLE_CLIENT_ID = '138679985970-061ega3qvghmm0sfjk91rlih1uk5fp67.apps.googleusercontent.com';
+    const GOOGLE_LOGIN_ENDPOINT = 'https://meetflow.runasp.net/api/Auth/google-login';
 
     const phoneInput = document.getElementById('phone');
     let iti = null;
@@ -33,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Verification Code
     function verifyAndRedirect(userIdentifier, token) {
         const verificationCode = prompt(`[Verification Required]\nWe sent a 6-digit verification code to ${userIdentifier}.\nPlease enter the code to proceed:`, "123456");
-        
+
         if (verificationCode !== null) {
             if (verificationCode.trim() === "") {
                 alert("Verification code cannot be empty.");
@@ -61,28 +63,122 @@ document.addEventListener('DOMContentLoaded', () => {
     //login by Google
     const googleBtn = document.getElementById('googleBtn');
     if (googleBtn) {
-        googleBtn.addEventListener('click', () => {
-            if (window.google && google.accounts && google.accounts.id) {
-                try {
-                    google.accounts.id.initialize({
-                        client_id: "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
-                        callback: handleGoogleCredentialResponse
-                    });
-                    google.accounts.id.prompt();
-                } catch (err) {
-                    console.warn("Google Client ID not configured. Triggering Demo Verification mode.", err);
-                    triggerSocialDemo('Google', 'user@gmail.com');
-                }
-            } else {
-                triggerSocialDemo('Google', 'user@gmail.com');
+        googleBtn.addEventListener('click', async () => {
+            const loaded = await ensureGoogleIdentityLoaded();
+            if (!loaded) return;
+
+            try {
+                google.accounts.id.initialize({
+                    client_id: GOOGLE_CLIENT_ID,
+                    callback: handleGoogleCredentialResponse
+                });
+                google.accounts.id.prompt();
+            } catch (err) {
+                console.error("Google sign-up initialization failed.", err);
+                alert("Unable to start Google sign-up right now.");
             }
         });
     }
 
+    function ensureGoogleIdentityLoaded() {
+        if (window.google && google.accounts && google.accounts.id) {
+            return Promise.resolve(true);
+        }
+
+        return new Promise((resolve) => {
+            const existingScript = document.querySelector('script[src="https://accounts.google.com/gsi/client"]');
+
+            const finishWhenReady = () => {
+                const startedAt = Date.now();
+                const timer = setInterval(() => {
+                    if (window.google && google.accounts && google.accounts.id) {
+                        clearInterval(timer);
+                        resolve(true);
+                    } else if (Date.now() - startedAt > 5000) {
+                        clearInterval(timer);
+                        alert("Google sign-up could not load. Check your internet connection or browser blocking settings.");
+                        resolve(false);
+                    }
+                }, 100);
+            };
+
+            if (existingScript) {
+                finishWhenReady();
+                return;
+            }
+
+            const script = document.createElement('script');
+            script.src = 'https://accounts.google.com/gsi/client';
+            script.async = true;
+            script.defer = true;
+            script.onload = finishWhenReady;
+            script.onerror = () => {
+                alert("Google sign-up could not load. Check your internet connection or browser blocking settings.");
+                resolve(false);
+            };
+            document.head.appendChild(script);
+        });
+    }
+
     // Google
-    function handleGoogleCredentialResponse(response) {
-        console.log("Encoded JWT ID token: " + response.credential);
-        verifyAndRedirect('Google Account', response.credential);
+    async function handleGoogleCredentialResponse(response) {
+        await loginWithGoogleIdToken(response.credential);
+    }
+
+    async function loginWithGoogleIdToken(idToken) {
+        if (!idToken) {
+            alert("Google did not return a valid sign-up token.");
+            return;
+        }
+
+        const googleBtnLabel = googleBtn ? googleBtn.querySelector('span') : null;
+        const originalBtnText = googleBtnLabel ? googleBtnLabel.textContent : 'Google';
+        if (googleBtn) {
+            googleBtn.disabled = true;
+            if (googleBtnLabel) googleBtnLabel.textContent = 'Signing in...';
+        }
+
+        try {
+            const apiResponse = await fetch(GOOGLE_LOGIN_ENDPOINT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ idToken })
+            });
+
+            const responseText = await apiResponse.text();
+            let result = {};
+            try {
+                result = responseText ? JSON.parse(responseText) : {};
+            } catch (err) {
+                result = { message: responseText };
+            }
+
+            if (!apiResponse.ok) {
+                alert(result.message || result.title || 'Google sign-up failed.');
+                return;
+            }
+
+            saveAuthSession(result);
+            window.location.href = '../Dashboard/Dashboard.html';
+        } catch (error) {
+            console.error('Google sign-up error:', error);
+            alert('Unable to sign up with Google right now.');
+        } finally {
+            if (googleBtn) {
+                googleBtn.disabled = false;
+                if (googleBtnLabel) googleBtnLabel.textContent = originalBtnText;
+            }
+        }
+    }
+
+    function saveAuthSession(data) {
+        if (data.accessToken) localStorage.setItem('accessToken', data.accessToken);
+        if (data.refreshToken) localStorage.setItem('refreshToken', data.refreshToken);
+        if (data.userId) localStorage.setItem('userId', data.userId);
+        localStorage.setItem('userData', JSON.stringify(data));
     }
 
     //Apple
@@ -135,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
-            
+
             // Country key
             const dialCode = iti ? `+${iti.getSelectedCountryData().dialCode}` : '';
             const phone = document.getElementById('phone').value.trim();

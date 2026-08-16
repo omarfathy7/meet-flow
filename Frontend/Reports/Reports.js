@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-
-    // 1. Sidebar Toggle Logic
     const toggleBtn = document.getElementById('toggleSidebar');
     const sidebar = document.querySelector('.sidebar');
 
@@ -11,38 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 2. Mock Statistics Data for (Today / This Month / This Year)
     const reportsData = {
-        today: {
-            label: "Today",
-            metrics: {
-                totalMeetings: { value: "3", change: "↑ 2%", positive: true },
-                tasksCompleted: { value: "12", change: "↑ 5%", positive: true },
-                ontimeCompletion: { value: "95%", change: "↑ 2%", positive: true },
-                avgDuration: { value: "30 min", change: "↓ 10%", positive: false }
-            }
-        },
-        month: {
-            label: "This Month",
-            metrics: {
-                totalMeetings: { value: "28", change: "↑ 12%", positive: true },
-                tasksCompleted: { value: "155", change: "↑ 18%", positive: true },
-                ontimeCompletion: { value: "92%", change: "↑ 8%", positive: true },
-                avgDuration: { value: "46 min", change: "↓ 5%", positive: false }
-            }
-        },
-        year: {
-            label: "This Year",
-            metrics: {
-                totalMeetings: { value: "320", change: "↑ 24%", positive: true },
-                tasksCompleted: { value: "1,840", change: "↑ 32%", positive: true },
-                ontimeCompletion: { value: "89%", change: "↑ 4%", positive: true },
-                avgDuration: { value: "42 min", change: "↓ 8%", positive: false }
-            }
-        }
+        today: createEmptyReportData('Today'),
+        month: createEmptyReportData('This Month'),
+        year: createEmptyReportData('This Year')
     };
 
-    // 3. Dropdown Selection & Interactive View Switcher
     const timeframeBtn = document.getElementById('timeframeBtn');
     const dropdownMenu = document.getElementById('dropdownMenu');
     const selectedPeriod = document.getElementById('selectedPeriod');
@@ -64,52 +36,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 item.classList.add('active');
 
                 const selectedValue = item.getAttribute('data-value');
-                selectedPeriod.textContent = item.textContent;
+                if (selectedPeriod) selectedPeriod.textContent = item.textContent;
                 dropdownMenu.classList.remove('show');
-
-                // Update UI Table based on selection
                 updateReportsUI(selectedValue);
             });
         });
     }
 
-    // Function to Update Activity Summary Table Dynamic Values
-    function updateReportsUI(periodKey) {
-        const data = reportsData[periodKey];
-        if (!data) return;
-
-        // Total Meetings
-        document.getElementById('val-total-meetings').textContent = data.metrics.totalMeetings.value;
-        const chgMeetings = document.getElementById('chg-total-meetings');
-        chgMeetings.innerHTML = `<i class="fa-solid fa-${data.metrics.totalMeetings.positive ? 'arrow-up' : 'arrow-down'}"></i> ${data.metrics.totalMeetings.change.replace(/[↑↓]\s?/, '')}`;
-
-        // Tasks Completed
-        document.getElementById('val-tasks-completed').textContent = data.metrics.tasksCompleted.value;
-        const chgTasks = document.getElementById('chg-tasks-completed');
-        chgTasks.innerHTML = `<i class="fa-solid fa-${data.metrics.tasksCompleted.positive ? 'arrow-up' : 'arrow-down'}"></i> ${data.metrics.tasksCompleted.change.replace(/[↑↓]\s?/, '')}`;
-
-        // On-time Completion
-        document.getElementById('val-ontime-completion').textContent = data.metrics.ontimeCompletion.value;
-        const chgOntime = document.getElementById('chg-ontime-completion');
-        chgOntime.innerHTML = `<i class="fa-solid fa-${data.metrics.ontimeCompletion.positive ? 'arrow-up' : 'arrow-down'}"></i> ${data.metrics.ontimeCompletion.change.replace(/[↑↓]\s?/, '')}`;
-
-        // Average Duration
-        document.getElementById('val-avg-duration').textContent = data.metrics.avgDuration.value;
-        const chgDuration = document.getElementById('chg-avg-duration');
-        chgDuration.innerHTML = `<i class="fa-solid fa-${data.metrics.avgDuration.positive ? 'arrow-up' : 'arrow-down'}"></i> ${data.metrics.avgDuration.change.replace(/[↑↓]\s?/, '')}`;
-        
-        chgDuration.className = `metric-change ${data.metrics.avgDuration.positive ? 'positive' : 'negative'}`;
-
-        fetchReportsFromBackend(periodKey);
-    }
-
-    // 4. Report View Buttons Click Event Listener
-    const reportBtns = document.querySelectorAll('.view-report-btn');
-    reportBtns.forEach(btn => {
+    document.querySelectorAll('.view-report-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
-            const reportType = btn.getAttribute('data-report');
-            alert(`Opening details for ${reportType.toUpperCase()} report (${selectedPeriod.textContent})...`);
         });
     });
 
@@ -117,34 +53,39 @@ document.addEventListener('DOMContentLoaded', () => {
     if (viewAllBtn) {
         viewAllBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            alert('Redirecting to full reports archive...');
         });
     }
 
-    // 5. Backend API Fetching Placeholder
-    const API_BASE_URL = 'https://meetflow.runasp.net';
+    updateReportsUI('today');
 
-    function getAuthHeaders() {
-        const token = localStorage.getItem('token');
+    function createEmptyReportData(label) {
         return {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            label,
+            metrics: {
+                totalMeetings: { value: '0', change: '0%' },
+                tasksCompleted: { value: '0', change: '0%' },
+                ontimeCompletion: { value: '0%', change: '0%' },
+                avgDuration: { value: '0 min', change: '0%' }
+            }
         };
     }
 
-    async function fetchReportsFromBackend(timeframe) {
-        try {
-            const response = await fetch(`${API_BASE_URL}/api/Reports?timeframe=${timeframe}`, {
-                method: 'GET',
-                headers: getAuthHeaders()
-            });
+    function updateReportsUI(periodKey) {
+        const data = reportsData[periodKey] || reportsData.today;
+        setMetric('val-total-meetings', 'chg-total-meetings', data.metrics.totalMeetings);
+        setMetric('val-tasks-completed', 'chg-tasks-completed', data.metrics.tasksCompleted);
+        setMetric('val-ontime-completion', 'chg-ontime-completion', data.metrics.ontimeCompletion);
+        setMetric('val-avg-duration', 'chg-avg-duration', data.metrics.avgDuration);
+    }
 
-            if (!response.ok) throw new Error('Failed to fetch report metrics');
+    function setMetric(valueId, changeId, metric) {
+        const valueElement = document.getElementById(valueId);
+        const changeElement = document.getElementById(changeId);
 
-            const reportResult = await response.json();
-            console.log(`Backend reports data for ${timeframe}:`, reportResult);
-        } catch (error) {
-            console.log(`Note: Using local interactive state for timeframe [${timeframe}].`);
+        if (valueElement) valueElement.textContent = metric.value;
+        if (changeElement) {
+            changeElement.className = 'metric-change';
+            changeElement.innerHTML = `<i class="fa-solid fa-minus"></i> ${metric.change}`;
         }
     }
 });

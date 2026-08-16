@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const API_BASE_URL = 'https://meetflow.runasp.net';
 
 function getAuthHeaders() {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('accessToken') || localStorage.getItem('token');
     return {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
