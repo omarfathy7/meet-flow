@@ -315,7 +315,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 10. DELETE ACCOUNT (DELETE /api/User/me)
     // ===================================================
     // Add delete account functionality if there's a suitable button
-    window.deleteAccount = async function() {
+    window.deleteAccount = async function () {
         if (!confirm("Are you sure you want to permanently delete your account? This action cannot be undone.")) return;
         if (!confirm("This will delete ALL your data. Type 'DELETE' to confirm.")) return;
 

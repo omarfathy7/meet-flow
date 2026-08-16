@@ -267,24 +267,38 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     display: flex;
     align-items: center;
     gap: 12px;
+    flex-wrap: wrap;
 }
 
-.avatar {
-    width: 38px;
-    height: 38px;
+.participant-chips {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.participant-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 999px;
+    background: #EFF6FF;
+    color: #1E3A8A;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.participant-chip button {
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
-}
-
-.avatar-1 {
-    background-color: #BFDBFE;
-}
-
-.avatar-2 {
-    background-color: #DDD6FE;
-}
-
-.avatar-3 {
-    background-color: #C7D2FE;
+    background: #DBEAFE;
+    color: #1D4ED8;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
 }
 
 .add-participant-btn {
@@ -304,6 +318,34 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 .add-participant-btn:hover {
     border-color: #3461FF;
     color: #3461FF;
+}
+
+.participant-entry {
+    display: flex;
+    gap: 8px;
+}
+
+.participant-entry[hidden] {
+    display: none;
+}
+
+.participant-entry input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #334155;
+    outline: none;
+}
+
+.participant-entry button {
+    padding: 0 18px;
+    border-radius: 10px;
+    background: #3461FF;
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 700;
 }
 
 /* Attachments Placeholder */

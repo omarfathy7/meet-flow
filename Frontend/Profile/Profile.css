@@ -553,11 +553,11 @@ body.sidebar-closed .toggle-btn i {
     transition: .3s;
 }
 
-input:checked + .slider {
+input:checked+.slider {
     background-color: #3461FF;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
     transform: translateX(20px);
 }
 

@@ -108,7 +108,7 @@ body {
     white-space: nowrap;
 
     transition: opacity 0.3s ease,
-                width 0.3s ease;
+        width 0.3s ease;
 }
 
 
@@ -213,7 +213,7 @@ body {
 
 .sidebar nav ul li span {
     transition: opacity 0.3s ease,
-                width 0.3s ease;
+        width 0.3s ease;
 }
 
 
@@ -924,4 +924,27 @@ body.sidebar-closed .main-content {
     .btn-submit {
         width: 100%;
     }
+}
+
+.form-help {
+    color: #94A3B8;
+    font-size: 12px;
+}
+
+.inline-action-btn {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: #EFF6FF;
+    color: #3461FF;
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 8px;
+}
+
+.inline-action-btn:hover {
+    background: #DBEAFE;
 }

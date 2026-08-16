@@ -327,7 +327,9 @@ body.sidebar-closed .main-content {
     gap: 6px;
 }
 
-.sub-text.positive { color: #16A34A; }
+.sub-text.positive {
+    color: #16A34A;
+}
 
 /* Status Dots */
 .status-dot {
@@ -337,9 +339,17 @@ body.sidebar-closed .main-content {
     display: inline-block;
 }
 
-.status-dot.online { background-color: #22C55E; }
-.status-dot.away { background-color: #F59E0B; }
-.status-dot.offline { background-color: #94A3B8; }
+.status-dot.online {
+    background-color: #22C55E;
+}
+
+.status-dot.away {
+    background-color: #F59E0B;
+}
+
+.status-dot.offline {
+    background-color: #94A3B8;
+}
 
 /* ===================================================
                 TEAM CARD & TOOLBAR
@@ -763,4 +773,12 @@ body.sidebar-closed .main-content {
     .departments-grid {
         grid-template-columns: 1fr;
     }
+}
+
+.empty-team-state {
+    grid-column: 1 / -1;
+    color: #94A3B8;
+    font-size: 14px;
+    text-align: center;
+    padding: 34px 12px;
 }

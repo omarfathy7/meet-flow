@@ -1,189 +1,140 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const toggleBtn = document.getElementById('toggleSidebar');
-    const sidebar = document.querySelector('.sidebar');
+document.addEventListener("DOMContentLoaded", async () => {
+    if (!requireAuth()) return;
+
+    const toggleBtn = document.getElementById("toggleSidebar");
+    const sidebar = document.querySelector(".sidebar");
 
     if (toggleBtn && sidebar) {
-        toggleBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('close');
-            document.body.classList.toggle('sidebar-closed');
+        toggleBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("close");
+            document.body.classList.toggle("sidebar-closed");
         });
     }
 
-    const timeframeBtn = document.getElementById('timeframeBtn');
-    const dropdownMenu = document.getElementById('dropdownMenu');
-    const selectedPeriod = document.getElementById('selectedPeriod');
-    const dropdownItems = document.querySelectorAll('.dropdown-item');
+    setupTimeframeDropdown();
 
-    if (timeframeBtn && dropdownMenu) {
-        timeframeBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            dropdownMenu.classList.toggle('show');
-        });
+    const meetingsChart = createMeetingsChart();
+    const tasksStatusChart = createTasksStatusChart();
 
-        document.addEventListener('click', () => {
-            dropdownMenu.classList.remove('show');
-        });
+    await Promise.all([
+        loadDashboardSummary(),
+        loadTasksAnalytics(tasksStatusChart)
+    ]);
 
-        dropdownItems.forEach(item => {
-            item.addEventListener('click', () => {
-                dropdownItems.forEach(i => i.classList.remove('active'));
-                item.classList.add('active');
-                selectedPeriod.textContent = item.textContent;
-                dropdownMenu.classList.remove('show');
-                
-                fetchAnalyticsData(item.getAttribute('data-value'));
-            });
-        });
-    }
-
-    const meetingsCtx = document.getElementById('meetingsChart')?.getContext('2d');
-    const tasksCtx = document.getElementById('tasksStatusChart')?.getContext('2d');
-
-    let meetingsChart, tasksStatusChart;
-
-    if (meetingsCtx) {
-        meetingsChart = new Chart(meetingsCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                datasets: [{
-                    data: [12, 18, 17, 17, 15, 5, 4],
-                    backgroundColor: '#3461FF',
-                    borderRadius: 6,
-                    barThickness: 32
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    x: { grid: { display: false }, ticks: { font: { size: 11, weight: '600' } } },
-                    y: { display: false }
-                }
-            }
-        });
-    }
-
-    if (tasksCtx) {
-        tasksStatusChart = new Chart(tasksCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Completed', 'In Progress', 'To Do', 'Blocked'],
-                datasets: [{
-                    data: [16, 6, 4, 2],
-                    backgroundColor: ['#16A34A', '#EAB308', '#DC2626', '#A855F7'],
-                    borderWidth: 0,
-                    cutout: '78%'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } }
-            }
-        });
-    }
-
-    function fetchAnalyticsData(period) {
-        console.log(`Fetching analytics for period: ${period}`);
-    }
+    if (meetingsChart) meetingsChart.update();
 });
 
+function setupTimeframeDropdown() {
+    const timeframeBtn = document.getElementById("timeframeBtn");
+    const dropdownMenu = document.getElementById("dropdownMenu");
+    const selectedPeriod = document.getElementById("selectedPeriod");
+    const dropdownItems = document.querySelectorAll(".dropdown-item");
 
+    if (!timeframeBtn || !dropdownMenu) return;
 
+    timeframeBtn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        dropdownMenu.classList.toggle("show");
+    });
 
+    document.addEventListener("click", () => dropdownMenu.classList.remove("show"));
 
+    dropdownItems.forEach(item => {
+        item.addEventListener("click", () => {
+            dropdownItems.forEach(i => i.classList.remove("active"));
+            item.classList.add("active");
+            if (selectedPeriod) selectedPeriod.textContent = item.textContent;
+            dropdownMenu.classList.remove("show");
+        });
+    });
+}
 
+function createMeetingsChart() {
+    const ctx = document.getElementById("meetingsChart")?.getContext("2d");
+    if (!ctx) return null;
 
+    return new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+            datasets: [{
+                data: [0, 0, 0, 0, 0, 0, 0],
+                backgroundColor: "#3461FF",
+                borderRadius: 6,
+                barThickness: 32
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { grid: { display: false }, ticks: { font: { size: 11, weight: "600" } } },
+                y: { display: false, beginAtZero: true }
+            }
+        }
+    });
+}
 
+function createTasksStatusChart() {
+    const ctx = document.getElementById("tasksStatusChart")?.getContext("2d");
+    if (!ctx) return null;
 
-
-const API_BASE_URL = 'https://meetflow.runasp.net';
-
-function getAuthHeaders() {
-    const token = localStorage.getItem('accessToken') || localStorage.getItem('token');
-    return {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-    };
+    return new Chart(ctx, {
+        type: "doughnut",
+        data: {
+            labels: ["Completed", "In Progress", "To Do", "Blocked"],
+            datasets: [{
+                data: [0, 0, 0, 0],
+                backgroundColor: ["#16A34A", "#EAB308", "#DC2626", "#A855F7"],
+                borderWidth: 0,
+                cutout: "78%"
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } }
+        }
+    });
 }
 
 async function loadDashboardSummary() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/api/Dashboard/summary`, {
-            method: 'GET',
-            headers: getAuthHeaders()
-        });
+    const data = await fetchAPI("/api/Dashboard/summary");
+    document.getElementById("totalMeetings").textContent = data?.todaysMeetingsCount ?? 0;
+    document.getElementById("tasksCompleted").textContent = 0;
+    document.getElementById("timeSaved").textContent = "0h";
+    document.getElementById("participation").textContent = `${Math.round(data?.completionProgressPercent ?? 0)}%`;
+}
 
-        if (!response.ok) throw new Error('فشل في جلب بيانات الإحصائيات');
+async function loadTasksAnalytics(tasksStatusChart) {
+    const tasks = await fetchAPI("/api/tasks/my");
+    const list = Array.isArray(tasks) ? tasks : [];
+    const counts = { completed: 0, inProgress: 0, todo: 0, blocked: 0 };
 
-        const data = await response.json();
+    list.forEach(task => {
+        const status = String(task.status || "").toLowerCase();
+        if (status === "completed" || status === "done") counts.completed++;
+        else if (status === "inprogress" || status === "in progress") counts.inProgress++;
+        else if (status === "blocked") counts.blocked++;
+        else counts.todo++;
+    });
 
-        if (document.getElementById('totalMeetings')) {
-            document.getElementById('totalMeetings').textContent = data.todaysMeetingsCount || 0;
-        }
-        if (document.getElementById('tasksCompleted')) {
-            document.getElementById('tasksCompleted').textContent = data.tasksPendingCount || 0;
-        }
-        if (document.getElementById('participation')) {
-            document.getElementById('participation').textContent = `${data.completionProgressPercent || 0}%`;
-        }
+    const total = counts.completed + counts.inProgress + counts.todo + counts.blocked;
+    document.getElementById("tasksCompleted").textContent = counts.completed;
+    document.getElementById("totalTasksCount").textContent = total;
+    document.getElementById("completedCount").textContent = formatCountPercent(counts.completed, total);
+    document.getElementById("inProgressCount").textContent = formatCountPercent(counts.inProgress, total);
+    document.getElementById("toDoCount").textContent = formatCountPercent(counts.todo, total);
+    document.getElementById("blockedCount").textContent = formatCountPercent(counts.blocked, total);
 
-    } catch (error) {
-        console.error('Error fetching dashboard summary:', error);
+    if (tasksStatusChart) {
+        tasksStatusChart.data.datasets[0].data = [counts.completed, counts.inProgress, counts.todo, counts.blocked];
+        tasksStatusChart.update();
     }
 }
 
-async function loadTasksAnalytics() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/api/tasks/my`, {
-            method: 'GET',
-            headers: getAuthHeaders()
-        });
-
-        if (!response.ok) throw new Error('فشل في جلب المهام');
-
-        const tasks = await response.json();
-
-        const statusCounts = {
-            completed: 0,
-            inProgress: 0,
-            pending: 0
-        };
-
-        tasks.forEach(task => {
-            const status = (task.status || '').toLowerCase();
-            if (status === 'completed' || status === 'done') {
-                statusCounts.completed++;
-            } else if (status === 'inprogress' || status === 'in progress') {
-                statusCounts.inProgress++;
-            } else {
-                statusCounts.pending++;
-            }
-        });
-
-        if (typeof tasksChart !== 'undefined' && tasksChart) {
-            tasksChart.data.datasets[0].data = [
-                statusCounts.completed,
-                statusCounts.inProgress,
-                statusCounts.pending
-            ];
-            tasksChart.update();
-        }
-
-    } catch (error) {
-        console.error('Error fetching tasks analytics:', error);
-    }
+function formatCountPercent(value, total) {
+    const percent = total ? Math.round((value / total) * 100) : 0;
+    return `${value} (${percent}%)`;
 }
-
-function fetchAnalyticsData(period) {
-    console.log(`جاري تحديث البيانات للفترة: ${period}`);
-    loadDashboardSummary();
-    loadTasksAnalytics();
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    loadDashboardSummary();
-    loadTasksAnalytics();
-});

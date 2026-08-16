@@ -96,7 +96,8 @@ body {
     border-radius: 12px;
     color: #475569;
     font-size: 15px;
-    font-weight: 600; /* تم توحيد سمك الخط ليكون مطابقاً لباقي الصفحات */
+    font-weight: 600;
+    /* تم توحيد سمك الخط ليكون مطابقاً لباقي الصفحات */
     text-decoration: none;
     transition: .3s;
     white-space: nowrap;
@@ -250,11 +251,10 @@ body.sidebar-closed .main-content {
     font-size: 14px;
     font-weight: 600;
     color: #334155;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    min-width: 128px;
     cursor: pointer;
     transition: 0.2s ease;
+    outline: none;
 }
 
 .view-selector:hover {
@@ -291,6 +291,21 @@ body.sidebar-closed .main-content {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-auto-rows: minmax(85px, auto);
+}
+
+.calendar-card.day-view .weekdays-grid,
+.calendar-card.year-view .weekdays-grid {
+    display: none;
+}
+
+.calendar-card.day-view .days-grid,
+.calendar-card.year-view .days-grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+}
+
+.calendar-card.year-view .days-grid {
+    grid-template-columns: repeat(4, 1fr);
 }
 
 .day-cell {
@@ -335,6 +350,103 @@ body.sidebar-closed .main-content {
     font-weight: 600;
 }
 
+.day-cell.today:not(.active) .day-number {
+    border: 1px solid #3461FF;
+    color: #3461FF;
+}
+
+.event-dot {
+    margin-top: 8px;
+    min-width: 22px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: #EFF6FF;
+    color: #3461FF;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.month-cell {
+    min-height: 92px;
+    justify-content: space-between;
+}
+
+.month-name {
+    font-weight: 700;
+    color: #0F172A;
+}
+
+.day-detail-cell {
+    padding: 28px;
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+.day-detail-number {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: #3461FF;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.day-detail-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 18px;
+}
+
+.day-detail-meta strong {
+    color: #0F172A;
+    font-size: 18px;
+}
+
+.day-detail-meta span {
+    color: #64748B;
+    font-size: 14px;
+}
+
+.day-detail-events {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.day-detail-event {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+}
+
+.day-detail-event span {
+    width: 86px;
+    color: #64748B;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.day-detail-event strong {
+    color: #0F172A;
+    font-size: 14px;
+}
+
 /* ===================================================
               TODAY'S SCHEDULE CARD
 =================================================== */
@@ -370,6 +482,13 @@ body.sidebar-closed .main-content {
     display: flex;
     flex-direction: column;
     gap: 16px;
+}
+
+.empty-calendar {
+    color: #94A3B8;
+    font-size: 14px;
+    text-align: center;
+    padding: 18px 12px;
 }
 
 .event-item {
@@ -457,6 +576,19 @@ body.sidebar-closed .main-content {
     .day-cell {
         padding: 4px;
         font-size: 12px;
+    }
+
+    .calendar-card.year-view .days-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .day-detail-cell {
+        grid-template-columns: 1fr;
+        padding: 18px;
+    }
+
+    .day-detail-events {
+        grid-column: 1;
     }
 
     .day-number {

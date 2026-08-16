@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok) {
                 const userData = await response.json();
-                
+
                 // Filling form elements based on API fields
                 const fullNameInput = document.getElementById('fullName') || document.getElementById('userName');
                 const emailInput = document.getElementById('userEmail');
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const otpInputContainer = document.getElementById('otpInputContainer');
     const otpCodeInput = document.getElementById('otpCode');
     const verifyCodeBtn = document.getElementById('verifyCodeBtn');
-    
+
     const securityForm = document.getElementById('securityForm');
     const currPassInput = document.getElementById('currPass');
     const newPassInput = document.getElementById('newPass');
@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             newPassword: newPassword
                         })
                     });
-                } 
+                }
                 // Option 2: Direct Change Password with Current Password (PUT /api/User/change-password)
                 else {
                     response = await fetch(`${API_BASE_URL}/api/User/change-password`, {

@@ -22,6 +22,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    const participantEmails = [];
+    initParticipants(participantEmails);
+
     // Load workspaces for selection
     loadWorkspaces();
 
@@ -42,12 +45,73 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Set default date to today
+    // Set default date to today and block past dates on this page only
     const dateInput = document.getElementById("date");
-    if (dateInput && !dateInput.value) {
-        dateInput.value = new Date().toISOString().split("T")[0];
+    if (dateInput) {
+        const today = getTodayInputValue();
+        dateInput.min = today;
+        if (!dateInput.value) dateInput.value = today;
     }
 });
+
+function initParticipants(participantEmails) {
+    const addBtn = document.querySelector(".add-participant-btn");
+    const entry = document.getElementById("participantEntry");
+    const input = document.getElementById("participantEmailInput");
+    const saveBtn = document.getElementById("saveParticipantBtn");
+    const chips = document.getElementById("participantChips");
+
+    if (!addBtn || !entry || !input || !saveBtn || !chips) return;
+
+    function renderParticipants() {
+        chips.innerHTML = participantEmails.map(email => `
+            <span class="participant-chip">
+                ${escapeHtml(email)}
+                <button type="button" data-email="${escapeHtml(email)}" aria-label="Remove participant">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </span>
+        `).join("");
+
+        chips.querySelectorAll("button[data-email]").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const email = btn.getAttribute("data-email");
+                const index = participantEmails.indexOf(email);
+                if (index >= 0) participantEmails.splice(index, 1);
+                renderParticipants();
+            });
+        });
+    }
+
+    function addParticipant() {
+        const email = input.value.trim().toLowerCase();
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            showToast("Please enter a valid participant email", "error");
+            return;
+        }
+        if (participantEmails.includes(email)) {
+            showToast("Participant already added", "error");
+            return;
+        }
+
+        participantEmails.push(email);
+        input.value = "";
+        entry.hidden = true;
+        renderParticipants();
+    }
+
+    addBtn.addEventListener("click", () => {
+        entry.hidden = !entry.hidden;
+        if (!entry.hidden) input.focus();
+    });
+    saveBtn.addEventListener("click", addParticipant);
+    input.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            addParticipant();
+        }
+    });
+}
 
 // ------------------------------------------
 // Load Workspaces for Dropdown (GET /api/Workspaces)
@@ -99,7 +163,8 @@ async function createMeeting() {
     }
 
     // Build meetingDate from date + time inputs
-    const dateVal = date ? date.value : new Date().toISOString().split("T")[0];
+    const today = getTodayInputValue();
+    const dateVal = date ? date.value : today;
     const timeVal = time ? time.value : "10:00";
     const meetingDateValue = new Date(`${dateVal}T${timeVal}:00`);
 
@@ -108,15 +173,25 @@ async function createMeeting() {
         return;
     }
 
+    if (dateVal < today) {
+        showToast("Please choose today or a future date", "error");
+        return;
+    }
+
     const meetingDate = meetingDateValue.toISOString();
 
     // Get workspace ID
-    let workspaceId = 1;
+    let workspaceId = null;
     if (workspaceSelect && workspaceSelect.value) {
         workspaceId = parseInt(workspaceSelect.value);
     } else {
-        const stored = localStorage.getItem("currentWorkspaceId");
-        if (stored) workspaceId = parseInt(stored);
+        const resolved = await getCurrentWorkspaceId();
+        if (resolved) workspaceId = parseInt(resolved);
+    }
+
+    if (!workspaceId) {
+        showToast("Please create or select a workspace first", "error");
+        return;
     }
 
     const payload = {

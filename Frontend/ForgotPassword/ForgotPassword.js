@@ -42,10 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert('A verification code has been sent to your email.');
 
                     const code = prompt(`Please enter the code sent to ${email}:`);
-                    
+
                     if (code && code.trim() !== '') {
                         const newPassword = prompt('Enter your new password:');
-                        
+
                         if (newPassword && newPassword.trim() !== '') {
                             await handleResetPassword(email, code.trim(), newPassword);
                         } else {

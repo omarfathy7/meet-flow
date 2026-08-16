@@ -22,6 +22,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    loadHeaderProfile();
+    initNotificationDropdown({ viewUrl: "../Notifications/Notifications.html" });
+
     // State
     let allMeetings = [];
     let currentTab = "upcoming";
@@ -44,7 +47,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // Load Meetings (GET /api/Meetings/workspace/{workspaceId})
     // ------------------------------------------
     async function loadMeetings() {
-        const workspaceId = localStorage.getItem("currentWorkspaceId") || 1;
+        const workspaceId = await getCurrentWorkspaceId();
+        if (!workspaceId) {
+            allMeetings = [];
+            renderMeetings();
+            return;
+        }
         const meetings = await fetchAPI(`/api/Meetings/workspace/${workspaceId}`);
 
         if (meetings && Array.isArray(meetings)) {
@@ -126,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Expose functions globally
-    window.viewMeetingDetails = async function(meetingId) {
+    window.viewMeetingDetails = async function (meetingId) {
         const meeting = await fetchAPI(`/api/Meetings/${meetingId}`);
         if (!meeting) {
             showToast("Failed to load meeting details", "error");
@@ -143,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showMeetingModal(meeting, notes || [], tasks || [], decisions || []);
     };
 
-    window.deleteMeetingById = async function(meetingId) {
+    window.deleteMeetingById = async function (meetingId) {
         if (!confirm("Are you sure you want to delete this meeting?")) return;
 
         try {
@@ -265,7 +273,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // ------------------------------------------
     // Notes CRUD
     // ------------------------------------------
-    window.addNote = async function(meetingId) {
+    window.addNote = async function (meetingId) {
         const input = document.getElementById("newNoteInput");
         const content = input ? input.value.trim() : "";
         if (!content) { showToast("Please enter a note", "error"); return; }
@@ -283,7 +291,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    window.deleteNote = async function(meetingId, noteId) {
+    window.deleteNote = async function (meetingId, noteId) {
         if (!confirm("Delete this note?")) return;
         await fetchAPI(`/api/Meetings/${meetingId}/notes/${noteId}`, { method: "DELETE" });
         showToast("Note deleted");
@@ -293,7 +301,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // ------------------------------------------
     // Decisions CRUD
     // ------------------------------------------
-    window.addDecision = async function(meetingId) {
+    window.addDecision = async function (meetingId) {
         const input = document.getElementById("newDecisionInput");
         const description = input ? input.value.trim() : "";
         if (!description) { showToast("Please enter a decision", "error"); return; }
@@ -311,7 +319,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    window.deleteDecision = async function(meetingId, decisionId) {
+    window.deleteDecision = async function (meetingId, decisionId) {
         if (!confirm("Delete this decision?")) return;
         await fetchAPI(`/api/meetings/${meetingId}/decisions/${decisionId}`, { method: "DELETE" });
         showToast("Decision deleted");
@@ -321,7 +329,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // ------------------------------------------
     // Task Status Update from Modal
     // ------------------------------------------
-    window.updateMeetingTaskStatus = async function(meetingId, taskId, isChecked) {
+    window.updateMeetingTaskStatus = async function (meetingId, taskId, isChecked) {
         const newStatus = isChecked ? "Completed" : "Pending";
         await fetchAPI(`/api/meetings/${meetingId}/tasks/${taskId}/status`, {
             method: "PUT",

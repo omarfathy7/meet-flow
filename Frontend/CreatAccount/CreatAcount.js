@@ -1,304 +1,281 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const GOOGLE_CLIENT_ID = '138679985970-061ega3qvghmm0sfjk91rlih1uk5fp67.apps.googleusercontent.com';
-    const GOOGLE_LOGIN_ENDPOINT = 'https://meetflow.runasp.net/api/Auth/google-login';
+// ==========================================
+// MEETFLOW CREATE MEETING — BACKEND INTEGRATION
+// ==========================================
+// Depends on: ../api.js (loaded first)
 
-    const phoneInput = document.getElementById('phone');
-    let iti = null;
-    if (phoneInput && window.intlTelInput) {
-        iti = window.intlTelInput(phoneInput, {
-            initialCountry: "eg",
-            separateDialCode: true,
-            preferredCountries: ["eg", "sa", "ae", "us", "kw"],
-            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"
-        });
-    }
+document.addEventListener("DOMContentLoaded", () => {
+    if (!requireAuth()) return;
 
-    //Password
-    const toggleIcons = document.querySelectorAll('.toggle-password');
-    toggleIcons.forEach(icon => {
-        icon.addEventListener('click', () => {
-            const targetId = icon.getAttribute('data-target');
-            const targetInput = document.getElementById(targetId);
+    // Sidebar Toggle
+    const menuToggle = document.getElementById("menuToggle");
+    const sidebar = document.getElementById("sidebar");
+    const mainContent = document.querySelector(".main-content");
 
-            if (targetInput.type === 'password') {
-                targetInput.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
+    if (menuToggle && sidebar) {
+        menuToggle.addEventListener("click", () => {
+            if (window.innerWidth <= 768) {
+                sidebar.classList.toggle("open");
             } else {
-                targetInput.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
+                sidebar.classList.toggle("close");
+                if (mainContent) mainContent.classList.toggle("expand");
             }
         });
-    });
+    }
 
-    // Verification Code
-    function verifyAndRedirect(userIdentifier, token) {
-        const verificationCode = prompt(`[Verification Required]\nWe sent a 6-digit verification code to ${userIdentifier}.\nPlease enter the code to proceed:`, "123456");
+    const participantEmails = [];
+    initParticipants(participantEmails);
 
-        if (verificationCode !== null) {
-            if (verificationCode.trim() === "") {
-                alert("Verification code cannot be empty.");
-                return false;
-            }
+    // Load workspaces for selection
+    loadWorkspaces();
 
-            // حفظ بيانات التوكن والـ User ID القادمة من الباك إند
-            if (token && typeof token === 'object') {
-                if (token.accessToken) localStorage.setItem('accessToken', token.accessToken);
-                if (token.refreshToken) localStorage.setItem('refreshToken', token.refreshToken);
-                if (token.userId) localStorage.setItem('userId', token.userId);
-                localStorage.setItem('userData', JSON.stringify(token));
-            } else if (token) {
-                localStorage.setItem('accessToken', token);
-            }
+    // Form submission
+    const form = document.getElementById("createMeetingForm");
+    const cancelBtn = document.querySelector(".btn-cancel");
 
-            localStorage.setItem('isVerified', 'true');
-            alert("Account verified successfully! Redirecting to Dashboard...");
-            window.location.href = '../Dashboard/Dashboard.html';
-            return true;
+    if (cancelBtn) {
+        cancelBtn.addEventListener("click", () => {
+            window.location.href = "../Meetings/Meetings.html";
+        });
+    }
+
+    if (form) {
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            await createMeeting();
+        });
+    }
+
+    // Set default date to today and block past dates on this page only
+    const dateInput = document.getElementById("date");
+    if (dateInput) {
+        const today = getTodayInputValue();
+        dateInput.min = today;
+        if (!dateInput.value) dateInput.value = today;
+    }
+});
+
+function initParticipants(participantEmails) {
+    const addBtn = document.querySelector(".add-participant-btn");
+    const entry = document.getElementById("participantEntry");
+    const input = document.getElementById("participantEmailInput");
+    const saveBtn = document.getElementById("saveParticipantBtn");
+    const chips = document.getElementById("participantChips");
+
+    if (!addBtn || !entry || !input || !saveBtn || !chips) return;
+
+    function renderParticipants() {
+        chips.innerHTML = participantEmails.map(email => `
+            <span class="participant-chip">
+                ${escapeHtml(email)}
+                <button type="button" data-email="${escapeHtml(email)}" aria-label="Remove participant">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </span>
+        `).join("");
+
+        chips.querySelectorAll("button[data-email]").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const email = btn.getAttribute("data-email");
+                const index = participantEmails.indexOf(email);
+                if (index >= 0) participantEmails.splice(index, 1);
+                renderParticipants();
+            });
+        });
+    }
+
+    function addParticipant() {
+        const email = input.value.trim().toLowerCase();
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            showToast("Please enter a valid participant email", "error");
+            return;
         }
-        return false;
-    }
-
-    //login by Google
-    const googleBtn = document.getElementById('googleBtn');
-    if (googleBtn) {
-        googleBtn.addEventListener('click', async () => {
-            const loaded = await ensureGoogleIdentityLoaded();
-            if (!loaded) return;
-
-            try {
-                google.accounts.id.initialize({
-                    client_id: GOOGLE_CLIENT_ID,
-                    callback: handleGoogleCredentialResponse
-                });
-                google.accounts.id.prompt();
-            } catch (err) {
-                console.error("Google sign-up initialization failed.", err);
-                alert("Unable to start Google sign-up right now.");
-            }
-        });
-    }
-
-    function ensureGoogleIdentityLoaded() {
-        if (window.google && google.accounts && google.accounts.id) {
-            return Promise.resolve(true);
-        }
-
-        return new Promise((resolve) => {
-            const existingScript = document.querySelector('script[src="https://accounts.google.com/gsi/client"]');
-
-            const finishWhenReady = () => {
-                const startedAt = Date.now();
-                const timer = setInterval(() => {
-                    if (window.google && google.accounts && google.accounts.id) {
-                        clearInterval(timer);
-                        resolve(true);
-                    } else if (Date.now() - startedAt > 5000) {
-                        clearInterval(timer);
-                        alert("Google sign-up could not load. Check your internet connection or browser blocking settings.");
-                        resolve(false);
-                    }
-                }, 100);
-            };
-
-            if (existingScript) {
-                finishWhenReady();
-                return;
-            }
-
-            const script = document.createElement('script');
-            script.src = 'https://accounts.google.com/gsi/client';
-            script.async = true;
-            script.defer = true;
-            script.onload = finishWhenReady;
-            script.onerror = () => {
-                alert("Google sign-up could not load. Check your internet connection or browser blocking settings.");
-                resolve(false);
-            };
-            document.head.appendChild(script);
-        });
-    }
-
-    // Google
-    async function handleGoogleCredentialResponse(response) {
-        await loginWithGoogleIdToken(response.credential);
-    }
-
-    async function loginWithGoogleIdToken(idToken) {
-        if (!idToken) {
-            alert("Google did not return a valid sign-up token.");
+        if (participantEmails.includes(email)) {
+            showToast("Participant already added", "error");
             return;
         }
 
-        const googleBtnLabel = googleBtn ? googleBtn.querySelector('span') : null;
-        const originalBtnText = googleBtnLabel ? googleBtnLabel.textContent : 'Google';
-        if (googleBtn) {
-            googleBtn.disabled = true;
-            if (googleBtnLabel) googleBtnLabel.textContent = 'Signing in...';
+        participantEmails.push(email);
+        input.value = "";
+        entry.hidden = true;
+        renderParticipants();
+    }
+
+    addBtn.addEventListener("click", () => {
+        entry.hidden = !entry.hidden;
+        if (!entry.hidden) input.focus();
+    });
+    saveBtn.addEventListener("click", addParticipant);
+    input.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            addParticipant();
+        }
+    });
+}
+
+// ------------------------------------------
+// Load Workspaces for Dropdown (GET /api/Workspaces)
+// ------------------------------------------
+async function loadWorkspaces() {
+    const workspaces = await fetchAPI("/api/Workspaces");
+
+    const select = document.getElementById("workspaceSelect");
+    if (!select) return;
+
+    // Clear existing options
+    select.innerHTML = '<option value="" disabled selected>Select workspace</option>';
+
+    if (workspaces && Array.isArray(workspaces)) {
+        workspaces.forEach(ws => {
+            const option = document.createElement("option");
+            option.value = ws.id;
+            option.textContent = ws.name || `Workspace ${ws.id}`;
+            select.appendChild(option);
+        });
+
+        // Auto-select if there's a stored workspace ID
+        const currentWsId = localStorage.getItem("currentWorkspaceId");
+        if (currentWsId) {
+            select.value = currentWsId;
         }
 
-        try {
-            const apiResponse = await fetch(GOOGLE_LOGIN_ENDPOINT, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({ idToken })
+        // Auto-select if only one workspace exists
+        if (workspaces.length === 1) {
+            select.value = workspaces[0].id;
+        }
+    }
+}
+
+// ------------------------------------------
+// Create Meeting (POST /api/Meetings)
+// ------------------------------------------
+async function createMeeting() {
+    const title = document.getElementById("title");
+    const date = document.getElementById("date");
+    const time = document.getElementById("time");
+    const agenda = document.getElementById("agenda");
+    const workspaceSelect = document.getElementById("workspaceSelect");
+    const addToCalendar = document.getElementById("addToCalendar");
+
+    if (!title || !title.value.trim()) {
+        showToast("Please enter a meeting title", "error");
+        return;
+    }
+
+    // Build meetingDate from date + time inputs
+    const today = getTodayInputValue();
+    const dateVal = date ? date.value : today;
+    const timeVal = time ? time.value : "10:00";
+    const meetingDateValue = new Date(`${dateVal}T${timeVal}:00`);
+
+    if (Number.isNaN(meetingDateValue.getTime())) {
+        showToast("Please choose a valid meeting date and time", "error");
+        return;
+    }
+
+    if (dateVal < today) {
+        showToast("Please choose today or a future date", "error");
+        return;
+    }
+
+    const meetingDate = meetingDateValue.toISOString();
+
+    // Get workspace ID
+    let workspaceId = null;
+    if (workspaceSelect && workspaceSelect.value) {
+        workspaceId = parseInt(workspaceSelect.value);
+    } else {
+        const resolved = await getCurrentWorkspaceId();
+        if (resolved) workspaceId = parseInt(resolved);
+    }
+
+    if (!workspaceId) {
+        showToast("Please create or select a workspace first", "error");
+        return;
+    }
+
+    const payload = {
+        workspaceId: workspaceId,
+        title: title.value.trim(),
+        description: agenda ? agenda.value.trim() : "",
+        meetingDate: meetingDate
+    };
+
+    // Disable submit button
+    const submitBtn = document.querySelector(".btn-create");
+    const originalText = submitBtn ? submitBtn.textContent : "Create Meeting";
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Creating...";
+    }
+
+    try {
+        const result = await fetchAPI("/api/Meetings", {
+            method: "POST",
+            body: JSON.stringify(payload)
+        });
+
+        if (result) {
+            showToast("Meeting created successfully!");
+            // Store workspace ID for future use
+            localStorage.setItem("currentWorkspaceId", workspaceId);
+            showCalendarResult({
+                title: payload.title,
+                description: payload.description,
+                startDate: meetingDateValue,
+                enabled: !addToCalendar || addToCalendar.checked
             });
+        } else {
+            showToast("Failed to create meeting", "error");
+        }
+    } catch (error) {
+        showToast("Error creating meeting", "error");
+    } finally {
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+        }
+    }
+}
 
-            const responseText = await apiResponse.text();
-            let result = {};
-            try {
-                result = responseText ? JSON.parse(responseText) : {};
-            } catch (err) {
-                result = { message: responseText };
-            }
+function showCalendarResult({ title, description, startDate, enabled }) {
+    const resultPanel = document.getElementById("calendarResult");
+    const calendarLink = document.getElementById("googleCalendarLink");
+    const resultMessage = document.getElementById("calendarResultMessage");
+    const formActions = document.querySelector(".form-actions");
 
-            if (!apiResponse.ok) {
-                alert(result.message || result.title || 'Google sign-up failed.');
-                return;
-            }
+    if (!resultPanel) return;
 
-            saveAuthSession(result);
-            window.location.href = '../Dashboard/Dashboard.html';
-        } catch (error) {
-            console.error('Google sign-up error:', error);
-            alert('Unable to sign up with Google right now.');
-        } finally {
-            if (googleBtn) {
-                googleBtn.disabled = false;
-                if (googleBtnLabel) googleBtnLabel.textContent = originalBtnText;
-            }
+    if (enabled && calendarLink) {
+        calendarLink.href = buildGoogleCalendarUrl(title, description, startDate);
+        calendarLink.hidden = false;
+        if (resultMessage) {
+            resultMessage.textContent = "Your meeting is saved in MeetFlow. Add it to Google Calendar when you are ready.";
+        }
+    } else if (calendarLink) {
+        calendarLink.hidden = true;
+        if (resultMessage) {
+            resultMessage.textContent = "Your meeting is saved in MeetFlow.";
         }
     }
 
-    function saveAuthSession(data) {
-        if (data.accessToken) localStorage.setItem('accessToken', data.accessToken);
-        if (data.refreshToken) localStorage.setItem('refreshToken', data.refreshToken);
-        if (data.userId) localStorage.setItem('userId', data.userId);
-        localStorage.setItem('userData', JSON.stringify(data));
-    }
+    resultPanel.hidden = false;
+    if (formActions) formActions.hidden = true;
+    resultPanel.scrollIntoView({ behavior: "smooth", block: "center" });
+}
 
-    //Apple
-    const appleBtn = document.getElementById('appleBtn');
-    if (appleBtn) {
-        appleBtn.addEventListener('click', async () => {
-            if (window.AppleID && AppleID.auth) {
-                try {
-                    AppleID.auth.init({
-                        clientId: 'com.meetflow.web',
-                        scope: 'name email',
-                        redirectURI: window.location.origin,
-                        state: 'origin:web',
-                        usePopup: true
-                    });
-                    const data = await AppleID.auth.signIn();
-                    console.log("Apple auth response:", data);
-                    if (data && data.authorization) {
-                        verifyAndRedirect('Apple ID', data.authorization.id_token);
-                    }
-                } catch (error) {
-                    console.warn("Apple Sign-In failed or popup closed. Triggering Demo Verification mode.", error);
-                    triggerSocialDemo('Apple', 'user@icloud.com');
-                }
-            } else {
-                triggerSocialDemo('Apple', 'user@icloud.com');
-            }
-        });
-    }
+function buildGoogleCalendarUrl(title, description, startDate) {
+    const endDate = new Date(startDate.getTime() + 60 * 60 * 1000);
+    const params = new URLSearchParams({
+        action: "TEMPLATE",
+        text: title,
+        dates: `${formatGoogleCalendarDate(startDate)}/${formatGoogleCalendarDate(endDate)}`,
+        details: description || "Created from MeetFlow"
+    });
 
-    // Google / Apple
-    function triggerSocialDemo(providerName, defaultEmail) {
-        const userEmail = prompt(`[${providerName} Authentication]\nPlease enter your ${providerName} account email:`, defaultEmail);
-        if (userEmail !== null && userEmail.trim() !== "") {
-            const mockToken = `mock_${providerName.toLowerCase()}_token_` + Math.random().toString(36).substring(2);
-            verifyAndRedirect(userEmail.trim(), mockToken);
-        }
-    }
+    return `https://calendar.google.com/calendar/render?${params.toString()}`;
+}
 
-    // Register Form Submit
-    const registerForm = document.getElementById('registerForm');
-    const submitBtn = registerForm ? registerForm.querySelector('button[type="submit"]') : null;
-
-    if (registerForm) {
-        registerForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const firstName = document.getElementById('firstName').value.trim();
-            const lastName = document.getElementById('lastName').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-
-            // Country key
-            const dialCode = iti ? `+${iti.getSelectedCountryData().dialCode}` : '';
-            const phone = document.getElementById('phone').value.trim();
-            const termsAccepted = document.getElementById('terms').checked;
-
-            // Validation
-            if (password !== confirmPassword) {
-                alert('Password and Confirm Password do not match.');
-                return;
-            }
-
-            if (password.length < 6) {
-                alert('Password must be at least 6 characters long.');
-                return;
-            }
-
-            if (!termsAccepted) {
-                alert('You must agree to the Terms of Service and Privacy Policy.');
-                return;
-            }
-
-            const payload = {
-                fullName: `${firstName} ${lastName}`.trim(),
-                email: email,
-                phoneNumber: `${dialCode}${phone}`,
-                password: password
-            };
-
-            const originalBtnText = submitBtn ? submitBtn.innerText : 'Create Account';
-            if (submitBtn) {
-                submitBtn.disabled = true;
-                submitBtn.innerText = 'Creating Account...';
-            }
-
-            try {
-                const response = await fetch('https://meetflow.runasp.net/api/Auth/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(payload)
-                });
-
-                const responseText = await response.text();
-                let result = {};
-                try {
-                    result = JSON.parse(responseText);
-                } catch (err) {
-                    result = { message: responseText };
-                }
-
-                if (response.ok) {
-                    alert('Account created successfully!');
-                    verifyAndRedirect(email, result);
-                } else {
-                    alert(result.message || result.title || 'Registration failed. Please check your data.');
-                }
-            } catch (error) {
-                console.error('Error during registration:', error);
-                alert('Network error. Unable to connect to the server.');
-            } finally {
-                if (submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = originalBtnText;
-                }
-            }
-        });
-    }
-});
+function formatGoogleCalendarDate(date) {
+    return date.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
+}

@@ -89,11 +89,11 @@ document.addEventListener('DOMContentLoaded', () => {
           saveAuthSession(data);
           window.location.href = '../Dashboard/Dashboard.html';
         } else {
-          showError(passwordInput, data.message || data.title || 'Invalid email or password.');
+          showError(passwordInput, formatApiError(data, 'Invalid email or password.'));
         }
       } catch (error) {
         console.error('Login error:', error);
-        alert('Unable to connect to the server. Please check your internet connection.');
+        alert(getNetworkErrorMessage());
       } finally {
         if (submitBtn) {
           submitBtn.textContent = originalBtnText;
@@ -250,5 +250,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function validateEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).toLowerCase());
+  }
+
+  function formatApiError(result, fallback) {
+    if (result?.errors && typeof result.errors === 'object') {
+      return Object.entries(result.errors)
+        .map(([field, messages]) => `${field}: ${Array.isArray(messages) ? messages.join(', ') : messages}`)
+        .join('\n');
+    }
+
+    return result?.message || result?.title || fallback;
+  }
+
+  function getNetworkErrorMessage() {
+    if (navigator && navigator.onLine === false) {
+      return 'Network error. Your browser appears to be offline.';
+    }
+
+    return 'Network error. The browser could not reach the backend. Check that https://meetflow.runasp.net is reachable and that your browser is not blocking the request.';
   }
 });

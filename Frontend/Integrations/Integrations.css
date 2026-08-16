@@ -311,12 +311,35 @@ body.sidebar-closed .toggle-btn i {
 }
 
 /* Icon Colors */
-.slack-icon { color: #E01E5A; background: #FDF2F8; }
-.gcal-icon { color: #4285F4; background: #EFF6FF; }
-.zoom-icon { color: #2D8CFF; background: #EFF6FF; }
-.notion-icon { color: #000000; background: #F1F5F9; }
-.trello-icon { color: #0052CC; background: #EFF6FF; }
-.teams-icon { color: #6264A7; background: #F5F3FF; }
+.slack-icon {
+    color: #E01E5A;
+    background: #FDF2F8;
+}
+
+.gcal-icon {
+    color: #4285F4;
+    background: #EFF6FF;
+}
+
+.zoom-icon {
+    color: #2D8CFF;
+    background: #EFF6FF;
+}
+
+.notion-icon {
+    color: #000000;
+    background: #F1F5F9;
+}
+
+.trello-icon {
+    color: #0052CC;
+    background: #EFF6FF;
+}
+
+.teams-icon {
+    color: #6264A7;
+    background: #F5F3FF;
+}
 
 /* Dynamic Status Badges and Connect Buttons */
 .status-badge.connected {

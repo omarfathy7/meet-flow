@@ -303,8 +303,15 @@ body.sidebar-closed .main-content {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-8px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .dropdown-menu.show {
@@ -319,6 +326,7 @@ body.sidebar-closed .main-content {
     cursor: pointer;
     transition: all 0.2s ease;
 }
+
 .dropdown-item:hover {
     background: #3461FF;
     color: #FFFFFF;
@@ -374,7 +382,9 @@ body.sidebar-closed .main-content {
     gap: 4px;
 }
 
-.sub-text.positive { color: #16A34A; }
+.sub-text.positive {
+    color: #16A34A;
+}
 
 /* ===================================================
                     CHARTS GRID SECTION
@@ -482,10 +492,21 @@ body.sidebar-closed .main-content {
     border-radius: 50%;
 }
 
-.dot.completed { background: #16A34A; }
-.dot.in-progress { background: #EAB308; }
-.dot.todo { background: #DC2626; }
-.dot.blocked { background: #A855F7; }
+.dot.completed {
+    background: #16A34A;
+}
+
+.dot.in-progress {
+    background: #EAB308;
+}
+
+.dot.todo {
+    background: #DC2626;
+}
+
+.dot.blocked {
+    background: #A855F7;
+}
 
 /* ===================================================
                 RESPONSIVE DESIGN

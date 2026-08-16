@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <!-- Main Stylesheet -->
     <link rel="stylesheet" href="Calendar.css">
 </head>
+
 <body>
 
     <!-- ================= Sidebar ================= -->
@@ -55,6 +57,7 @@
                         <span>Analytics</span>
                     </a>
                 </li>
+                <hr class="sidebar-divider">
                 <li>
                     <a href="../Team/Team.html">
                         <i class="fa-solid fa-users"></i>
@@ -73,13 +76,13 @@
                         <span>Integrations</span>
                     </a>
                 </li>
+                <hr class="sidebar-divider">
                 <li>
                     <a href="../Settings/Settings.html">
                         <i class="fa-solid fa-gear"></i>
                         <span>Settings</span>
                     </a>
                 </li>
-                <hr class="sidebar-divider">
                 <li>
                     <a href="../Help&Support/Help&Support.html">
                         <i class="fa-regular fa-circle-question"></i>
@@ -92,7 +95,7 @@
 
     <!-- ================= Main Content ================= -->
     <main class="main-content">
-        
+
         <!-- Top Navigation Bar / Calendar Header Controls -->
         <header class="calendar-header">
             <div class="header-left">
@@ -100,7 +103,7 @@
                 <button class="toggle-btn" id="toggleSidebar">
                     <i class="fa-solid fa-bars"></i>
                 </button>
-                
+
                 <!-- Month Navigator -->
                 <div class="month-nav">
                     <button class="nav-arrow" id="prevMonth"><i class="fa-solid fa-chevron-left"></i></button>
@@ -112,16 +115,18 @@
             </div>
 
             <div class="header-right">
-                <div class="view-selector">
-                    <span>Month</span>
-                    <i class="fa-solid fa-chevron-down"></i>
-                </div>
+                <select class="view-selector" id="calendarView">
+                    <option value="month">Month</option>
+                    <option value="day">Day</option>
+                    <option value="week">Week</option>
+                    <option value="year">Year</option>
+                </select>
             </div>
         </header>
 
         <!-- Calendar Container Card -->
-        <div class="calendar-card">
-            
+        <div class="calendar-card" id="fullCalendar">
+
             <!-- Weekdays Header -->
             <div class="weekdays-grid">
                 <div>Mon</div>
@@ -143,21 +148,12 @@
         <!-- Today's Schedule Card -->
         <div class="schedule-card">
             <div class="schedule-header">
-                <h3 id="selectedDateTitle">Today · May 24, 2024</h3>
-                <a href="../Meetings/Meetings.html" class="view-full">View full calendar &rarr;</a>
+                <h3 id="selectedDateTitle">Today - Calendar</h3>
+                <a href="#fullCalendar" class="view-full">View full calendar &rarr;</a>
             </div>
 
-            <div class="events-list">
-                <div class="event-item">
-                    <span class="event-time">10:00 AM</span>
-                    <span class="event-title">Product Roadmap Review</span>
-                    <span class="event-duration">10:00 AM – 11:00 AM</span>
-                </div>
-                <div class="event-item">
-                    <span class="event-time">02:30 PM</span>
-                    <span class="event-title">Design Sync</span>
-                    <span class="event-duration">02:30 PM – 03:30 PM</span>
-                </div>
+            <div class="events-list" id="eventsList">
+                <p class="empty-calendar">Loading calendar...</p>
             </div>
         </div>
 
@@ -166,4 +162,5 @@
     <script src="../api.js"></script>
     <script src="Calendar.js"></script>
 </body>
+
 </html>

@@ -163,8 +163,8 @@
                                 <i class="fa-solid fa-user"></i>
                             </div>
                             <div class="user-header-text">
-                                <h2 id="val-display-name">Alex Johnson</h2>
-                                <span id="val-display-email">alex@example.com</span>
+                                <h2 id="val-display-name">User</h2>
+                                <span id="val-display-email"></span>
                             </div>
                         </div>
 
@@ -176,22 +176,22 @@
                     <div class="profile-details-grid">
                         <div class="detail-item">
                             <span class="detail-label">Full Name</span>
-                            <span class="detail-value" id="val-fullname">Alex Johnson</span>
+                            <span class="detail-value" id="val-fullname">User</span>
                         </div>
 
                         <div class="detail-item">
                             <span class="detail-label">Email</span>
-                            <span class="detail-value" id="val-email">alex@example.com</span>
+                            <span class="detail-value" id="val-email"></span>
                         </div>
 
                         <div class="detail-item">
                             <span class="detail-label">Phone</span>
-                            <span class="detail-value" id="val-phone">+20 101 234 5678</span>
+                            <span class="detail-value" id="val-phone">N/A</span>
                         </div>
 
                         <div class="detail-item">
                             <span class="detail-label">Role</span>
-                            <span class="detail-value" id="val-role">Admin</span>
+                            <span class="detail-value" id="val-role">Member</span>
                         </div>
 
                         <div class="detail-item">
@@ -282,7 +282,7 @@
                         <div class="setting-row">
                             <div class="setting-text">
                                 <h4>Google Calendar</h4>
-                                <p>Status: Connected (alex@example.com)</p>
+                                <p>Status: Not connected</p>
                             </div>
                             <button class="btn-secondary-action danger">Disconnect</button>
                         </div>
@@ -387,7 +387,7 @@
                 <button class="close-modal-x" id="closeModalCross">&times;</button>
             </div>
             <form id="editProfileForm">
-                
+
                 <div class="form-group">
                     <label for="input-fullname">Full Name</label>
                     <input type="text" id="input-fullname" class="form-input" required />
@@ -412,7 +412,8 @@
                         <button type="button" class="btn-verify" id="verifyPhoneBtn">Verify Phone</button>
                     </div>
                     <div class="otp-box" id="phoneOtpBox">
-                        <input type="text" id="phoneOtpInput" class="form-input" placeholder="Enter WhatsApp/SMS OTP Code" />
+                        <input type="text" id="phoneOtpInput" class="form-input"
+                            placeholder="Enter WhatsApp/SMS OTP Code" />
                         <button type="button" class="btn-confirm-otp" id="confirmPhoneOtp">Confirm</button>
                     </div>
                 </div>

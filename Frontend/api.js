@@ -254,6 +254,246 @@ function getGreeting() {
     return "Good evening";
 }
 
+function getTodayInputValue() {
+    const today = new Date();
+    today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
+    return today.toISOString().split("T")[0];
+}
+
+async function getCurrentWorkspaceId() {
+    const stored = localStorage.getItem("currentWorkspaceId");
+    if (stored) return stored;
+
+    const workspaces = await fetchAPI("/api/Workspaces");
+    if (Array.isArray(workspaces) && workspaces.length > 0) {
+        const workspaceId = String(workspaces[0].id);
+        localStorage.setItem("currentWorkspaceId", workspaceId);
+        return workspaceId;
+    }
+
+    return null;
+}
+
+async function loadHeaderProfile() {
+    const userData = await getCurrentUserProfile();
+    if (!userData) return null;
+
+    document.querySelectorAll(".header-user-name, .profile span, .user-name").forEach(el => {
+        el.textContent = userData.fullName || "User";
+    });
+    document.querySelectorAll(".header-user-role, .user-role").forEach(el => {
+        el.textContent = userData.role || "Member";
+    });
+    document.querySelectorAll(".header-avatar").forEach(el => {
+        el.textContent = getInitials(userData.fullName || "User");
+    });
+    document.querySelectorAll(".user-profile .avatar").forEach(el => {
+        el.textContent = getInitials(userData.fullName || "User");
+    });
+    document.querySelectorAll(".profile img").forEach(img => {
+        const name = encodeURIComponent(userData.fullName || "User");
+        img.src = `https://ui-avatars.com/api/?name=${name}&background=EEF3FF&color=3461FF`;
+        img.alt = userData.fullName || "Profile";
+    });
+
+    return userData;
+}
+
+async function getCurrentUserProfile() {
+    const apiUser = await fetchAPI("/api/User/me");
+    if (apiUser) {
+        const normalized = normalizeUserProfile(apiUser);
+        localStorage.setItem("userData", JSON.stringify(normalized));
+        return normalized;
+    }
+
+    try {
+        const stored = JSON.parse(localStorage.getItem("userData") || "null");
+        if (stored) return normalizeUserProfile(stored);
+    } catch (error) {
+        console.warn("Invalid stored user data:", error);
+    }
+
+    const storedName = localStorage.getItem("fullName") || localStorage.getItem("userName");
+    const storedRole = localStorage.getItem("role");
+    if (storedName || storedRole) {
+        return {
+            id: localStorage.getItem("userId"),
+            fullName: storedName || "User",
+            role: storedRole || "Member"
+        };
+    }
+
+    return null;
+}
+
+function normalizeUserProfile(user) {
+    const storedName = localStorage.getItem("fullName") || localStorage.getItem("userName");
+    const storedRole = localStorage.getItem("role");
+    const id = user?.id ?? user?.userId ?? localStorage.getItem("userId") ?? "";
+
+    return {
+        ...user,
+        id,
+        userId: user?.userId ?? id,
+        fullName: user?.fullName || user?.name || storedName || "User",
+        role: user?.role || storedRole || "Member"
+    };
+}
+
+async function loadNotifications() {
+    // No notifications endpoint exists in the current backend Swagger.
+    return [];
+}
+
+function ensureNotificationDropdownStyles() {
+    if (document.getElementById("notification-dropdown-styles")) return;
+
+    const style = document.createElement("style");
+    style.id = "notification-dropdown-styles";
+    style.textContent = `
+        .notification-menu-wrap { position: relative; }
+        .app-notification-dropdown {
+            position: absolute; top: calc(100% + 10px); right: 0; width: 320px;
+            background: #fff; border: 1px solid #E2E8F0; border-radius: 12px;
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.14); padding: 12px;
+            z-index: 3000; display: none;
+        }
+        .notification-menu-wrap { display: inline-flex; }
+        .app-notification-dropdown.show { display: block; }
+        .app-notification-head {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 12px; padding: 4px 4px 10px; border-bottom: 1px solid #F1F5F9;
+        }
+        .app-notification-head h3 { margin: 0; font-size: 14px; color: #0F172A; }
+        .app-notification-view {
+            color: #3461FF; font-size: 12px; font-weight: 700; text-decoration: none;
+            white-space: nowrap;
+        }
+        .app-notification-empty {
+            padding: 24px 10px; text-align: center; color: #64748B; font-size: 13px;
+        }
+        .app-notification-item {
+            display: flex; gap: 10px; padding: 12px 4px; border-bottom: 1px solid #F8FAFC;
+        }
+        .app-notification-item:last-child { border-bottom: 0; }
+        .app-notification-item strong { display: block; color: #0F172A; font-size: 13px; }
+        .app-notification-item span { color: #64748B; font-size: 12px; line-height: 1.4; }
+        @media (max-width: 576px) {
+            .app-notification-dropdown { right: -48px; width: min(320px, calc(100vw - 32px)); }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+async function initNotificationDropdown(options = {}) {
+    const button = document.querySelector(options.buttonSelector || '.notification-btn, .notification, [aria-label="Notifications"]');
+    if (!button) return;
+    if (button.dataset.notificationReady === "true") return;
+    button.dataset.notificationReady = "true";
+
+    ensureNotificationDropdownStyles();
+
+    const viewUrl = options.viewUrl || getRelativePath("Notifications/Notifications.html");
+    const wrapper = button.parentElement && button.parentElement.classList.contains("notification-menu-wrap")
+        ? button.parentElement
+        : document.createElement("div");
+
+    if (!wrapper.classList.contains("notification-menu-wrap")) {
+        button.parentNode.insertBefore(wrapper, button);
+        wrapper.appendChild(button);
+    }
+
+    let dropdown = wrapper.querySelector(".app-notification-dropdown");
+    if (!dropdown) {
+        dropdown = document.createElement("div");
+        dropdown.className = "app-notification-dropdown";
+        wrapper.appendChild(dropdown);
+    }
+
+    const notifications = await loadNotifications();
+    const unread = notifications.filter(n => !n.isRead).length;
+    document.querySelectorAll(".notification-badge").forEach(badge => {
+        badge.textContent = unread;
+        badge.style.display = "flex";
+    });
+    button.classList.toggle("has-zero", unread === 0);
+
+    const latest = notifications.slice(0, 3);
+    dropdown.innerHTML = `
+        <div class="app-notification-head">
+            <h3>Notifications</h3>
+            <a class="app-notification-view" href="${viewUrl}">View all notifications</a>
+        </div>
+        ${latest.length ? latest.map(item => `
+            <div class="app-notification-item">
+                <i class="fa-regular fa-bell"></i>
+                <div>
+                    <strong>${escapeHtml(item.title || "Notification")}</strong>
+                    <span>${escapeHtml(item.message || "")}</span>
+                </div>
+            </div>
+        `).join("") : '<div class="app-notification-empty">No notifications yet.</div>'}
+    `;
+
+    button.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        dropdown.classList.toggle("show");
+    });
+
+    document.addEventListener("click", (event) => {
+        if (!wrapper.contains(event.target)) {
+            dropdown.classList.remove("show");
+        }
+    });
+}
+
+function normalizeSidebarNav() {
+    const iconMap = [
+        ["Dashboard", "fa-solid fa-table-columns"],
+        ["Meetings", "fa-regular fa-calendar"],
+        ["Tasks", "fa-solid fa-check"],
+        ["Follow-Ups", "fa-solid fa-arrow-turn-up"],
+        ["Calender", "fa-regular fa-calendar-days"],
+        ["Analytics", "fa-solid fa-chart-line"],
+        ["Team", "fa-solid fa-users"],
+        ["Reports", "fa-regular fa-file-lines"],
+        ["Integrations", "fa-solid fa-plug"],
+        ["Settings", "fa-solid fa-gear"],
+        ["Help&Support", "fa-regular fa-circle-question"]
+    ];
+
+    iconMap.forEach(([pathPart, iconClass]) => {
+        document.querySelectorAll(`.sidebar a[href*="${pathPart}"] i`).forEach(icon => {
+            icon.className = iconClass;
+        });
+    });
+
+    if (!document.getElementById("sidebar-stability-styles")) {
+        const style = document.createElement("style");
+        style.id = "sidebar-stability-styles";
+        style.textContent = `
+            .sidebar nav {
+                max-height: calc(100vh - 116px);
+                overflow-y: auto;
+                overflow-x: hidden;
+                padding-right: 2px;
+            }
+            .sidebar nav::-webkit-scrollbar { width: 4px; }
+            .sidebar nav::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 999px; }
+            .sidebar.close nav ul li a { min-height: 46px; }
+        `;
+        document.head.appendChild(style);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", normalizeSidebarNav);
+document.addEventListener("DOMContentLoaded", () => {
+    const hasNotificationButton = document.querySelector('.notification-btn, .notification, [aria-label="Notifications"]');
+    if (hasNotificationButton) initNotificationDropdown();
+});
+
 // ------------------------------------------
 // Toast Notification Helper
 // ------------------------------------------

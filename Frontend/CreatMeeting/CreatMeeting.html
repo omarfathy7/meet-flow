@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <!-- Main Stylesheet -->
     <link rel="stylesheet" href="CreatMeeting.css">
 </head>
+
 <body>
 
     <!-- ================= Sidebar ================= -->
@@ -139,12 +141,14 @@
                 <div class="form-group">
                     <label>Participants</label>
                     <div class="participants-list">
-                        <div class="avatar avatar-1"></div>
-                        <div class="avatar avatar-2"></div>
-                        <div class="avatar avatar-3"></div>
+                        <div class="participant-chips" id="participantChips"></div>
                         <button type="button" class="add-participant-btn">
                             <i class="fa-solid fa-plus"></i>
                         </button>
+                    </div>
+                    <div class="participant-entry" id="participantEntry" hidden>
+                        <input type="email" id="participantEmailInput" placeholder="participant@example.com">
+                        <button type="button" id="saveParticipantBtn">Add</button>
                     </div>
                 </div>
 
@@ -175,7 +179,8 @@
                 <div class="calendar-result" id="calendarResult" hidden>
                     <div>
                         <h3>Meeting created</h3>
-                        <p id="calendarResultMessage">Your meeting is saved in MeetFlow. Add it to Google Calendar when you are ready.</p>
+                        <p id="calendarResultMessage">Your meeting is saved in MeetFlow. Add it to Google Calendar when
+                            you are ready.</p>
                     </div>
                     <div class="calendar-result-actions">
                         <a href="#" id="googleCalendarLink" class="btn btn-calendar" target="_blank" rel="noopener">
@@ -201,4 +206,5 @@
     <script src="CreatMeeting.js"></script>
 
 </body>
+
 </html>

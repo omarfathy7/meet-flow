@@ -1,4 +1,11 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    if (!requireAuth()) return;
+    const userData = await loadHeaderProfile();
+    const heroTitle = document.getElementById('helpHeroTitle');
+    if (heroTitle) {
+        const firstName = (userData?.fullName || 'there').trim().split(/\s+/)[0] || 'there';
+        heroTitle.textContent = `How can we help you, ${firstName}?`;
+    }
 
     // ===================================================
     // 1. SIDEBAR TOGGLE (COLLAPSE & MOBILE)

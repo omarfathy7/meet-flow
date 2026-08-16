@@ -1,310 +1,207 @@
-const menuToggle = document.getElementById("menuToggle");
-const sidebar = document.getElementById("sidebar");
-const mainContent = document.getElementById("mainContent");
+document.addEventListener("DOMContentLoaded", async () => {
+    if (!requireAuth()) return;
 
-menuToggle.addEventListener("click", () => {
+    const menuToggle = document.getElementById("menuToggle");
+    const sidebar = document.getElementById("sidebar");
+    const mainContent = document.getElementById("mainContent");
 
-
-    if (window.innerWidth <= 768) {
-        sidebar.classList.toggle("open");
-    } else {
-        sidebar.classList.toggle("close");
-        mainContent.classList.toggle("expand");
-    }
-
-});
-
-const taskTabs = document.querySelectorAll(".task-tabs button");
-
-taskTabs.forEach((tab) => {
-
-    tab.addEventListener("click", () => {
-
-        taskTabs.forEach((t) => t.classList.remove("active"));
-
-        tab.classList.add("active");
-
-    });
-    // ==========================================
-    // MEETFLOW DASHBOARD - COMPLETE BACKEND INTEGRATION
-    // ==========================================
-
-    // رابط الباك إند الحقيقي المرفوع
-    const BASE_URL = "https://meetflow.runasp.net";
-
-    document.addEventListener("DOMContentLoaded", () => {
-        initDashboard();
-    });
-
-    // Helper Function for API Requests
-    async function fetchAPI(endpoint, options = {}) {
-        const token = localStorage.getItem("accessToken") || localStorage.getItem("token");
-        const defaultHeaders = {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        };
-
-        if (token) {
-            defaultHeaders["Authorization"] = `Bearer ${token}`;
-        }
-
-        try {
-            // تحويل الرابط النسبي إلى الرابط الكامل للباك إند
-            const response = await fetch(`${BASE_URL}${endpoint}`, {
-                ...options,
-                headers: {
-                    ...defaultHeaders,
-                    ...options.headers
-                }
-            });
-
-            if (response.status === 401) {
-                console.warn("Unauthorized access. Token might be missing or expired.");
-                return null;
+    if (menuToggle && sidebar && mainContent) {
+        menuToggle.addEventListener("click", () => {
+            if (window.innerWidth <= 768) {
+                sidebar.classList.toggle("open");
+            } else {
+                sidebar.classList.toggle("close");
+                mainContent.classList.toggle("expand");
             }
-
-            if (!response.ok) {
-                throw new Error(`API Error: ${response.status}`);
-            }
-
-            const text = await response.text();
-            return text ? JSON.parse(text) : {};
-        } catch (error) {
-            console.error(`Error fetching ${endpoint}:`, error);
-            return null;
-        }
-    }
-
-    // Global Tasks State
-    let globalTasks = [];
-
-    async function initDashboard() {
-        await loadUserProfile();
-        await loadDashboardSummary();
-        await loadUpcomingMeetings();
-        await loadMyTasks();
-    }
-
-    // 1. User Profile Sync (/api/User/me)
-    async function loadUserProfile() {
-        const userData = await fetchAPI("/api/User/me");
-        if (!userData) return;
-
-        const userNameElem = document.querySelector(".header-user-name");
-        const userRoleElem = document.querySelector(".header-user-role");
-        const avatarElem = document.querySelector(".header-avatar");
-        const welcomeHeading = document.querySelector(".welcome h1");
-
-        const fullName = userData.fullName ? userData.fullName.trim() : "User";
-        const role = userData.role || "Member";
-        const nameParts = fullName.split(" ").filter(p => p.length > 0);
-        const firstName = nameParts[0] || "User";
-
-        // Dynamic Greeting
-        const hour = new Date().getHours();
-        let greeting = "Good morning";
-        if (hour >= 12 && hour < 18) greeting = "Good afternoon";
-        else if (hour >= 18) greeting = "Good evening";
-
-        // Dynamic Initials
-        let initials = "U";
-        if (nameParts.length >= 2) {
-            initials = (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase();
-        } else if (nameParts.length === 1) {
-            initials = nameParts[0].substring(0, 2).toUpperCase();
-        }
-
-        if (userNameElem) userNameElem.textContent = fullName;
-        if (userRoleElem) userRoleElem.textContent = role;
-        if (welcomeHeading) welcomeHeading.textContent = `${greeting}, ${firstName} 👋`;
-        if (avatarElem) avatarElem.textContent = initials;
-    }
-
-    // 2. Dashboard Summary Cards (/api/Dashboard/summary)
-    async function loadDashboardSummary() {
-        const summary = await fetchAPI("/api/Dashboard/summary");
-        if (!summary) return;
-
-        const statCards = document.querySelectorAll(".stat-card");
-        if (statCards.length < 4) return;
-
-        // Stat 1: Today's Meetings
-        const card1Value = statCards[0].querySelector("h2");
-        const card1Sub = statCards[0].querySelector("p");
-        if (card1Value) card1Value.textContent = summary.todaysMeetingsCount ?? 0;
-        if (card1Sub) {
-            card1Sub.textContent = summary.nextMeetingTitle
-                ? `Next meeting in ${summary.nextMeetingInMinutes} min`
-                : "No upcoming meetings";
-        }
-
-        // Stat 2: Tasks Pending
-        const card2Value = statCards[1].querySelector("h2");
-        const card2Sub = statCards[1].querySelector("p");
-        if (card2Value) card2Value.textContent = summary.tasksPendingCount ?? 0;
-        if (card2Sub) {
-            card2Sub.textContent = `${summary.tasksOverdueCount ?? 0} tasks overdue`;
-        }
-
-        // Stat 3: Completion Progress
-        const card3Value = statCards[2].querySelector("h2");
-        if (card3Value) card3Value.textContent = `${summary.completionProgressPercent ?? 0}%`;
-
-        // Stat 4: Active Projects
-        const card4Value = statCards[3].querySelector("h2");
-        const card4Sub = statCards[3].querySelector("p");
-        if (card4Value) card4Value.textContent = summary.activeWorkspacesCount ?? 0;
-        if (card4Sub) {
-            card4Sub.textContent = `${summary.workspacesAtRiskCount ?? 0} projects at risk`;
-        }
-    }
-
-    // 3. Upcoming Meetings List (/api/Meetings/workspace/{workspaceId})
-    async function loadUpcomingMeetings() {
-        const workspaceId = localStorage.getItem("currentWorkspaceId") || 1;
-        const meetings = await fetchAPI(`/api/Meetings/workspace/${workspaceId}`);
-
-        const meetingsSection = document.querySelector(".meetings");
-        if (!meetingsSection) return;
-
-        // الحصول على العناصر واستبدال القديم بالجديد
-        const oldItems = meetingsSection.querySelectorAll(".meeting-item");
-        oldItems.forEach(item => item.remove());
-
-        if (!meetings || !Array.isArray(meetings) || meetings.length === 0) {
-            const emptyMsg = document.createElement("p");
-            emptyMsg.className = "text-muted py-3";
-            emptyMsg.textContent = "No upcoming meetings scheduled.";
-            meetingsSection.appendChild(emptyMsg);
-            return;
-        }
-
-        const upcoming = meetings
-            .filter(m => new Date(m.meetingDate) >= new Date())
-            .sort((a, b) => new Date(a.meetingDate) - new Date(b.meetingDate))
-            .slice(0, 5);
-
-        upcoming.forEach(m => {
-            const itemHtml = `
-            <div class="meeting-item">
-                <div class="meeting-time">
-                    <h4>${formatTime(m.meetingDate)}</h4>
-                    <span>${formatDateLabel(m.meetingDate)}</span>
-                </div>
-                <div class="meeting-details">
-                    <h4>${escapeHtml(m.title)}</h4>
-                </div>
-                <button class="join-btn" onclick="window.location.href='../Meetings/Meetings.html?id=${m.id}'">Join</button>
-            </div>
-        `;
-            meetingsSection.insertAdjacentHTML("beforeend", itemHtml);
         });
     }
 
-    // 4. Tasks Integration & Dynamic Filters (/api/tasks/my)
-    async function loadMyTasks() {
-        const tasks = await fetchAPI("/api/tasks/my");
-        if (!tasks || !Array.isArray(tasks)) return;
+    const userData = await loadHeaderProfile();
+    updateWelcomeMessage(userData);
+    await initNotificationDropdown({ viewUrl: "../Notifications/Notifications.html" });
+    await Promise.all([
+        loadDashboardSummary(),
+        loadUpcomingMeetings(),
+        loadMyTasks()
+    ]);
+    renderRecentActivity([]);
+});
 
-        globalTasks = tasks;
-        renderTasks("Pending");
-        setupTaskTabListeners();
+let dashboardTasks = [];
+
+async function loadDashboardSummary() {
+    const summary = await fetchAPI("/api/Dashboard/summary");
+    const statCards = document.querySelectorAll(".stat-card");
+    if (statCards.length < 4) return;
+
+    const values = {
+        todaysMeetingsCount: summary?.todaysMeetingsCount ?? 0,
+        nextMeetingTitle: summary?.nextMeetingTitle || "",
+        nextMeetingInMinutes: summary?.nextMeetingInMinutes ?? null,
+        tasksPendingCount: summary?.tasksPendingCount ?? 0,
+        tasksOverdueCount: summary?.tasksOverdueCount ?? 0,
+        completionProgressPercent: summary?.completionProgressPercent ?? 0,
+        activeWorkspacesCount: summary?.activeWorkspacesCount ?? 0,
+        workspacesAtRiskCount: summary?.workspacesAtRiskCount ?? 0
+    };
+
+    statCards[0].querySelector("h2").textContent = values.todaysMeetingsCount;
+    statCards[0].querySelector("p").textContent = values.nextMeetingTitle
+        ? `Next meeting in ${values.nextMeetingInMinutes ?? 0} min`
+        : "No upcoming meetings";
+
+    statCards[1].querySelector("h2").textContent = values.tasksPendingCount;
+    statCards[1].querySelector("p").textContent = `${values.tasksOverdueCount} tasks overdue`;
+
+    statCards[2].querySelector("h2").textContent = `${Math.round(values.completionProgressPercent)}%`;
+    statCards[2].querySelector("p").textContent = "Based on your tasks";
+
+    statCards[3].querySelector("h2").textContent = values.activeWorkspacesCount;
+    statCards[3].querySelector("p").textContent = `${values.workspacesAtRiskCount} projects at risk`;
+}
+
+async function loadUpcomingMeetings() {
+    const container = document.querySelector(".meetings-list");
+    if (!container) return;
+
+    const workspaceId = await getCurrentWorkspaceId();
+    if (!workspaceId) {
+        renderEmpty(container, "No upcoming meetings scheduled.");
+        return;
     }
 
-    function renderTasks(filterStatus) {
-        const taskList = document.querySelector(".task-list");
-        if (!taskList) return;
+    const meetings = await fetchAPI(`/api/Meetings/workspace/${workspaceId}`);
+    if (!Array.isArray(meetings)) {
+        renderEmpty(container, "No upcoming meetings scheduled.");
+        return;
+    }
 
-        let filtered = globalTasks;
+    const upcoming = meetings
+        .filter(m => new Date(m.meetingDate) >= new Date())
+        .sort((a, b) => new Date(a.meetingDate) - new Date(b.meetingDate))
+        .slice(0, 5);
 
-        if (filterStatus === "Pending") {
-            filtered = globalTasks.filter(t => t.status !== "Completed");
-        } else if (filterStatus === "Overdue") {
-            filtered = globalTasks.filter(t => t.status !== "Completed" && new Date(t.dueDate) < new Date());
-        } else if (filterStatus === "Completed") {
-            filtered = globalTasks.filter(t => t.status === "Completed");
-        }
+    if (upcoming.length === 0) {
+        renderEmpty(container, "No upcoming meetings scheduled.");
+        return;
+    }
 
-        if (filtered.length === 0) {
-            taskList.innerHTML = `<p class="empty-state text-muted py-3 text-center">No ${filterStatus.toLowerCase()} tasks found.</p>`;
-            return;
-        }
+    container.innerHTML = upcoming.map(m => `
+        <div class="meeting-item">
+            <div class="meeting-time">
+                <h4>${formatTime(m.meetingDate)}</h4>
+                <span>${formatDateLabel(m.meetingDate)}</span>
+            </div>
+            <div class="meeting-details">
+                <h4>${escapeHtml(m.title)}</h4>
+            </div>
+            <button class="join-btn" onclick="window.location.href='../Meetings/Meetings.html?id=${m.id}'">View</button>
+        </div>
+    `).join("");
+}
 
-        taskList.innerHTML = filtered.map(t => {
-            const isCompleted = t.status === "Completed";
-            const priorityClass = (t.priority || "Medium").toLowerCase();
+async function loadMyTasks() {
+    const tasks = await fetchAPI("/api/tasks/my");
+    dashboardTasks = Array.isArray(tasks) ? tasks : [];
+    setupTaskTabListeners();
+    renderTasks("Pending");
+}
 
-            return `
+function setupTaskTabListeners() {
+    const tabs = document.querySelectorAll(".task-tabs button");
+    tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+            tabs.forEach(t => t.classList.remove("active"));
+            tab.classList.add("active");
+            renderTasks(tab.dataset.filter || "Pending");
+        });
+    });
+}
+
+function renderTasks(filterStatus) {
+    const taskList = document.querySelector(".task-list");
+    if (!taskList) return;
+
+    let filtered = dashboardTasks;
+    if (filterStatus === "Pending") {
+        filtered = dashboardTasks.filter(t => t.status !== "Completed");
+    } else if (filterStatus === "Overdue") {
+        filtered = dashboardTasks.filter(t => t.status !== "Completed" && t.dueDate && new Date(t.dueDate) < new Date());
+    } else if (filterStatus === "Completed") {
+        filtered = dashboardTasks.filter(t => t.status === "Completed");
+    }
+
+    updateTaskTabCounts();
+
+    if (filtered.length === 0) {
+        renderEmpty(taskList, `No ${filterStatus.toLowerCase()} tasks found.`);
+        return;
+    }
+
+    taskList.innerHTML = filtered.slice(0, 5).map(t => {
+        const isCompleted = t.status === "Completed";
+        const priorityClass = (t.priority || "Medium").toLowerCase();
+        return `
             <div class="task-item" data-task-id="${t.id}">
-                <input type="checkbox" ${isCompleted ? "checked" : ""} 
+                <input type="checkbox" ${isCompleted ? "checked" : ""}
                        onchange="updateTaskStatus(${t.meetingId}, ${t.id}, this.checked)">
                 <div class="task-info">
-                    <h4 class="${isCompleted ? 'completed-text' : ''}">${escapeHtml(t.title)}</h4>
-                    <span>${escapeHtml(t.workspaceName || "Project")} • ${formatDate(t.dueDate)}</span>
+                    <h4 class="${isCompleted ? "completed-text" : ""}">${escapeHtml(t.title)}</h4>
+                    <span>${escapeHtml(t.workspaceName || "Meeting task")} - ${formatDate(t.dueDate)}</span>
                 </div>
-                <small class="priority-${priorityClass}">${t.priority || "Medium"}</small>
+                <small class="priority-${priorityClass}">${escapeHtml(t.priority || "Medium")}</small>
             </div>
         `;
-        }).join("");
+    }).join("");
+}
+
+function updateTaskTabCounts() {
+    const tabs = document.querySelectorAll(".task-tabs button");
+    const pending = dashboardTasks.filter(t => t.status !== "Completed").length;
+    const overdue = dashboardTasks.filter(t => t.status !== "Completed" && t.dueDate && new Date(t.dueDate) < new Date()).length;
+    const completed = dashboardTasks.filter(t => t.status === "Completed").length;
+    const counts = { Pending: pending, Overdue: overdue, Completed: completed };
+
+    tabs.forEach(tab => {
+        const filter = tab.dataset.filter || "Pending";
+        tab.textContent = `${filter} (${counts[filter] ?? 0})`;
+    });
+}
+
+async function updateTaskStatus(meetingId, taskId, isChecked) {
+    const newStatus = isChecked ? "Completed" : "Pending";
+    const response = await fetchAPI(`/api/meetings/${meetingId}/tasks/${taskId}/status`, {
+        method: "PUT",
+        body: JSON.stringify({ status: newStatus })
+    });
+
+    if (response !== null) {
+        const task = dashboardTasks.find(t => t.id === taskId);
+        if (task) task.status = newStatus;
+        await loadDashboardSummary();
+        renderTasks(document.querySelector(".task-tabs button.active")?.dataset.filter || "Pending");
     }
+}
 
-    // Update Task Status (/api/meetings/{meetingId}/tasks/{taskId}/status)
-    async function updateTaskStatus(meetingId, taskId, isChecked) {
-        const newStatus = isChecked ? "Completed" : "Pending";
+function renderRecentActivity(items) {
+    const activityList = document.querySelector(".activity-list");
+    if (!activityList) return;
 
-        const response = await fetchAPI(`/api/meetings/${meetingId}/tasks/${taskId}/status`, {
-            method: "PUT",
-            body: JSON.stringify({ status: newStatus })
-        });
-
-        if (response) {
-            const task = globalTasks.find(t => t.id === taskId);
-            if (task) task.status = newStatus;
-            await loadDashboardSummary();
-        }
+    if (!Array.isArray(items) || items.length === 0) {
+        renderEmpty(activityList, "No recent activity yet.");
+        return;
     }
+}
 
-    function setupTaskTabListeners() {
-        const tabs = document.querySelectorAll(".task-tabs button");
-        tabs.forEach(tab => {
-            tab.addEventListener("click", (e) => {
-                tabs.forEach(t => t.classList.remove("active"));
-                e.currentTarget.classList.add("active");
+function updateWelcomeMessage(userData) {
+    const welcomeHeading = document.querySelector(".welcome h1");
+    if (!welcomeHeading) return;
 
-                const tabText = e.currentTarget.textContent.trim();
-                let filter = "Pending";
-                if (tabText.includes("Overdue")) filter = "Overdue";
-                else if (tabText.includes("Completed")) filter = "Completed";
+    const fullName = userData?.fullName || "User";
+    const firstName = fullName.trim().split(/\s+/)[0] || "User";
+    welcomeHeading.textContent = `${getGreeting()}, ${firstName}`;
+}
 
-                renderTasks(filter);
-            });
-        });
-    }
-
-    // Utility Helpers
-    function formatDate(dateString) {
-        if (!dateString) return "";
-        return new Date(dateString).toLocaleDateString("en-US", { month: "short", day: "numeric" });
-    }
-
-    function formatTime(dateString) {
-        if (!dateString) return "";
-        return new Date(dateString).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true });
-    }
-
-    function formatDateLabel(dateString) {
-        const date = new Date(dateString);
-        const today = new Date();
-        return date.toDateString() === today.toDateString() ? "Today" : formatDate(dateString);
-    }
-
-    function escapeHtml(str) {
-        if (!str) return "";
-        return str.replace(/[&<>"']/g, match => {
-            const chars = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
-            return chars[match];
-        });
-    }
-
-});
-
+function renderEmpty(container, message) {
+    container.innerHTML = `<p class="empty-inline">${escapeHtml(message)}</p>`;
+}

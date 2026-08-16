@@ -41,22 +41,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // ===================================================
     const searchInput = document.getElementById("memberSearchInput");
     const tableBody = document.getElementById("teamTableBody");
+    const departmentsGrid = document.getElementById("departmentsGrid");
 
-    if (searchInput && tableBody) {
+    if (searchInput) {
         searchInput.addEventListener("input", (e) => {
             const searchTerm = e.target.value.toLowerCase().trim();
-            const rows = tableBody.querySelectorAll("tr");
-
-            rows.forEach(row => {
-                const nameText = row.querySelector(".member-name")?.textContent.toLowerCase() || "";
-                const roleText = row.querySelector(".role-cell")?.textContent.toLowerCase() || "";
-
-                if (nameText.includes(searchTerm) || roleText.includes(searchTerm)) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
-            });
+            filterActiveTeamTab(searchTerm);
         });
     }
 
@@ -124,12 +114,8 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("currentWorkspaceId", currentWorkspaceId);
         }
 
-        // Update stats
-        const deptCountCard = document.querySelectorAll(".stat-card");
-        if (deptCountCard.length >= 3) {
-            const card3 = deptCountCard[2].querySelector("h2");
-            if (card3) card3.textContent = workspaces.length;
-        }
+        updateStatsCards(allMembers);
+        renderDepartments([]);
     }
 
     // ===================================================
@@ -146,6 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
         allMembers = members;
         renderMembersTable(members);
         updateStatsCards(members);
+        renderDepartments([]);
     }
 
     // ===================================================
@@ -221,10 +208,45 @@ document.addEventListener("DOMContentLoaded", () => {
         // Active Members
         const activeH2 = statCards[1].querySelector("h2");
         if (activeH2) activeH2.textContent = members.length;
+        const activeSub = statCards[1].querySelector(".sub-text");
+        if (activeSub) activeSub.innerHTML = `<i class="fa-solid fa-circle status-dot online"></i> Active`;
+
+        const departmentsH2 = statCards[2].querySelector("h2");
+        if (departmentsH2) departmentsH2.textContent = "0";
+        const departmentsSub = statCards[2].querySelector(".sub-text");
+        if (departmentsSub) departmentsSub.innerHTML = `<i class="fa-solid fa-building"></i> No departments`;
 
         // Pending Invitations
         const pendingH2 = statCards[3].querySelector("h2");
         if (pendingH2) pendingH2.textContent = "0";
+        const pendingSub = statCards[3].querySelector(".sub-text");
+        if (pendingSub) pendingSub.innerHTML = `<i class="fa-solid fa-envelope"></i> Awaiting response`;
+    }
+
+    function renderDepartments(departments) {
+        if (!departmentsGrid) return;
+
+        if (!Array.isArray(departments) || departments.length === 0) {
+            departmentsGrid.innerHTML = '<p class="empty-team-state">No departments yet.</p>';
+            return;
+        }
+    }
+
+    function filterActiveTeamTab(searchTerm) {
+        const activeTab = document.querySelector(".tab-btn.active")?.getAttribute("data-tab") || "all-members";
+
+        if (activeTab === "departments") {
+            departmentsGrid?.querySelectorAll(".department-card").forEach(card => {
+                card.style.display = card.innerText.toLowerCase().includes(searchTerm) ? "" : "none";
+            });
+            return;
+        }
+
+        if (!tableBody) return;
+        tableBody.querySelectorAll("tr").forEach(row => {
+            const text = row.innerText.toLowerCase();
+            row.style.display = text.includes(searchTerm) ? "" : "none";
+        });
     }
 
     // ===================================================
@@ -272,7 +294,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // ===================================================
     // 12. Change Member Role (PUT /api/Workspaces/{id}/members/{userId}/role)
     // ===================================================
-    window.changeMemberRole = async function(userId, newRole) {
+    window.changeMemberRole = async function (userId, newRole) {
         if (!currentWorkspaceId) return;
 
         const result = await fetchAPI(`/api/Workspaces/${currentWorkspaceId}/members/${userId}/role`, {
@@ -291,7 +313,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // ===================================================
     // 13. Remove Member (DELETE /api/Workspaces/{id}/members/{userId})
     // ===================================================
-    window.removeMember = async function(userId) {
+    window.removeMember = async function (userId) {
         if (!confirm("Are you sure you want to remove this member?")) return;
         if (!currentWorkspaceId) return;
 
