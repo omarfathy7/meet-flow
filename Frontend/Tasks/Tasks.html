@@ -7,7 +7,8 @@
     <title>Tasks</title>
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <!-- Tasks CSS -->
     <link rel="stylesheet" href="Tasks.css">
@@ -128,7 +129,9 @@
             <!-- LEFT HEADER -->
             <header class="top-header">
 
-                <button class="toggle-btn" id="toggleSidebar" aria-label="Toggle Sidebar">
+                <button class="toggle-btn"
+                    id="toggleSidebar"
+                    aria-label="Toggle Sidebar">
 
                     <i class="fa-solid fa-bars"></i>
 
@@ -177,7 +180,11 @@
                             Task Title
                         </label>
 
-                        <input type="text" id="taskTitle" placeholder="Enter task title" required>
+                        <input
+                            type="text"
+                            id="taskTitle"
+                            placeholder="Enter task title"
+                            required>
 
                     </div>
 
@@ -189,7 +196,10 @@
                             Description
                         </label>
 
-                        <textarea id="taskDescription" rows="4" placeholder="Add task description..."></textarea>
+                        <textarea
+                            id="taskDescription"
+                            rows="4"
+                            placeholder="Add task description..."></textarea>
 
                     </div>
 
@@ -219,7 +229,9 @@
                             Deadline
                         </label>
 
-                        <input type="date" id="taskDeadline">
+                        <input
+                            type="date"
+                            id="taskDeadline">
 
                     </div>
 
@@ -233,15 +245,21 @@
 
                         <div class="priority-options">
 
-                            <button type="button" class="priority-btn low">
+                            <button
+                                type="button"
+                                class="priority-btn low">
                                 Low
                             </button>
 
-                            <button type="button" class="priority-btn medium">
+                            <button
+                                type="button"
+                                class="priority-btn medium">
                                 Medium
                             </button>
 
-                            <button type="button" class="priority-btn high active">
+                            <button
+                                type="button"
+                                class="priority-btn high active">
                                 High
                             </button>
 
@@ -294,8 +312,7 @@
                             <i class="fa-solid fa-plus"></i>
                             Create project
                         </button>
-                        <small class="form-help">Optional. Leave it as a general task when it does not belong to a
-                            project.</small>
+                        <small class="form-help">Optional. Leave it as a general task when it does not belong to a project.</small>
 
                     </div>
 
@@ -303,11 +320,15 @@
                     <!-- Form Actions -->
                     <div class="form-actions">
 
-                        <button type="button" class="btn-cancel">
+                        <button
+                            type="button"
+                            class="btn-cancel">
                             Cancel
                         </button>
 
-                        <button type="submit" class="btn-submit">
+                        <button
+                            type="submit"
+                            class="btn-submit">
                             Create Task
                         </button>
 
@@ -325,8 +346,7 @@
 
                 <div class="tasks-list">
                     <!-- Tasks populated dynamically from API -->
-                    <p style="color: #94A3B8; font-size: 14px; text-align: center; margin-top: 20px;">Loading tasks...
-                    </p>
+                    <p style="color: #94A3B8; font-size: 14px; text-align: center; margin-top: 20px;">Loading tasks...</p>
                 </div>
 
             </section>

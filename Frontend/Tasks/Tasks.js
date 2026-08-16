@@ -122,27 +122,6 @@ document.addEventListener("DOMContentLoaded", () => {
         projectSelect.value = selectedProjectId ? String(selectedProjectId) : "";
     }
 
-    async function loadMeetingsForSelect() {
-        await loadProjectsForSelect();
-    }
-
-    async function loadMeetingsForProject(projectId, meetingSelect) {
-        if (!meetingSelect) return;
-
-        meetingSelect.innerHTML = '<option value="">No meeting</option>';
-        if (!projectId) return;
-
-        const meetings = await fetchAPI(`/api/Meetings/workspace/${projectId}`);
-        if (Array.isArray(meetings)) {
-            meetings.forEach(m => {
-                const option = document.createElement("option");
-                option.value = m.id;
-                option.textContent = `${m.title} (${formatDate(m.meetingDate)})`;
-                meetingSelect.appendChild(option);
-            });
-        }
-    }
-
     // ------------------------------------------
     // Load Workspace Members for Assignee Dropdown
     // ------------------------------------------
@@ -177,21 +156,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ------------------------------------------
-    // Create Task (POST /api/meetings/{meetingId}/tasks)
+    // Create Task
     // ------------------------------------------
     async function createTask() {
         const title = document.getElementById("taskTitle").value.trim();
         const description = document.getElementById("taskDescription").value.trim();
         const assignee = document.getElementById("taskAssignee").value;
         const deadline = document.getElementById("taskDeadline").value;
-        const meetingSelect = document.getElementById("taskProject");
+        const projectSelect = document.getElementById("taskProject");
 
         if (!title) {
             showToast("Please enter a task title", "error");
             return;
         }
 
-        const projectId = meetingSelect ? meetingSelect.value : "";
+        const projectId = projectSelect ? projectSelect.value : "";
         const selectedProject = allProjects.find(project => String(project.id) === String(projectId));
 
         const payload = {
@@ -224,7 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ------------------------------------------
-    // Update Task (PUT /api/meetings/{meetingId}/tasks/{taskId})
+    // Update Task
     // ------------------------------------------
     async function updateTask() {
         const title = document.getElementById("taskTitle").value.trim();

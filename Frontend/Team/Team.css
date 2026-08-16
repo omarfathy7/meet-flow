@@ -286,6 +286,92 @@ body.sidebar-closed .main-content {
     color: #0F172A;
 }
 
+.danger-action {
+    color: #B91C1C;
+    border-color: #FECACA;
+    background: #FEF2F2;
+}
+
+.danger-action:hover {
+    color: #991B1B;
+    background: #FEE2E2;
+}
+
+.header-action {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.workspace-panel {
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 16px;
+    padding: 18px 20px;
+    margin-bottom: 24px;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 18px;
+    align-items: center;
+}
+
+.workspace-panel-main {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.workspace-panel-main label {
+    color: #475569;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.workspace-panel-main select {
+    border: 1px solid #CBD5E1;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #0F172A;
+    background: #FFFFFF;
+}
+
+.workspace-info {
+    color: #64748B;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.workspace-info strong {
+    color: #0F172A;
+}
+
+.workspace-info .workspace-role-badge {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 8px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: #EFF6FF;
+    color: #3461FF;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.permission-note {
+    color: #94A3B8;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.form-hint {
+    color: #64748B;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
 /* ===================================================
                     STATS CARDS GRID
 =================================================== */
@@ -757,6 +843,20 @@ body.sidebar-closed .main-content {
     }
 
     .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .header-action {
+        justify-content: flex-start;
+    }
+
+    .workspace-panel {
         grid-template-columns: 1fr;
     }
 

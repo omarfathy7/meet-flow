@@ -10,6 +10,7 @@ const BASE_URL = "https://meetflow.runasp.net";
 // Core API Fetch Wrapper
 // ------------------------------------------
 async function fetchAPI(endpoint, options = {}) {
+    window.__lastApiError = null;
     const token = localStorage.getItem("accessToken");
     const defaultHeaders = {
         "Content-Type": "application/json",
@@ -59,6 +60,11 @@ async function fetchAPI(endpoint, options = {}) {
 
         if (!response.ok) {
             const errorText = await response.text();
+            window.__lastApiError = {
+                endpoint,
+                status: response.status,
+                message: errorText || `API Error: ${response.status}`
+            };
             console.error(`API Error ${response.status}: ${errorText}`);
             throw new Error(errorText || `API Error: ${response.status}`);
         }
@@ -66,8 +72,35 @@ async function fetchAPI(endpoint, options = {}) {
         const text = await response.text();
         return text ? JSON.parse(text) : {};
     } catch (error) {
+        if (!window.__lastApiError) {
+            window.__lastApiError = {
+                endpoint,
+                status: 0,
+                message: error.message || "Network error"
+            };
+        }
         console.error(`Error fetching ${endpoint}:`, error);
         return null;
+    }
+}
+
+function getLastApiError() {
+    return window.__lastApiError || null;
+}
+
+function getApiErrorMessage(fallback = "Request failed") {
+    const error = getLastApiError();
+    if (!error) return fallback;
+    if (error.status === 401) return "Your session expired. Please log in again.";
+    if (error.status === 403) return "You do not have permission to perform this action.";
+    if (error.status === 404) return "The requested backend endpoint is not available.";
+    if (error.status === 0) return "Unable to reach the backend. Please check your connection.";
+
+    try {
+        const parsed = JSON.parse(error.message);
+        return parsed.message || parsed.title || fallback;
+    } catch (parseError) {
+        return error.message || fallback;
     }
 }
 

@@ -605,3 +605,136 @@ img {
 .notification.has-zero::after {
     display: none;
 }
+
+.ai-task-section {
+    margin-bottom: 20px;
+    padding: 16px;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    background: #FFFFFF;
+}
+
+.ai-task-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+.ai-task-head h3 {
+    font-size: 16px;
+    color: #1E293B;
+    margin-bottom: 4px;
+}
+
+.ai-task-head h3 i {
+    margin-right: 6px;
+    color: #3461FF;
+}
+
+.ai-task-head p,
+.ai-draft-empty,
+.ai-draft-error,
+.ai-draft-source {
+    color: #64748B;
+    font-size: 13px;
+}
+
+.ai-draft-error {
+    color: #DC2626;
+}
+
+.ai-extract-btn:disabled {
+    background: #CBD5E1;
+    cursor: not-allowed;
+}
+
+.ai-drafts-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ai-draft-card {
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 14px;
+    background: #F8FAFC;
+}
+
+.ai-draft-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr .8fr .9fr;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.ai-draft-card label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.ai-draft-card input,
+.ai-draft-card select,
+.ai-draft-card textarea {
+    border: 1px solid #CBD5E1;
+    border-radius: 8px;
+    padding: 9px 10px;
+    background: #FFFFFF;
+    color: #1E293B;
+    font-size: 13px;
+}
+
+.ai-draft-card textarea {
+    resize: vertical;
+}
+
+.ai-draft-source {
+    margin-top: 8px;
+}
+
+.ai-draft-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.ai-secondary-btn,
+.ai-accept-btn,
+.ai-reject-btn {
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.ai-secondary-btn {
+    background: #E2E8F0;
+    color: #334155;
+}
+
+.ai-accept-btn {
+    background: #16A34A;
+    color: #FFFFFF;
+}
+
+.ai-reject-btn {
+    background: #FEE2E2;
+    color: #B91C1C;
+}
+
+@media (max-width:768px) {
+    .ai-task-head {
+        flex-direction: column;
+    }
+
+    .ai-draft-grid {
+        grid-template-columns: 1fr;
+    }
+}
